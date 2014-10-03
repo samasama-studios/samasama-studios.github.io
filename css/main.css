@@ -1,0 +1,36 @@
+body {
+	background-image: url("../images/header.png");
+	background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;	
+}
+
+navbar .menuList {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	background-color: #F7F7F7;
+}
+
+navbar .menuList li {
+	float: left;
+	padding: 10px 20px;
+}
+
+navbar .menuList li a {
+	color: #FA6900;
+}
+
+navbar .menuList li:hover {
+	background-color: #EEE;
+}
+
+navbar .menuList li a:hover {
+	color: #FA6900;
+	text-decoration: none;
+}
+
+#welcome-content {
+	margin-top: 20px;
+}
