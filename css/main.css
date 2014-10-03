@@ -6,27 +6,27 @@ body {
     -o-background-size: cover;	
 }
 
-navbar .menuList {
+.navbar .menuList {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 	background-color: #F7F7F7;
 }
 
-navbar .menuList li {
+.navbar .menuList li {
 	float: left;
 	padding: 10px 20px;
 }
 
-navbar .menuList li a {
+.navbar .menuList li a {
 	color: #FA6900;
 }
 
-navbar .menuList li:hover {
+.navbar .menuList li:hover {
 	background-color: #EEE;
 }
 
-navbar .menuList li a:hover {
+.navbar .menuList li a:hover {
 	color: #FA6900;
 	text-decoration: none;
 }
