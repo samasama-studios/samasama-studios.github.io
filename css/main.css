@@ -62,3 +62,31 @@ body {
 	display: none;		
 }
 
+.section {
+
+}
+
+.section h2 {
+	text-transform: uppercase;
+	font-size: 14px;
+}
+
+.teamMember {
+
+}
+
+.teamMember h3 {
+	
+}
+
+.teamMember span {
+	
+}
+
+.teamMember .imageWrapper {
+	
+}
+
+.teamMember .imageWrapper img {
+	
+}
