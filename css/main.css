@@ -1,14 +1,27 @@
 body {
+	background-color: #FA6900;
+	/*
 	background-image: url("../images/header.png");
 	background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;	
+    */
 }
 
+/*HEADER + TOPMENU*/
+#topBarLogo a {
+	/*background:url("/images/header.png") no-repeat;	*/
+}
+
+#topBarLogo h1 {
+	display: none;
+}
 
 .navbar {
 	background-color: #F7F7F7;
+	height:40px;
+	opacity: 0.8;
 }
 
 .navbar .menuList {
@@ -36,5 +49,14 @@ body {
 }
 
 #welcome-content {
-	margin-top: 50px;
+	margin-top: 40px;
+	background-color: #FA6900;
+	background:url("/images/header.png") no-repeat;	
+	background-size: cover;
+	height: 420px;
 }
+
+#welcome-content h2 {
+	display: none;		
+}
+
