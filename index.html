@@ -1,95 +1,100 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Sama Sama Studios</title>
 
-		<!-- BOOTSTRAP -->
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-		<!-- Optional theme -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-		
-		<link rel="stylesheet" type="text/css" href="css/bootstrap_custom.css">
+		<!-- FOUNDATION -->
+    	<link rel="stylesheet" href="css/foundation.css" />
+    	<link rel="stylesheet" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/main_old.css">
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<link rel="shortcut icon" href="images/page_icon.ico" >
 
 		<!-- JQUERY -->
 		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-		<!-- BOOTSTRAP -->
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+		<script src="js/vendor/modernizr.js"></script>
+		<!-- FOUNDATION -->		
+		<script src="js/foundation/foundation.js"></script>
+		<script src="js/foundation/foundation.accordion.js"></script>
+		<script src="js/foundation/foundation.alert.js"></script>
+		<script src="js/foundation/foundation.tab.js"></script>
+		<script src="js/foundation/foundation.topbar.js"></script>
 	</head>
 	<body>
 		<!-- <img src="images/logo.png"/ align="top|right"> -->
 		<header>			
-			<div class="navbar navbar-fixed-top" role="navigation">
-				<div class="container">
-					<div id="topBarLogo" class="pull-left">
-						<a href="/index.html"><h1>Sama-Sama Studios</h1></a>
+			<div class="nav">
+				<div class="row">
+					<div class="small-6 medium-4 columns">
+						<div id="topBarLogo" class="pull-left">
+							<a href="/index.html"><h1>Sama-Sama Studios</h1></a>
+						</div>
 					</div>
-
-					<ul class="menuList pull-right">
-						<li><a href="/games/hideandseek/hideandseek.html">Play Hide &amp; Seek</a></li>
-						<li><a href="/games/hideandseekthirdperson/hideandseekthirdperson.html">Play Hide &amp; Seek (3rd person demo)</a></li>
-						<li><a href="#about">About being a Sama</a></li>
-						<li><a href="#contact">Contact us</a></li>
-					</ul>
+					<div class="small-6 medium-8 columns">
+						<ul class="menuList">
+							<li><a href="/games/hideandseek/hideandseek.html">Play Hide &amp; Seek</a></li>
+							<li><a href="/games/hideandseekthirdperson/hideandseekthirdperson.html">Play Hide &amp; Seek (3rd person demo)</a></li>
+							<li><a href="#about">About being a Sama</a></li>
+							<li><a href="#contact">Contact us</a></li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</header>
-		<div id="welcome-content" class="jumbotron">
-			<div class="container">
-				<div class="row">
-    				<h2>Somewhere, something incredible is waiting to be known.</h2>	
-    			</div>
+		<div id="welcome-content" class="row">
+			<div class="small-12 columns">
+    			<h2>Somewhere, something incredible is waiting to be known.</h2>	
 			</div>
 		</div>
-		<div id="about" class="section">
-			<div class="container">
-				<div class="row about">
-    				<h2>About being a Sama</h2>	
-    				<p>Bacon ipsum dolor sit amet sausage ribeye pig, jowl ground round strip steak tail leberkas tongue meatloaf drumstick cow beef ribs tenderloin pork chop. Doner shank pork chop biltong kielbasa pork short ribs pancetta ham meatball shankle turkey chicken. Pig boudin biltong andouille, chuck pastrami landjaeger swine strip steak pork belly tongue. Kielbasa jowl ribeye, doner leberkas cow chuck.</p>
-    			</div>
-    			<div class="row team">
-    				<h2>Team Sama</h2>	
-    				<div class="teamMember col-sm-4">
-    					<a href="#">
-	    					<div class="imageWrapper">
-	    						<img src=""/>
-	    					</div>
-	    					<h3>Lea</h3>
-	    					<span>Co-Founder</span>
-	    				</a>
-    				</div>
-    				<div class="teamMember col-sm-4">
-    					<a href="#">
-	    					<div class="imageWrapper">
-	    						<img src=""/>
-	    					</div>
-	    					<h3>Pepi</h3>
-	    					<span>Co-Founder</span>
-	    				</a>
-    				</div>
-    				<div class="teamMember col-sm-4">
-    					<a href="#">
-	    					<div class="imageWrapper">
-	    						<img src=""/>
-	    					</div>
-	    					<h3>Zeta</h3>
-	    					<span>Co-Founder</span>
-	    				</a>
-    				</div>
-    			</div>
+		<div id="about" class="row">
+			<div class="small-12 columns aboutus">
+				<h2>About being a Sama</h2>	
+				<p>Bacon ipsum dolor sit amet sausage ribeye pig, jowl ground round strip steak tail leberkas tongue meatloaf drumstick cow beef ribs tenderloin pork chop. Doner shank pork chop biltong kielbasa pork short ribs pancetta ham meatball shankle turkey chicken. Pig boudin biltong andouille, chuck pastrami landjaeger swine strip steak pork belly tongue. Kielbasa jowl ribeye, doner leberkas cow chuck.</p>
+    		</div>
+    	</div>
+    	<div id="team" class="row">
+    		<h2>Team Sama</h2>
+			<div class="small-4 columns teamMember">					
+				<a href="#">
+					<div class="imageWrapper">
+						<img src=""/>
+					</div>
+					<h3>Lea</h3>
+					<span>Co-Founder</span>
+				</a>
+			</div>
+			<div class="small-4 columns teamMember">
+				<a href="#">
+					<div class="imageWrapper">
+						<img src=""/>
+					</div>
+					<h3>Pepi</h3>
+					<span>Co-Founder</span>
+				</a>
+			</div>
+			<div class="small-4 columns teamMember">
+				<a href="#">
+					<div class="imageWrapper">
+						<img src=""/>
+					</div>
+					<h3>Zeta</h3>
+					<span>Co-Founder</span>
+				</a>
 			</div>
 		</div>
-		<div id="contact" class="section">
-			<div class="container">
-				<div class="row">
-    				<h2>Contact us</h2>	
-    			</div>
+		<div id="contact" class="row">
+			<div class="small-12 columns">
+    			<h2>Contact us</h2>	
 			</div>
 		</div>
-		<footer></footer>
+		<footer>
+			<script>
+			  $(document).foundation();
+			</script>
+		</footer>
 	</body>
 </html>

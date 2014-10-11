@@ -1,105 +1,24 @@
-body {
-	background-color: #F7F7F7;
-	/*
-	background-image: url("../images/header.png");
-	background-size: cover;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;	
-    */
-}
+// FOUNDATION
 
-/*HEADER + TOPMENU*/
-#topBarLogo a {
-	/*background:url("/images/header.png") no-repeat;	*/
-}
+// Small screens
+@media only screen { } /* Define mobile styles */
 
-#topBarLogo h1 {
-	display: none;
-}
+@media only screen and (max-width: 40em) { } /* max-width 640px, mobile-only styles, use when QAing mobile issues */
 
-.navbar {
-	background-color: #F7F7F7;
-	opacity: 0.8;
-}
+// Medium screens
+@media only screen and (min-width: 40.063em) { } /* min-width 641px, medium screens */
 
-.navbar .menuList {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
+@media only screen and (min-width: 40.063em) and (max-width: 64em) { } /* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
 
-.navbar .menuList li {
-	float: left;
-	padding: 15px 20px;
-}
+// Large screens
+@media only screen and (min-width: 64.063em) { } /* min-width 1025px, large screens */
 
-.navbar .menuList li a {
-	color: #FA6900;
-}
+@media only screen and (min-width: 64.063em) and (max-width: 90em) { } /* min-width 1025px and max-width 1440px, use when QAing large screen-only issues */
 
-.navbar .menuList li:hover {
-	background-color: #EEE;
-}
+// XLarge screens
+@media only screen and (min-width: 90.063em) { } /* min-width 1441px, xlarge screens */
 
-.navbar .menuList li a:hover {
-	color: #FA6900;
-	text-decoration: none;
-}
+@media only screen and (min-width: 90.063em) and (max-width: 120em) { } /* min-width 1441px and max-width 1920px, use when QAing xlarge screen-only issues */
 
-/*JUMBOTRON*/
-#welcome-content {
-	margin-top: 50px;
-	background-color: #FA6900;
-	background:url("/images/header.png") no-repeat;	
-	background-size: cover;
-	background-position-y: 55%;
-	height: 420px;
-	border-bottom: 1px solid #333;
-	box-shadow: 0px 2px 6px #333;
-}
-
-#welcome-content h2 {
-	display: none;		
-}
-
-/*SECTIONS*/
-.section {
-	padding:20px 10px;
-}
-
-.section h2 {
-	text-transform: uppercase;
-	font-size: 1.1em;
-	font-weight: bold;
-}
-
-/*ABOUT*/
-#about {
-
-}
-
-.teamMember {
-
-}
-
-.teamMember h3 {
-	
-}
-
-.teamMember span {
-	
-}
-
-.teamMember .imageWrapper {
-	
-}
-
-.teamMember .imageWrapper img {
-	
-}
-
-/*CONTACT US*/
-#contact {
-	background-color: #FA6900;
-}
+// XXLarge screens
+@media only screen and (min-width: 120.063em) { } /* min-width 1921px, xxlarge screens */
