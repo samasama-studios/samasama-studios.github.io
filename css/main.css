@@ -1,7 +1,123 @@
 // FOUNDATION
 
+body {
+    background-color: #FFF;
+    font-size: 12px;
+    font-family: sans-serif;
+}
+
+/*PASAR AL MEDIA ONLY SCREEN*/
+    #topBarLogo a {
+        /*background:url("/images/header.png") no-repeat;	*/
+    }
+
+    #topBarLogo h1 {
+        display: none;
+    }
+
+    .top-bar {
+        background-color: #333;
+        /*opacity: 0.8;*/
+    }
+
+    .menuList {
+
+    }
+
+    .menuList li a {
+        color: #FFF;
+    }
+
+    .menuList li:hover {
+        background-color: #FA6900;
+    }
+
+    .menuList li:hover a {
+        color: #FFF;
+    }
+
+    #welcome-content {
+        background-color: #FA6900;
+        background:url("/images/header.png") no-repeat;	
+        background-size: cover;
+        background-position-y: 55%;
+        height: 420px;
+        border-bottom: 1px solid #333;
+        box-shadow: 0px 2px 6px #333;
+    }
+
+    #welcome-content h2 {
+        display: none;		
+    }
+    
+    .section {
+        padding: 10px 0;
+    }
+
+    .section h2 {
+        text-transform: uppercase;
+        font-size: 1.1em;
+        font-weight: bold;
+        color: #FA6900;
+    }    
+
+    .section p {
+        font-size: 0.9em;
+        line-height: 1.1em;
+    }   
+
+    .gameVersions {
+    
+    }
+    
+    .demoGame a {
+        border: 1px solid #333;
+        background-color: #FAFAFA;
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+       
+    }
+    
+    .demoGame a h4 {
+        color: #FFF;
+        background-color: rgba(0,0,0,0.7);
+        padding: 5px 10px;
+        text-align: left;
+        position: absolute;
+        z-index: 10;
+        bottom: 5px;
+        width: 100%;
+    }
+    
+    .demoGame.first a {
+        background: url("/images/makale.jpg") no-repeat;        
+    }
+    
+    .demoGame.third a {
+        background: url("/images/makale.jpg") no-repeat;
+    }
+    
+    /*CONTACT US*/
+    #contact {
+        background-color: #FA6900;
+    }
+
+    #contact h2 {
+        color: #FFF;
+    }
+
+    #contact p {
+        color: #FFF;
+    }
+/*PASAR AL MEDIA ONLY SCREEN*/
+
 // Small screens
-@media only screen { } /* Define mobile styles */
+@media only screen { 
+
+    
+    
+} /* Define mobile styles */
 
 @media only screen and (max-width: 40em) { } /* max-width 640px, mobile-only styles, use when QAing mobile issues */
 

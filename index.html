@@ -2,15 +2,14 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Sama Sama Studios</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />		
+        <link rel="shortcut icon" href="images/page_icon.ico" >
+        <title>Sama Sama Studios</title>s
 
 		<!-- FOUNDATION -->
-    	<link rel="stylesheet" href="css/foundation.css" />
-    	<link rel="stylesheet" href="css/normalize.css" />
-		<link rel="stylesheet" type="text/css" href="css/main_old.css">
-		<link rel="stylesheet" type="text/css" href="css/main.css">
-		<link rel="shortcut icon" href="images/page_icon.ico" >
+    	<link rel="stylesheet" type="text/css" href="/css/foundation.css" />
+    	<link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/main.css">		
 
 		<!-- JQUERY -->
 		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -38,11 +37,10 @@
 					</ul>
 
 					<section class="top-bar-section">
-						<ul class="right">
-							<li><a href="/games/hideandseek/hideandseek.html">Play Hide &amp; Seek</a></li>
-							<li><a href="/games/hideandseekthirdperson/hideandseekthirdperson.html">Play Hide &amp; Seek (3rd person demo)</a></li>
-							<li><a href="#about">About being a Sama</a></li>
-							<li><a href="#contact">Contact us</a></li>
+						<ul class="right menuList">
+							<li><a href="#playHideAndSeek">Play Hide &amp; Seek</a></li>
+							<li><a href="#about">About us</a></li>
+							<li><a href="#contact">Contact</a></li>
 						</ul>
 						<!-- Right Nav Section 
 						<ul class="right">
@@ -60,19 +58,43 @@
 				</nav>
 			</div>					
 		</header>
-		<div id="welcome-content" class="row">
+        
+		<div id="welcome-content" class="row section">
 			<div class="small-12 columns">
     			<h2>Somewhere, something incredible is waiting to be known.</h2>	
 			</div>
 		</div>
-		<div id="about" class="row">
+        
+        <div id="playHideAndSeek" class="row section">
+			<div class="small-12 columns">
+    			<h2>Do you remember the time...</h2>
+                <p>when just hiding was the most funny way to spend a day?<br>Come on! just try to live it again within two ways, first and third person demo:</p>
+			</div>
+            <div class="row gameVersions">
+                <div class="small-6 columns demoGame first">
+                    <a href="/games/hideandseek/hideandseek.html">
+                        <h4>1st person</h4>
+                    </a>
+                </div>
+                <div class="small-6 columns demoGame third">
+                    <a href="/games/hideandseekthirdperson/hideandseekthirdperson.html">
+                        <h4>3rd person</h4>
+                    </a>
+                </div>
+            </div>
+		</div>
+        
+		<div id="about" class="row section">
 			<div class="small-12 columns aboutus">
 				<h2>About being a Sama</h2>	
 				<p>Bacon ipsum dolor sit amet sausage ribeye pig, jowl ground round strip steak tail leberkas tongue meatloaf drumstick cow beef ribs tenderloin pork chop. Doner shank pork chop biltong kielbasa pork short ribs pancetta ham meatball shankle turkey chicken. Pig boudin biltong andouille, chuck pastrami landjaeger swine strip steak pork belly tongue. Kielbasa jowl ribeye, doner leberkas cow chuck.</p>
     		</div>
     	</div>
-    	<div id="team" class="row">
-    		<h2>Team Sama</h2>
+        
+    	<div id="team" class="row section">
+            <div class="small-12 columns">
+    		  <h2>Team Sama</h2>
+            </div>
 			<div class="small-4 columns teamMember">					
 				<a href="#">
 					<div class="imageWrapper">
@@ -101,11 +123,14 @@
 				</a>
 			</div>
 		</div>
-		<div id="contact" class="row">
+        
+		<div id="contact" class="row section">
 			<div class="small-12 columns">
     			<h2>Contact us</h2>	
+                <p>form de contacto al info de sama</p>
 			</div>
 		</div>
+        
 		<footer>
 			<script>
 			  $(document).foundation();

@@ -49,7 +49,6 @@ body {
 
 /*JUMBOTRON*/
 #welcome-content {
-	margin-top: 50px;
 	background-color: #FA6900;
 	background:url("/images/header.png") no-repeat;	
 	background-size: cover;
