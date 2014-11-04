@@ -9,19 +9,22 @@
 		<!-- FOUNDATION -->
     	<link rel="stylesheet" type="text/css" href="/css/foundation.css" />
     	<link rel="stylesheet" type="text/css" href="/css/normalize.css" />
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>		
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
 
 		<!-- JQUERY -->
 		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
 		<script src="js/vendor/modernizr.js"></script>
+        
 		<!-- FOUNDATION -->		
 		<script src="js/foundation/foundation.js"></script>
 		<script src="js/foundation/foundation.accordion.js"></script>
 		<script src="js/foundation/foundation.alert.js"></script>
 		<script src="js/foundation/foundation.tab.js"></script>
 		<script src="js/foundation/foundation.topbar.js"></script>
+        
+        <script src="js/samasama.js"></script>
 	</head>
 	<body>
 		<!-- <img src="images/logo.png"/ align="top|right"> -->
@@ -72,14 +75,14 @@
 			</div>
             <div class="row gameVersions">
                 <div class="small-6 columns demoGame first">
-                    <div class="teaserWrapper">
+                    <div class="teaserWrapper first">
                         <a href="/games/hideandseek/hideandseek.html">
                             <h4>1st person</h4>
                         </a>
                     </div>    
                 </div>
                 <div class="small-6 columns demoGame third">
-                    <div class="teaserWrapper">
+                    <div class="teaserWrapper second">
                         <a href="/games/hideandseekthirdperson/hideandseekthirdperson.html">
                             <h4>3rd person</h4>
                         </a>
@@ -99,7 +102,7 @@
             <div class="small-12 columns">
     		  <h2>Team Sama</h2>
             </div>
-			<div class="small-4 columns teamMember">
+			<div class="small-12 medium-4 columns teamMember">
 				<a href="" target="_blank">
 					<div class="imageWrapper">
 				        <img src="/images/CandH_lea.png"/>
@@ -108,7 +111,7 @@
                     </div>					
 				</a>
 			</div>
-			<div class="small-4 columns teamMember">
+			<div class="small-12 medium-4 columns teamMember">
 				<a href="http://ee.linkedin.com/in/joseprietogaray/es" target="_blank">
 					<div class="imageWrapper">
 						<img src="/images/CandH_pepi.png"/>
@@ -117,7 +120,7 @@
 					</div>
 				</a>
 			</div>
-			<div class="small-4 columns teamMember">
+			<div class="small-12 medium-4 columns teamMember">
 				<a href="ar.linkedin.com/in/juanmanuelyanez/" target="_blank">
 					<div class="imageWrapper">
 						<img src="/images/CandH_zeta.png"/>
@@ -130,8 +133,26 @@
         
 		<div id="contact" class="row section">
 			<div class="small-12 columns">
-    			<h2>Contact us</h2>	
-                <p>form de contacto al info de sama</p>
+                <div class="row">
+                    <div class="small-6 columns">
+                        <form id="contactForm" method="post">
+                            <h2>Contact</h2>	
+                            <p>Want to know more? Feel free to contact us..</p>
+                            <label><!--Name-->
+                                <input type="text" name="name" id="contactName" maxlength="20" placeholder="Name"/>    
+                            </label>
+                            <label><!--Mail-->
+                                <input type="email" name="mail" id="contactMail" placeholder="Mail"/>    
+                            </label>
+                            <label><!--Message-->
+                                <textarea name="message" id="contactMsg" placeholder="Message"></textarea>    
+                            </label>
+                            <button type="submit" class="button" onsubmit="sendContactMail()">Send</button>
+                        </form>
+                    </div>
+                    <div class="small-6 columns">
+                    </div>
+                </div>
 			</div>
 		</div>
         

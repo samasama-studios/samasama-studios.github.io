@@ -17,7 +17,7 @@ body {
 
     .top-bar {
         background-color: #333;
-        /*opacity: 0.8;*/
+        opacity: 0.9;
     }
 
     .menuList {
@@ -51,7 +51,7 @@ body {
     }
     
     .section {
-        padding: 30px 0 50px;
+        padding: 3% 2%;
     }
 
     .section h2 {
@@ -66,17 +66,42 @@ body {
         line-height: 1.1em;
     }   
 
+    .button {
+        padding: 7px 20px;
+        text-transform: uppercase;
+        background-color: #FA6900;
+        border: 2px solid #FFF;
+    }
+
+    .button:hover {
+        background-color: #ff3300;
+    }
+
     /*PLAY HIDE AND SEEK*/
     #playHideAndSeek {
-        border-bottom: 1px solid #333;
+        
+        background-color: #DDD;
     }
     
+    #playHideAndSeek h2{
+        color: #333;
+        font-weight: 700;
+    }
+
     .gameVersions {
-    
+        display: inline;
     }
 
     .demoGame .teaserWrapper {
-        background-color: #000;
+        background-color: #000;        
+    }
+
+    .demoGame .teaserWrapper.first {
+        /*margin: 0 2.5% 0 5%;*/     
+    }
+
+    .demoGame .teaserWrapper.second {
+        /*margin: 0 5% 0 2.5%;*/       
     }
     
     .demoGame a {
@@ -85,6 +110,7 @@ body {
         overflow: hidden;
         display: block;
         opacity: 0.3;
+        
     }    
 
     .demoGame a h4 {
@@ -117,12 +143,12 @@ body {
 
     /*ABOUT + TEAM*/
     #about {
-        background-color: #F4F4F4;
+        
     }
 
     #team {
-        background-color: #F4F4F4;
         padding-top: 0;
+        border-bottom: 1px solid #333;
     }
 
     .teamMember {
@@ -135,9 +161,9 @@ body {
 
     .teamMember .imageWrapper {
         position: relative;
-        height: 320px;
+        height: 30%;
         overflow: hidden;
-        
+        margin: 3% 0;
     }
 
     .teamMember .imageWrapper img {
@@ -177,6 +203,33 @@ body {
 
     #contact p {
         color: #FFF;
+    }
+
+    #contactForm {
+        /*padding: 0 5%;*/
+    }
+
+    #contactForm label {
+        color: #FFF;
+        margin: 0;
+    }
+
+    #contactForm input {
+        padding: 5px 10px;
+        height: 30px;
+        border: none;
+        box-shadow: 1px 1px 1px #333 inset;
+    }
+
+    #contactForm textarea {
+        height: 70px;
+        border: none;
+        box-shadow: 1px 1px 1px #333 inset;
+    }
+
+    #contactForm button {
+        float: right;
+        margin: 10px 0;
     }
 /*PASAR AL MEDIA ONLY SCREEN*/
 
