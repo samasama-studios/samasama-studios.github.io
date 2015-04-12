@@ -18,38 +18,49 @@ body {
 }
 
 /*PASAR AL MEDIA ONLY SCREEN*/
+    .top-bar {
+        height: 60px;
+        background-color: #333;
+    }
+
+    #topBarLogo {
+        padding: 5px 0;
+    }
+
     #topBarLogo a {
         /*background:url("/images/header.png") no-repeat;	*/
+        background-image: url('/images/logoSama_wide_white.svg');
+        backgorund-repeat: no-repeat;
+        background-size: contain;
+        width: 250px;
+        height: 50px;
+        float:left;
+        margin-left: 10px;
     }
 
     #topBarLogo h1 {
         display: none;
     }
 
-    .top-bar {
-        background-color: #222;
-        /*opacity: 0.9;*/
-    }
-
     .menuList {
-
+        
     }
 
-    .menuList li {
-        background-color: #222;
+    .menuList li {        
+        padding: 7px 0;
     }
 
-    .menuList li a {        
-        background-color: #222 !important;
+    .menuList li a {
+        text-transform: uppercase !important;
     }
 
     .menuList li:hover {
-        background-color: #FA6900;
+        /*background-color: #FA6900;*/
     }
 
     .menuList li:hover a {
-        color: #FA6900 !important;
-        text-transform: uppercase;
+        color: #FA6900 !important;        
+        background-color: #333 !important;
     }
 
     #welcome-content {
@@ -96,67 +107,107 @@ body {
 
     /*PLAY HIDE AND SEEK*/
     #playHideAndSeek {
-        background-color: #DDD;
+        background-image: url('/images/hideandseek_logo_red.svg');
+        background-repeat: no-repeat;
+        background-size: 25%;
+        background-position: 97% 95%;
+        background-color: #556270;
+        padding: 5% 2% 5%;
     }
     
     #playHideAndSeek h2{
         font-family: "DBregular", sans-serif, arial;
-        color: #333;
+        color: #EEF0E4;
+        font-weight: 700;
+    }
+    
+    #playHideAndSeek p{        
+        color: #EEF0E4;
+    }    
+
+    .demoGame.selector p.brief{        
+        margin-top: 5%;
+        line-height: 1.5em;
+    }
+
+    .demoGame.selector p.brief span{
         font-weight: 700;
     }
 
-    .gameVersions {
-        display: inline;
+    .demoGame.selector .buttonHolder{
+        margin-top: 5%;
     }
 
-    .demoGame .teaserWrapper {
-        background-color: #000;        
-    }
-
-    .demoGame .teaserWrapper.first {
-        /*margin: 0 2.5% 0 5%;*/     
-    }
-
-    .demoGame .teaserWrapper.second {
-        /*margin: 0 5% 0 2.5%;*/       
+    .demoGame.selector .channel {
+        background-color: #556270;
+        border: 3px solid #C7F464;
+        border-radius: 3px;        
+        padding: 14px 0;
+        float: left;        
+        margin: 15px 0;
+        width: 100%;
+        color: #C7F464;
+        text-align: center;        
     }
     
-    .demoGame a {
+    .demoGame.selector .channel:hover {
+        color: #556270;
+        background-color: #C7F464;
+    }
+
+    .demoGame.preview {
+        background-image: url("/images/tele.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        height: 500px;  
         position: relative;
-        height: 250px;
+    }
+
+    .demoGame.preview .teaserWrapper {
+        background: url('/images/no-signal.gif') repeat;        
+        background-color: #556270; 
+        width: 270px;
+        height: 200px;
+        position: absolute;
+        top: 40%;
+        left: 14%;        
+        border-radius: 20px 15px 25px 20px;        
+    }
+    
+    .demoGame.preview .teaserWrapper .screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 200px;
         overflow: hidden;
         display: block;
-        opacity: 0.3;
-        
-    }    
+        opacity: 0;
+        border-radius: 20px 15px 25px 20px;
+        z-index: 200;
+    }      
+    
+    .demoGame.preview .teaserWrapper .screen.first {
+        background: url("/images/hideAndSeek_first.png") no-repeat;
+        background-size: cover;
+    }
+    
+    .demoGame.preview .teaserWrapper .screen.third {
+        background: url("/images/hideAndSeek_third.png") no-repeat;
+        background-size: cover;
+    }
 
-    .demoGame a h4 {
+    .demoGame.preview .screen h4 {
         color: #FFF;
-        background-color: rgba(0,0,0,0.7);
+        background-color: rgba(247,95,81,0.7);
         padding: 5px 10px;
         text-align: left;
         position: absolute;
         z-index: 10;
         bottom: 5px;
-        width: 100%;
-        opacity: 0;
-    }
-
-    .demoGame a:hover {
-        opacity: 1;
-    }
-
-    .demoGame a:hover h4 {
-        opacity: 1;
-    }
-    
-    .demoGame.first a {
-        background: url("/images/hideAndSeek_first.png") no-repeat;
-    }
-    
-    .demoGame.third a {
-        background: url("/images/hideAndSeek_third.png") no-repeat;
-    }
+        width: 100%;        
+    }  
 
     /*ABOUT + TEAM*/
     #about {

@@ -27,16 +27,34 @@
         <script src="js/samasama.js"></script>
 	</head>
 	<body>
-		<!-- <img src="images/logo.png"/ align="top|right"> -->
+		<script>
+        $(document).ready(function(){
+            $('.channel.firstPerson').hover(
+                function(){
+                    $('.teaserWrapper .screen.first').css('opacity',1);
+                },
+                function(){
+                    $('.teaserWrapper .screen.first').css('opacity',0);
+                }
+            );
+            
+            $('.channel.thirdPerson').hover(
+                function(){
+                    $('.teaserWrapper .screen.third').css('opacity',1);
+                },
+                function(){
+                    $('.teaserWrapper .screen.third').css('opacity',0);
+                }
+            );
+        });
+        </script>
 		<header>	
 			<div class="fixed sticky">
 				<nav class="top-bar" data-topbar role="navigation">
 					<ul class="title-area">
 						<li class="logo" id="topBarLogo" >
-							<h1><a href="#">Sama-Sama studios</a></h1>
-						</li>
-						<!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone 
-						<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>-->
+							<a href="/index.html"><h1>Sama-Sama studios</h1></a>
+						</li>						
 					</ul>
 
 					<section class="top-bar-section">
@@ -45,50 +63,48 @@
 							<li><a href="#about">About us</a></li>
 							<li><a href="#contact">Contact</a></li>
 						</ul>
-						<!-- Right Nav Section 
-						<ul class="right">
-							<li class="active"><a href="#">Right Button Active</a></li>
-							<li class="has-dropdown">
-								<a href="#">Right Button Dropdown</a>
-								<ul class="dropdown">
-									<li><a href="#">First link in dropdown</a></li>
-									<li class="active"><a href="#">Active link in dropdown</a></li>
-								</ul>
-							</li>
-						</ul>
-						-->
 					</section>
 				</nav>
 			</div>					
 		</header>
         
-		<div id="welcome-content" class="row section">
-			<div class="small-12 columns">
-    			<h2>Somewhere, something incredible is waiting to be known.</h2>	
-			</div>
-		</div>
-        
         <div id="playHideAndSeek" class="row section">
 			<div class="small-12 columns">
-    			<h2>Do you remember the time...</h2>
-                <p>when just hiding was the most funny way to spend a day?<br>Come on! just try to live it again within two ways, first and third person demo:</p>
+    			                
 			</div>
-            <div class="row gameVersions">
-                <div class="small-6 columns demoGame first">
-                    <div class="teaserWrapper first">
-                        <a href="/games/hideandseek/hideandseek.html">
+            <div class="row">
+                <div class="small-6 columns demoGame preview">
+                    <div class="teaserWrapper">
+                        <div class="screen first">
                             <h4>1st person</h4>
-                        </a>
-                    </div>    
-                </div>
-                <div class="small-6 columns demoGame third">
-                    <div class="teaserWrapper second">
-                        <a href="/games/hideandseekthirdperson/hideandseekthirdperson.html">
+                        </div>
+                    
+                        <div class="screen third">
                             <h4>3rd person</h4>
-                        </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="small-6 columns demoGame selector">
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <h2>Do you remember the time...</h2>
+                            <p class="brief">... <span>when just hiding was the most funny way to spend a day?</span><br>Come on! just try to live it again within two ways, first and third person demo.</p>
+                        </div>
+                    </div>
+                    <div class="row buttonHolder">
+                        <div class="small-6 columns">
+                            <a class="channel firstPerson" href="/games/hideandseek/hideandseek.html">First Person</a>
+                            <a class="channel thirdPerson" href="/games/hideandseekthirdperson/hideandseekthirdperson.html">Third Person</a>
+                        </div>
                     </div>
                 </div>
             </div>
+		</div>
+        
+        <div id="welcome-content" class="row section">
+			<div class="small-12 columns">
+    			<h2>Somewhere, something incredible is waiting to be known.</h2>	
+			</div>
 		</div>
         
 		<div id="about" class="row section">
