@@ -11,16 +11,33 @@
 
 // FOUNDATION
 
+html {
+    width: 100%;
+    height: 100%;
+}
+
 body {
-    background-color: #FFF;
-    font-size: 12px;
+    background-image: url(/images/absurdity.png);
+    background-color: #EEF0E4;
+    font-size: 16px;
     font-family: sans-serif;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+.page-wrapper {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    box-shadow: 0px 4px 5px #333;
 }
 
 /*PASAR AL MEDIA ONLY SCREEN*/
     .top-bar {
         height: 60px;
         background-color: #333;
+        z-index: 1000;
     }
 
     #topBarLogo {
@@ -63,21 +80,6 @@ body {
         background-color: #333 !important;
     }
 
-    #welcome-content {
-        background-color: #FA6900;
-        background:url("/images/header.png") no-repeat;	
-        background-size: cover;
-        background-position-y: 55%;
-        height: 420px;
-        /*border-bottom: 1px solid #333;*/
-        box-shadow: 0px 4px 8px #333 inset;
-        
-    }
-
-    #welcome-content h2 {
-        display: none;	
-    }
-    
     .section {
         padding: 3% 2%;
     }
@@ -99,26 +101,47 @@ body {
         text-transform: uppercase;
         background-color: #FA6900;
         border: 2px solid #FFF;
+        border-radius: 3px;
     }
 
     .button:hover {
-        background-color: #ff3300;
+        color: #FA6900;
+        background-color: #FFF;
     }
 
-    /*PLAY HIDE AND SEEK*/
-    #playHideAndSeek {
-        background-image: url('/images/hideandseek_logo_red.svg');
-        background-repeat: no-repeat;
-        background-size: 25%;
-        background-position: 97% 95%;
+    /*WELCOME*/
+    #welcome-content {
+        background-image: url(/images/absurdity.png), url('/images/hideandseek_logo_red.svg');
+        background-repeat: repeat, no-repeat;
+        background-size: 0.4%, 25%;
+        background-position: 0 0, 97% 92%;
         background-color: #556270;
         padding: 5% 2% 5%;
+        height: 420px;
     }
-    
-    #playHideAndSeek h2{
+
+    #welcome-content h2 {
         font-family: "DBregular", sans-serif, arial;
         color: #EEF0E4;
         font-weight: 700;
+    }
+
+    #welcome-content p{        
+        color: #EEF0E4;
+    }    
+
+    /*PLAY HIDE AND SEEK*/
+    #playHideAndSeek {
+        background-image: url('/images/absurdity.png');
+        background-color: #4DC9C0;
+        padding: 0% 20%;
+        position: relative;
+        height: 550px;
+        width: 100%;
+    }
+    
+    #playHideAndSeek h2{
+        
     }
     
     #playHideAndSeek p{        
@@ -135,7 +158,7 @@ body {
     }
 
     .demoGame.selector .buttonHolder{
-        margin-top: 5%;
+        margin-top: 4%;
     }
 
     .demoGame.selector .channel {
@@ -144,7 +167,7 @@ body {
         border-radius: 3px;        
         padding: 14px 0;
         float: left;        
-        margin: 15px 0;
+        margin: 10px 0;
         width: 100%;
         color: #C7F464;
         text-align: center;        
@@ -156,23 +179,42 @@ body {
     }
 
     .demoGame.preview {
-        background-image: url("/images/tele.svg");
+        height: 700px;  
+        width: 70%;
+        position: absolute;
+        top: -25%;
+        left: 15%;        
+    }
+
+    .demoGame.preview #first {        
+        cursor: pointer;
+    }
+
+    .shadow {
+    filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=5, OffY=5, Color='#444')";
+    filter: url(#drop-shadow);
+    -webkit-filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.5));
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.5));
+    }
+
+    .demoGame.preview .teaserWrapper.hs_logo {
+        background-image: url('/images/hideandseek_logo_green.svg');
         background-repeat: no-repeat;
-        background-size: contain;
+        background-size: 55%;
         background-position: center;
-        height: 500px;  
-        position: relative;
+        opacity: 0.8;
     }
 
     .demoGame.preview .teaserWrapper {
         background: url('/images/no-signal.gif') repeat;        
         background-color: #556270; 
-        width: 270px;
-        height: 200px;
+        width: 55%;
+        height: 40%;
+        z-index: 30;
         position: absolute;
         top: 40%;
-        left: 14%;        
-        border-radius: 20px 15px 25px 20px;        
+        left: 10%;        
+        border-radius: 20px 15px 25px 20px;
     }
     
     .demoGame.preview .teaserWrapper .screen {
@@ -180,12 +222,12 @@ body {
         top: 0;
         left: 0;
         width: 100%;
-        height: 200px;
+        height: 100%;
         overflow: hidden;
         display: block;
-        opacity: 0;
+        opacity: 0;        
+        z-index: 40;
         border-radius: 20px 15px 25px 20px;
-        z-index: 200;
     }      
     
     .demoGame.preview .teaserWrapper .screen.first {
@@ -211,12 +253,18 @@ body {
 
     /*ABOUT + TEAM*/
     #about {
-        
+        background-image: url('/images/absurdity.png');
+        background-color: #FFF;
+    }
+
+    #about p {
+        line-height: 1.4em;
     }
 
     #team {
         padding-top: 0;
-        border-bottom: 5px solid #333;
+        background-image: url('/images/absurdity.png');
+        background-color: #FFF;
     }
 
     .teamMember {
@@ -263,6 +311,15 @@ body {
     /*CONTACT US*/
     #contact {
         background-color: #FA6900;
+        background-image: url(/images/absurdity.png), url('/images/contact.png');
+        background-repeat: repeat, no-repeat;
+        background-size: 0.4%, 50%;
+        background-position: 0 0, 97% 63%;
+        /*background:url("/images/contact.png") no-repeat;	*/
+        /*background-size: cover;*/
+        /*background-position-y: 55%;*/
+        height: 400px;
+        box-shadow: 0px 4px 8px #333 inset;
     }
 
     #contact h2 {
@@ -285,19 +342,23 @@ body {
     #contactForm input {
         padding: 5px 10px;
         height: 30px;
+        width: 95%;
         border: none;
-        box-shadow: 1px 1px 1px #333 inset;
+        box-shadow: 1px 1px 1px #333 inset; 
+        border-radius: 3px;
     }
 
     #contactForm textarea {
         height: 70px;
+        width: 95%;
         border: none;
         box-shadow: 1px 1px 1px #333 inset;
+        border-radius: 3px;
     }
 
     #contactForm button {
         float: right;
-        margin: 10px 0;
+        margin: 10px 20px;
     }
 /*PASAR AL MEDIA ONLY SCREEN*/
 
