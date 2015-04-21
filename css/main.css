@@ -136,7 +136,7 @@ body {
         background-color: #4DC9C0;
         padding: 0% 20%;
         position: relative;
-        height: 550px;
+        height: 470px;
         width: 100%;
     }
     
@@ -182,27 +182,41 @@ body {
         height: 700px;  
         width: 70%;
         position: absolute;
-        top: -25%;
-        left: 15%;        
-    }
-
-    .demoGame.preview #first {        
-        cursor: pointer;
-    }
+        top: -37%;
+        left: 17%;        
+    }    
 
     .shadow {
-    filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=5, OffY=5, Color='#444')";
-    filter: url(#drop-shadow);
-    -webkit-filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.5));
-    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.5));
+        filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=5, OffY=5, Color='#444')";
+        filter: url(#drop-shadow);
+        -webkit-filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.5));
+        filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.5));
     }
 
-    .demoGame.preview .teaserWrapper.hs_logo {
-        background-image: url('/images/hideandseek_logo_green.svg');
-        background-repeat: no-repeat;
-        background-size: 55%;
-        background-position: center;
-        opacity: 0.8;
+    #retroTV #sombra {
+        opacity: 0.6;
+    }
+
+    #retroTV #firstChannel, #retroTV #secondChannel {        
+        cursor: pointer;
+        -ms-transform: rotate(0deg); /* IE 9 */
+        -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
+        transform: rotate(0deg); 
+        transform-origin: center;
+    }
+
+    #retroTV #firstChannel:hover, #retroTV #secondChannel:hover {
+        -ms-transform: rotate(45deg); /* IE 9 */
+        -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+        transform: rotate(45deg);         
+    }
+
+    #retroTV #firstChannel:hover .color {
+        fill: #db5549;
+    }
+
+    #retroTV #secondChannel:hover .color {
+        fill: #983d46;
     }
 
     .demoGame.preview .teaserWrapper {
@@ -214,7 +228,16 @@ body {
         position: absolute;
         top: 40%;
         left: 10%;        
-        border-radius: 20px 15px 25px 20px;
+        border-radius: 33px;
+        border: 3px solid #556270;
+    }
+
+    .demoGame.preview .teaserWrapper.hs_logo {
+        background-image: url('/images/hideandseek_logo_green.svg');
+        background-repeat: no-repeat;
+        background-size: 55%;
+        background-position: center;
+        opacity: 0.4;
     }
     
     .demoGame.preview .teaserWrapper .screen {
@@ -227,7 +250,7 @@ body {
         display: block;
         opacity: 0;        
         z-index: 40;
-        border-radius: 20px 15px 25px 20px;
+        border-radius: 30px;
     }      
     
     .demoGame.preview .teaserWrapper .screen.first {
@@ -243,18 +266,23 @@ body {
     .demoGame.preview .screen h4 {
         color: #FFF;
         background-color: rgba(247,95,81,0.7);
-        padding: 5px 10px;
+        padding: 7px 20px;
         text-align: left;
         position: absolute;
         z-index: 10;
-        bottom: 5px;
+        bottom: 15px;
         width: 100%;        
     }  
+
+    .demoGame.preview .screen.third h4 {
+        background-color: rgba(192,77,88,0.7);
+    }
 
     /*ABOUT + TEAM*/
     #about {
         background-image: url('/images/absurdity.png');
         background-color: #FFF;
+        padding-top: 7%;
     }
 
     #about p {
