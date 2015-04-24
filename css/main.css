@@ -20,7 +20,7 @@ body {
     background-image: url(/images/absurdity.png);
     background-color: #EEF0E4;
     font-size: 16px;
-    font-family: sans-serif;
+    font-family: 'Open Sans', sans-serif;
     display: inline-block;
     width: 100%;
     height: 100%;
@@ -85,6 +85,7 @@ body {
     }
 
     .section h2 {
+        font-family: 'Oswald', sans-serif;
         text-transform: uppercase;        
         font-size: 1.5em;
         font-weight: normal;
@@ -97,6 +98,7 @@ body {
     }   
 
     .button {
+        font-family: 'Open Sans', sans-serif;
         padding: 7px 20px;
         text-transform: uppercase;
         background-color: #FA6900;
@@ -113,11 +115,10 @@ body {
     #welcome-content {
         background-image: url(/images/absurdity.png), url('/images/hideandseek_logo_red.svg');
         background-repeat: repeat, no-repeat;
-        background-size: 0.4%, 25%;
-        background-position: 0 0, 97% 92%;
+        background-size: 0.4%, 30%;
+        background-position: 0 0, 105% -10%;
         background-color: #556270;
-        padding: 5% 2% 5%;
-        height: 420px;
+        padding: 5% 2% 0%;
     }
 
     #welcome-content h2 {
@@ -126,9 +127,36 @@ body {
         font-weight: 700;
     }
 
-    #welcome-content p{        
-        color: #EEF0E4;
+    #welcome-content .briefCol {
+        margin-top: 30px;
+    }
+
+    #welcome-content .brief{        
+        color: #EEF0E4;  
+        line-height: 1.3em;
     }    
+
+    #welcome-content .brief.advice{
+        font-size: 1.1em;
+        text-transform: uppercase;
+        text-align: center;
+        background-color: #F75F51;
+        padding: 5%;
+        margin: 10% 10% 10% 5%;
+        width: 69%;
+        box-shadow: 1px 1px 1px black;
+    }    
+
+    #welcome-content .briefDraw {        
+        margin: 0 25% 10px;
+        width: 200px;
+    }
+
+    #welcome-content .briefDraw.bottom {
+        margin: 5% 5% 0 7%;
+        float: left;
+        width: 150px;
+    }
 
     /*PLAY HIDE AND SEEK*/
     #playHideAndSeek {
@@ -320,7 +348,7 @@ body {
         width: 100%;
         padding: 5px 15px 0;
         font-size: 1.1em;
-        font-weight: 700;
+        font-weight: 600;
         color: #FFF;
         background-color: rgba(0,0,0,0.7);
     }
@@ -331,7 +359,7 @@ body {
         width: 100%;
         padding: 0 15px 5px;
         font-size: 0.7em;
-        font-weight: 700;
+        font-weight: 600;
         color: #FFF;
         background-color: rgba(0,0,0,0.7);
     }
