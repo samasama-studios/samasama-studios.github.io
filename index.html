@@ -43,7 +43,40 @@
         
         ga('create', 'UA-62592524-1', 'auto');
         ga('send', 'pageview');
-        <!-- Google Analytics : End --> 
+        <!-- Google Analytics : End -->
+     
+        $(document).ready(function(){
+            $('#firstChannel').click(function(){
+                window.open('/games/hideandseek/hideandseek.html');
+            });
+            
+            $('#firstChannel').hover(
+                function(){
+                    $('.teaserWrapper.hs_logo').hide();
+                    $('.teaserWrapper .screen.first').css('opacity',1);
+                },
+                function(){
+                    $('.teaserWrapper.hs_logo').show();
+                    $('.teaserWrapper .screen.first').css('opacity',0);
+                }
+            );
+            
+            $('#secondChannel').click(function(){
+                window.open('/games/hideandseekthirdperson/hideandseekthirdperson.html');
+            });
+            
+            $('#secondChannel').hover(
+                function(){
+                    $('.teaserWrapper.hs_logo').hide();
+                    $('.teaserWrapper .screen.third').css('opacity',1);
+                },
+                function(){
+                    $('.teaserWrapper.hs_logo').show();
+                    $('.teaserWrapper .screen.third').css('opacity',0);
+                }
+            );
+        });
+
         </script>
 
 		<header>	
@@ -254,37 +287,3 @@
 		</footer>
 	</body>
 </html>
-
-<script>
-$(document).ready(function(){
-    $('#firstChannel').click(function(){
-        window.open('/games/hideandseek/hideandseek.html');
-    });
-
-    $('#firstChannel').hover(
-        function(){
-            $('.teaserWrapper.hs_logo').hide();
-            $('.teaserWrapper .screen.first').css('opacity',1);
-        },
-        function(){
-            $('.teaserWrapper.hs_logo').show();
-            $('.teaserWrapper .screen.first').css('opacity',0);
-        }
-    );
-
-    $('#secondChannel').click(function(){
-        window.open('/games/hideandseekthirdperson/hideandseekthirdperson.html');
-    });
-
-    $('#secondChannel').hover(
-        function(){
-            $('.teaserWrapper.hs_logo').hide();
-            $('.teaserWrapper .screen.third').css('opacity',1);
-        },
-        function(){
-            $('.teaserWrapper.hs_logo').show();
-            $('.teaserWrapper .screen.third').css('opacity',0);
-        }
-    );
-});
-</script>
