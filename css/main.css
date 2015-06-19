@@ -144,7 +144,7 @@ body {
         padding: 5%;
         margin: 10% 10% 10% 5%;
         width: 69%;
-        box-shadow: 1px 1px 1px black;
+        box-shadow: 1px 1px 1px black inset;
     }    
 
     #welcome-content .briefDraw {        
@@ -367,7 +367,7 @@ body {
     /*CONTACT US*/
     #contact {
         background-color: #FA6900;
-        background-image: url(/images/absurdity.png), url('/images/contact.png');
+        background-image: url(/images/absurdity.png), url('/images/contact.svg');
         background-repeat: repeat, no-repeat;
         background-size: 0.4%, 50%;
         background-position: 0 0, 97% 63%;
