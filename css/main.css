@@ -113,21 +113,36 @@ body {
 
     /*WELCOME*/
     #welcome-content {
-        background-image: url(/images/absurdity.png), url('/images/hideandseek_logo_red.svg');
+        /*background-image: url(/images/absurdity.png), url('/images/hideandseek_logo_red.svg');
         background-repeat: repeat, no-repeat;
         background-size: 0.4%, 30%;
-        background-position: 0 0, 105% -10%;
+        background-position: 0 0, 105% -10%;        
+        padding: 5% 2% 0%;*/        
+        background-image: url(/images/absurdity.png);
+        background-size: 0.4%;
+        background-repeat: repeat;
         background-color: #556270;
-        padding: 5% 2% 0%;
     }
 
     #welcome-content h2 {
         font-family: "DBregular", sans-serif, arial;
         color: #EEF0E4;
+        /*display: none;*/
         font-weight: 700;
+        text-align: center;
+        margin: 20px 0;
     }
 
-    #welcome-content .briefCol {
+    #samaLogo {
+        background: url('/images/samaLogo.svg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 300px;
+        height: 300px;
+        margin: 0 auto;
+    }
+
+    /*#welcome-content .briefCol {
         margin-top: 30px;
     }
 
@@ -156,10 +171,10 @@ body {
         margin: 5% 5% 0 7%;
         float: left;
         width: 150px;
-    }
+    }*/
 
     /*PLAY HIDE AND SEEK*/
-    #playHideAndSeek {
+    /*#playHideAndSeek {
         background-image: url('/images/absurdity.png');
         background-color: #4DC9C0;
         padding: 0% 20%;
@@ -227,15 +242,15 @@ body {
 
     #retroTV #firstChannel, #retroTV #secondChannel {        
         cursor: pointer;
-        -ms-transform: rotate(0deg); /* IE 9 */
-        -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
         transform: rotate(0deg); 
         transform-origin: center;
     }
 
     #retroTV #firstChannel:hover, #retroTV #secondChannel:hover {
-        -ms-transform: rotate(45deg); /* IE 9 */
-        -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+        -ms-transform: rotate(45deg); 
+        -webkit-transform: rotate(45deg); 
         transform: rotate(45deg);         
     }
 
@@ -304,20 +319,56 @@ body {
 
     .demoGame.preview .screen.third h4 {
         background-color: rgba(192,77,88,0.7);
-    }
+    }*/
 
     /*ABOUT + TEAM*/
     #about {
         background-image: url('/images/absurdity.png');
         background-color: #FFF;
-        padding-top: 7%;
+       /* padding-top: 7%;*/
     }
 
     #about p {
         line-height: 1.4em;
     }
+    
+    #games {
+       background-image: url('/images/absurdity.png');
+       background-color: #FFF;
+    }
 
-    #team {
+    #games h2 {
+        margin-bottom: 20px;
+    }
+
+    .gameLink {
+        background-repeat: no-repeat;
+        background-size: contain;
+        margin-left: 15%;
+        width: 70%;
+        height: 200px;
+        display: inline-block;
+        opacity: 1;
+    }
+
+    .gameLink:hover {
+        opacity: 0.7;
+    }
+
+    .gameLink span {
+        display: none;
+    }
+
+    .gameLink.flickchess {
+        background-image: url('/images/flickChess.png');
+    }
+
+    .gameLink.hideandseek {
+        background-image: url('/images/hideandseek-03.png');
+    }
+
+
+    /*#team {
         padding-top: 0;
         background-image: url('/images/absurdity.png');
         background-color: #FFF;
@@ -362,7 +413,7 @@ body {
         font-weight: 600;
         color: #FFF;
         background-color: rgba(0,0,0,0.7);
-    }
+    }*/
     
     /*CONTACT US*/
     #contact {
@@ -371,9 +422,6 @@ body {
         background-repeat: repeat, no-repeat;
         background-size: 0.4%, 50%;
         background-position: 0 0, 97% 63%;
-        /*background:url("/images/contact.png") no-repeat;	*/
-        /*background-size: cover;*/
-        /*background-position-y: 55%;*/
         height: 400px;
         box-shadow: 0px 4px 8px #333 inset;
     }
@@ -427,10 +475,20 @@ body {
     
 } /* Define mobile styles */
 
-@media only screen and (max-width: 40em) { } /* max-width 640px, mobile-only styles, use when QAing mobile issues */
+@media only screen and (max-width: 40em) { 
+     #contact {
+        background-color: #FA6900;
+        background-image: url(/images/absurdity.png);
+        background-repeat: repeat;
+        background-size: 0.4%;
+     }
+
+} /* max-width 640px, mobile-only styles, use when QAing mobile issues */
 
 // Medium screens
-@media only screen and (min-width: 40.063em) { } /* min-width 641px, medium screens */
+@media only screen and (min-width: 40.063em) { 
+
+} /* min-width 641px, medium screens */
 
 @media only screen and (min-width: 40.063em) and (max-width: 64em) { } /* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
 
