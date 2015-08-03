@@ -10,11 +10,16 @@
     	<link rel="stylesheet" type="text/css" href="/css/foundation.css" />
     	<link rel="stylesheet" type="text/css" href="/css/normalize.css" />
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+        
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 		<!-- JQUERY -->
 		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
+        <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
+        
 		<script src="js/vendor/modernizr.js"></script>
         
 		<!-- FOUNDATION -->		
@@ -34,7 +39,6 @@
 
 	<body>
 	    <script>
-
         <!-- Google Analytics : Start -->
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -46,9 +50,28 @@
         <!-- Google Analytics : End -->
      
         $(document).ready(function(){
-        
+            // + SCROLLMAGIC +
+            // init
+//            var controller = new ScrollMagic.Controller({
+//                globalSceneOptions: {
+//                    triggerHook: 'onLeave'
+//                }
+//            });
+//
+//            // get all slides
+//            var slides = document.querySelectorAll(".section");
+//
+//            // create scene for every slide
+//            for (var i=0; i<slides.length; i++) {
+//                new ScrollMagic.Scene({
+//                        triggerElement: slides[i]
+//                    })
+//                    .setPin(slides[i])
+//                    .addIndicators() // add indicators (requires plugin)
+//                    .addTo(controller);
+//            }
+            // - SCROLLMAGIC -
         });
-
         </script>
 
 		<header>	
@@ -62,10 +85,11 @@
 
 					<section class="top-bar-section">
 						<ul class="right menuList">
-							<li><a href="#about">About us</a></li>
+                            <li><a class="socialIcon fa fa-facebook-square" href="https://www.facebook.com/SamaSamaStudios" target="_blank"><span>Facebook</span></a></li>
+							<!--<li><a href="#about">About us</a></li>
                             <li><a href="#games">Our Games</a></li>
-							<li><a href="#contact">Contact</a></li>
-						</ul>
+							<li><a href="#contact">Contact</a></li>-->
+						</ul>                        
 					</section>
 				</nav>
 			</div>					
@@ -82,27 +106,35 @@
 		</div>
             
         <div id="about" class="row section">
-			<div class="small-12 columns aboutus">
-				<h2>About being a Sama</h2>	
-				<p>
-                Sama-Sama nació de una necesidad, de una filosofía, de una realidad y un mensaje que por nosotros mismos debemos enviar. Es pura retribución y agradecimiento por ser parte de este basto Cosmos. Sama-Sama no es la mera idea de jugar, sino la de revolucionar utilizando lo que esta bien dentro nuestro, nuestro instinto, nuestra naturaleza. No se necesitan grandes cosas para divertirse, no mientras nuestras mentes se conecten con lo primitivo, con la belleza de lo simple.
-                </p>
-    		</div>
-    	</div>
-            
-        <div id="games" class="row section">
-			<div class="small-12 columns">
-    			<h2>in progress games...</h2>	
-            </div>
             <div class="row">
-                <div class="small-12 medium-6 columns">
-                    <a class="gameLink flickchess" href="http://www.flickchess.com" target="_blank"><span>Flick Chess</span></a>
+                <div class="small-12 columns aboutus">
+                    <h2>The SAMA project</h2>	
+                    <p class="eng">
+                        Sama-Sama born from a philosophy, from a reality and a message that for ourselves, we need and we must send. Big things are not necessary to have fun, not while our minds connect with oneself, with the primitive and the beauty of simplicity. Sama-Sama does not seek the mere idea of playing, but also that of revolutionize using what is right within us, our instinct, our nature.
+                        <br><br>
+                        This is pure remuneration and appreciation for the simple fact of being part of this vast Cosmos. This is to feed our spirit and have fun doing what we like most, video games.
+                    </p>
+                    <p class="spa">
+                        Sama-Sama nació de una filosofía, de una realidad y un mensaje que, por nosotros mismos, necesitamos y debemos enviar. No se necesitan grandes cosas para divertirse, no mientras nuestras mentes se conecten con uno mismo, con lo primitivo y con la belleza de lo simple. Sama-Sama no busca la mera idea de jugar, sino la de revolucionar utilizando lo que está bien dentro nuestro, nuestro instinto, nuestra naturaleza.
+                        <br><br>
+                        Esto es pura retribución y agradecimiento por el simple hecho de ser parte de este vasto Cosmos. Esto es para alimentar nuestro espíritu y divertirnos haciendo lo que más nos gusta, videojuegos.
+                    </p>
                 </div>
-                <div class="small-12 medium-6 columns">
-                    <a class="gameLink hideandseek" href="/games/hideandseekthirdperson/hideandseekthirdperson.html" target="_blank"><span>Hide & Seek</span></a>
-                </div>                                
             </div>
-		</div>    
+            <div id="games" class="row">
+                <div class="small-12 columns">
+                    <h2>Meet our first ideas...</h2>	
+                </div>
+                <div class="row">
+                    <div class="small-12 medium-6 columns gameWrapper">                        
+                        <a class="gameLink flickchess" href="http://www.flickchess.com" target="_blank"><div class='label comingSoonLabel shadowed'><span>Coming Soon</span></div><div class="gameLogo flickchess"><span class="gameName">Flick Chess</span></div></a>
+                    </div>
+                    <div class="small-12 medium-6 columns gameWrapper">                        
+                        <a class="gameLink hideandseek" href="/games/hideandseekthirdperson/hideandseekthirdperson.html" target="_blank"><div class='label onHoldLabel shadowed'><span>On Hold</span></div><div class="gameLogo hideandseek"><span class="gameName">Hide & Seek</span></div></a>
+                    </div>                                
+                </div>
+            </div>
+    	</div>    
         
     	<!--<div id="team" class="row section">
             <div class="small-12 columns">

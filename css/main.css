@@ -28,16 +28,32 @@ body {
 
 .page-wrapper {
     width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
+    /*max-width: 1000px;*/
+    /*margin: 0 auto;*/
     box-shadow: 0px 4px 5px #333;
 }
+
+.eng {
+    color: #333;
+}
+
+.spa {
+    color: #AAA;
+}
+
+.shadowed {
+        filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=5, OffY=5, Color='#444')";
+        filter: url(#drop-shadow);
+        -webkit-filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.5));
+        filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.5));
+    }
 
 /*PASAR AL MEDIA ONLY SCREEN*/
     .top-bar {
         height: 60px;
-        background-color: #333;
+        background-color: #000;
         z-index: 1000;
+        opacity: 0.8;
     }
 
     #topBarLogo {
@@ -65,10 +81,12 @@ body {
 
     .menuList li {        
         padding: 7px 0;
+        background-color: #000 !important;
     }
 
     .menuList li a {
-        text-transform: uppercase !important;
+        background-color: #000 !important;
+        /*text-transform: uppercase !important;*/
     }
 
     .menuList li:hover {
@@ -77,11 +95,24 @@ body {
 
     .menuList li:hover a {
         color: #FA6900 !important;        
-        background-color: #333 !important;
+        background-color: #000 !important;
+    }
+
+    .socialIcon {
+        color: #FFF;
+        font-family: 'FontAwesome' !important;
+        font-size: 1.5em !important;
+    }
+
+    .socialIcon span {
+        display: none;
     }
 
     .section {
-        padding: 3% 2%;
+        padding: 5%;
+        height: 100%;
+		width: 100%;
+        max-width: none !important;
     }
 
     .section h2 {
@@ -112,12 +143,7 @@ body {
     }
 
     /*WELCOME*/
-    #welcome-content {
-        /*background-image: url(/images/absurdity.png), url('/images/hideandseek_logo_red.svg');
-        background-repeat: repeat, no-repeat;
-        background-size: 0.4%, 30%;
-        background-position: 0 0, 105% -10%;        
-        padding: 5% 2% 0%;*/        
+    #welcome-content {       
         background-image: url(/images/absurdity.png);
         background-size: 0.4%;
         background-repeat: repeat;
@@ -125,12 +151,13 @@ body {
     }
 
     #welcome-content h2 {
-        font-family: "DBregular", sans-serif, arial;
+        font-family: "Oswald", sans-serif, arial;
         color: #EEF0E4;
         /*display: none;*/
         font-weight: 700;
+        font-size: 2em;
         text-align: center;
-        margin: 20px 0;
+        margin: 30px 0;
     }
 
     #samaLogo {
@@ -141,185 +168,6 @@ body {
         height: 300px;
         margin: 0 auto;
     }
-
-    /*#welcome-content .briefCol {
-        margin-top: 30px;
-    }
-
-    #welcome-content .brief{        
-        color: #EEF0E4;  
-        line-height: 1.3em;
-    }    
-
-    #welcome-content .brief.advice{
-        font-size: 1.1em;
-        text-transform: uppercase;
-        text-align: center;
-        background-color: #F75F51;
-        padding: 5%;
-        margin: 10% 10% 10% 5%;
-        width: 69%;
-        box-shadow: 1px 1px 1px black inset;
-    }    
-
-    #welcome-content .briefDraw {        
-        margin: 0 25% 10px;
-        width: 200px;
-    }
-
-    #welcome-content .briefDraw.bottom {
-        margin: 5% 5% 0 7%;
-        float: left;
-        width: 150px;
-    }*/
-
-    /*PLAY HIDE AND SEEK*/
-    /*#playHideAndSeek {
-        background-image: url('/images/absurdity.png');
-        background-color: #4DC9C0;
-        padding: 0% 20%;
-        position: relative;
-        height: 470px;
-        width: 100%;
-    }
-    
-    #playHideAndSeek h2{
-        
-    }
-    
-    #playHideAndSeek p{        
-        color: #EEF0E4;
-    }    
-
-    .demoGame.selector p.brief{        
-        margin-top: 5%;
-        line-height: 1.5em;
-    }
-
-    .demoGame.selector p.brief span{
-        font-weight: 700;
-    }
-
-    .demoGame.selector .buttonHolder{
-        margin-top: 4%;
-    }
-
-    .demoGame.selector .channel {
-        background-color: #556270;
-        border: 3px solid #C7F464;
-        border-radius: 3px;        
-        padding: 14px 0;
-        float: left;        
-        margin: 10px 0;
-        width: 100%;
-        color: #C7F464;
-        text-align: center;        
-    }
-    
-    .demoGame.selector .channel:hover {
-        color: #556270;
-        background-color: #C7F464;
-    }
-
-    .demoGame.preview {
-        height: 700px;  
-        width: 70%;
-        position: absolute;
-        top: -37%;
-        left: 17%;        
-    }    
-
-    .shadow {
-        filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=5, OffY=5, Color='#444')";
-        filter: url(#drop-shadow);
-        -webkit-filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.5));
-        filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.5));
-    }
-
-    #retroTV #sombra {
-        opacity: 0.6;
-    }
-
-    #retroTV #firstChannel, #retroTV #secondChannel {        
-        cursor: pointer;
-        -ms-transform: rotate(0deg);
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg); 
-        transform-origin: center;
-    }
-
-    #retroTV #firstChannel:hover, #retroTV #secondChannel:hover {
-        -ms-transform: rotate(45deg); 
-        -webkit-transform: rotate(45deg); 
-        transform: rotate(45deg);         
-    }
-
-    #retroTV #firstChannel:hover .color {
-        fill: #db5549;
-    }
-
-    #retroTV #secondChannel:hover .color {
-        fill: #983d46;
-    }
-
-    .demoGame.preview .teaserWrapper {
-        background: url('/images/no-signal.gif') repeat;        
-        background-color: #556270; 
-        width: 55%;
-        height: 40%;
-        z-index: 30;
-        position: absolute;
-        top: 40%;
-        left: 10%;        
-        border-radius: 33px;
-        border: 3px solid #556270;
-    }
-
-    .demoGame.preview .teaserWrapper.hs_logo {
-        background-image: url('/images/hideandseek_logo_green.svg');
-        background-repeat: no-repeat;
-        background-size: 55%;
-        background-position: center;
-        opacity: 0.4;
-    }
-    
-    .demoGame.preview .teaserWrapper .screen {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        display: block;
-        opacity: 0;        
-        z-index: 40;
-        border-radius: 30px;
-    }      
-    
-    .demoGame.preview .teaserWrapper .screen.first {
-        background: url("/images/hideAndSeek_first.png") no-repeat;
-        background-size: cover;
-    }
-    
-    .demoGame.preview .teaserWrapper .screen.third {
-        background: url("/images/hideAndSeek_third.png") no-repeat;
-        background-size: cover;
-    }
-
-    .demoGame.preview .screen h4 {
-        color: #FFF;
-        background-color: rgba(247,95,81,0.7);
-        padding: 7px 20px;
-        text-align: left;
-        position: absolute;
-        z-index: 10;
-        bottom: 15px;
-        width: 100%;        
-    }  
-
-    .demoGame.preview .screen.third h4 {
-        background-color: rgba(192,77,88,0.7);
-    }*/
 
     /*ABOUT + TEAM*/
     #about {
@@ -332,41 +180,86 @@ body {
         line-height: 1.4em;
     }
     
+
+    #about p.spa {
+        font-size: 0.8em;
+    }
+
     #games {
-       background-image: url('/images/absurdity.png');
-       background-color: #FFF;
+       /*background-image: url('/images/absurdity.png');
+       background-color: #FFF;*/
     }
 
     #games h2 {
-        margin-bottom: 20px;
+        margin: 30px 0;
     }
 
+    .gameWrapper {        
+    }    
+
     .gameLink {
-        background-repeat: no-repeat;
-        background-size: contain;
-        margin-left: 15%;
+        position: relative;        
+        margin-left: 15%;        
+        display: inline-block;  
         width: 70%;
         height: 200px;
-        display: inline-block;
+    }
+
+    .gameLink .gameLogo {
+        opacity: 0.6;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+        height: 100%;
+    }
+
+    .gameLink:hover .gameLogo {
         opacity: 1;
     }
 
-    .gameLink:hover {
-        opacity: 0.7;
+    .gameLink .gameLogo.flickchess {
+        background-image: url('/images/flickChess.png');
+        
     }
 
-    .gameLink span {
+    .gameLink .gameLogo.hideandseek {
+        background-image: url('/images/hideandseek-03.png');  
+    }
+
+    .gameLink span.gameName {
         display: none;
     }
 
-    .gameLink.flickchess {
-        background-image: url('/images/flickChess.png');
+    .gameLink .label {
+        position: absolute;
+        top: 25%;
+        left: 30%;
+        font-family: 'Open Sans', sans-serif;        
+        height: 100px;
+        width: 100px; 
+        z-index: 100;
     }
 
-    .gameLink.hideandseek {
-        background-image: url('/images/hideandseek-03.png');
+    .gameLink .label.comingSoonLabel {
+        background: url('/images/label_comingSoon.svg');
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+    .gameLink .label.onHoldLabel {
+        background: url('/images/label_onHold.svg');
+        background-repeat: no-repeat;
+        background-size: contain;
     }
 
+    .gameLink:hover .label {
+        opacity: 0;
+    }
+
+    .gameWrapper .label span {
+        color: #FFF;
+        text-align: center;
+        display: none;
+    }
 
     /*#team {
         padding-top: 0;
@@ -421,8 +314,7 @@ body {
         background-image: url(/images/absurdity.png), url('/images/contact.svg');
         background-repeat: repeat, no-repeat;
         background-size: 0.4%, 50%;
-        background-position: 0 0, 97% 63%;
-        height: 400px;
+        background-position: 0 0, 97% 63%;        
         box-shadow: 0px 4px 8px #333 inset;
     }
 
@@ -445,9 +337,9 @@ body {
 
     #contactForm input {
         color: #333;
-        padding: 5px 10px;
+        padding: 5px 2%;
         height: 30px;
-        width: 95%;
+        width: 96%;
         border: none;
         box-shadow: 1px 1px 1px #333 inset; 
         border-radius: 3px;
@@ -456,7 +348,8 @@ body {
     #contactForm textarea {
         color: #333;
         height: 70px;
-        width: 95%;
+        width: 96%;
+        max-width: 96%;
         border: none;
         box-shadow: 1px 1px 1px #333 inset;
         border-radius: 3px;
@@ -464,7 +357,7 @@ body {
 
     #contactForm button {
         float: right;
-        margin: 10px 20px;
+        margin: 10px 4%;
     }
 /*PASAR AL MEDIA ONLY SCREEN*/
 
