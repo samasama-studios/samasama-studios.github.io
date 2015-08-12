@@ -53,7 +53,7 @@ body {
         height: 60px;
         background-color: #000;
         z-index: 1000;
-        opacity: 0.8;
+        opacity: 0.8;        
     }
 
     #topBarLogo {
@@ -76,7 +76,7 @@ body {
     }
 
     .menuList {
-        
+           
     }
 
     .menuList li {        
@@ -240,11 +240,13 @@ body {
         background: url('/images/label_comingSoon.svg');
         background-repeat: no-repeat;
         background-size: contain;
+        background-position: center;
     }
     .gameLink .label.onHoldLabel {
         background: url('/images/label_onHold.svg');
         background-repeat: no-repeat;
         background-size: contain;
+        background-position: center;
     }
 
     .gameLink:hover .label {
@@ -360,7 +362,7 @@ body {
         background-color: #FA6900;
         background-image: url(/images/absurdity.png), url('/images/contact.svg');
         background-repeat: repeat, no-repeat;
-        background-size: 0.4%, 60%;
+        background-size: 0.4%, 80%;
         background-position: 0 0, 50% 55%;
         min-height: 300px;
     }
