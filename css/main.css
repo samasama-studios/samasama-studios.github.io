@@ -330,9 +330,8 @@ body {
         background-repeat: no-repeat;
         background-size: contain;
         background-position: center;
-        width: 100%;
+        width: 90%;
         height: 250px;
-        margin: 0 auto;
     }
 
     #contact p {
@@ -358,6 +357,9 @@ body {
 } /* Define mobile styles */
 
 @media only screen and (max-width: 40em) { 
+    #topBarLogo a {
+        margin-left: 5px;
+    }
     #welcome-content {               
         background-color: #FA6900;
         background-image: url(/images/absurdity.png), url('/images/contact.svg');
@@ -365,6 +367,11 @@ body {
         background-size: 0.4%, 80%;
         background-position: 0 0, 50% 55%;
         min-height: 300px;
+    }
+    
+    #samaLogo {        
+        height: 220px;
+        margin: 20px auto;
     }
 
 } /* max-width 640px, mobile-only styles, use when QAing mobile issues */
