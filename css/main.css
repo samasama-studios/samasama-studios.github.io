@@ -358,7 +358,7 @@ body {
 
 @media only screen and (max-width: 40em) { 
     #topBarLogo a {
-        margin-left: 5px;
+        margin-left: 0;
     }
     #welcome-content {               
         background-color: #FA6900;
