@@ -9,7 +9,7 @@
 		<!-- FOUNDATION -->
     	<link rel="stylesheet" type="text/css" href="/css/foundation.css" />
     	<link rel="stylesheet" type="text/css" href="/css/normalize.css" />
-		<link rel="stylesheet" type="text/css" href="/css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
         
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
@@ -17,6 +17,9 @@
 		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
+        <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
+        
 		<script src="js/vendor/modernizr.js"></script>
         
 		<!-- FOUNDATION -->		
@@ -52,7 +55,27 @@
         a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
      
         $(document).ready(function(){
- 
+            // + SCROLLMAGIC +
+            // init
+//            var controller = new ScrollMagic.Controller({
+//                globalSceneOptions: {
+//                    triggerHook: 'onLeave'
+//                }
+//            });
+//
+//            // get all slides
+//            var slides = document.querySelectorAll(".section");
+//
+//            // create scene for every slide
+//            for (var i=0; i<slides.length; i++) {
+//                new ScrollMagic.Scene({
+//                        triggerElement: slides[i]
+//                    })
+//                    .setPin(slides[i])
+//                    .addIndicators() // add indicators (requires plugin)
+//                    .addTo(controller);
+//            }
+            // - SCROLLMAGIC -
         });
         </script>
 
@@ -96,14 +119,14 @@
                         <a class="gameLink flickchess" href="http://www.flickchess.com" target="_blank"><div class='label comingSoonLabel shadowed'><span>Coming Soon</span></div><div class="gameLogo flickchess"><span class="gameName">Flick Chess</span></div></a>
                     </div>
                     <div class="small-12 medium-6 columns gameWrapper">                        
-                        <a class="gameLink hideandseek" href="/pages/hideandseek.html" target="_self"><div class='label comingSoonLabel shadowed'><span>On Hold</span></div><div class="gameLogo hideandseek"><span class="gameName">Hide & Seek</span></div></a>
+                        <a class="gameLink hideandseek" href="/pages/hideandseek.html" target="_blank"><div class='label comingSoonLabel shadowed'><span>On Hold</span></div><div class="gameLogo hideandseek"><span class="gameName">Hide & Seek</span></div></a>
                     </div>                                
                 </div>
             </div>
-            <!--<div class="row">
+            <div class="row">
                 <div class="small-12 columns aboutus">
-                    <h2>The SAMA project</h2>	
-                    <p class="eng">
+                    <h2>About The SAMA project</h2>	
+                    <!--<p class="eng">
                         Sama-Sama born from a philosophy, from a reality and a message that for ourselves, we need and we must send. We don't need big things to have fun, not while our minds connect with oneself, with the primitive and the beauty of simplicity. Sama-Sama does not seek the mere idea of playing, but also that of revolutionize using what is right within us, our instinct, our nature.
                         <br><br>
                         This is pure remuneration and appreciation for the simple fact of being part of this vast Cosmos. This is to feed our spirit and have fun doing what we love most, VIDEO GAMES.
@@ -112,9 +135,28 @@
                         Sama-Sama nació de una filosofía, de una realidad y un mensaje que, por nosotros mismos, necesitamos y debemos enviar. No se necesitan grandes cosas para divertirse, no mientras nuestras mentes se conecten con uno mismo, con lo primitivo y con la belleza de lo simple. Sama-Sama no busca la mera idea de jugar, sino la de revolucionar utilizando lo que está bien dentro nuestro, nuestro instinto, nuestra naturaleza.
                         <br><br>
                         Esto es pura retribución y agradecimiento por el simple hecho de ser parte de este vasto Cosmos. Esto es para alimentar nuestro espíritu y divertirnos haciendo lo que más nos gusta, VIDEOJUEGOS.
+                    </p>-->
+                    <p class="eng">
+                    Four ex-Gameloft seasoned game developers just founded a new indie game development studio called Sama Sama which means "You are welcome" in Indonesian.
+                       <br><br>    
+                    Sama Sama studios is based in Estonia – Europe’s "Silicon Valley" famous for its efficient E-economy initiatives, bubbling IT startup scene and an entrepreneur-friendly business legislation and low taxes.
+                        <br><br>
+                    Founding members are scattered around the globe (Argentina, Canada, Estonia and Indonesia) running a fully digital office maintains the global view for the company operating in highly competitive gaming industry.
+                        <br><br><br>
+                    We in Sama Sama believe that social doesn't mean to be connected all times through different screens, but totally the opposite! We go back to the origins: Social is to be close and to be able to share instantly the experience on a face-to-face environment
+                        <br><br>
+                    It’s because of this that we decide to call ourselves an “OFFLINE MULTIPLAYER MOBILE GAMES” company
+                    Let me guess what you are thinking: “What? Offline? And multiplayer? How is that even possible?”
+                        <br><br>
+                    Well, simply: By going back to the root. Board and tabletop games are still highly famous all around the world, and people enjoys gathering around to play them
+                    That’s the real social moment
+                        <br><br>
+                    And that’s exactly what we aim with our products: A short and agile gaming experiencing of different users on a single device, that will bring satisfaction to them not just because of the gaming experience itself, but because of the moment shared, that connection in real time and life, that spark that make us humans and that sometimes we tend to forget that it exists
+                        <br><br>
+                    Let’s enjoy the moment!
                     </p>
                 </div>
-            </div>-->            
+            </div>            
     	</div>    
         
     	<!--<div id="team" class="row section">

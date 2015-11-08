@@ -62,9 +62,9 @@ body {
 
     #topBarLogo a {
         /*background:url("/images/header.png") no-repeat;	*/
-        background-image: url('/images/logoSama_wide_white.svg');
-        backgorund-repeat: no-repeat;
+        background-image: url('/images/sama/samaWide.svg');
         background-size: contain;
+        background-repeat: no-repeat;
         width: 250px;
         height: 50px;
         float:left;
@@ -145,11 +145,11 @@ body {
     /*WELCOME*/
     #welcome-content {               
         background-color: #FA6900;
-        background-image: url(/images/absurdity.png), url('/images/contact.svg');
+        background-image: url(/images/absurdity.png), url('/images/sama/shareAMoment.svg');
         background-repeat: repeat, no-repeat;
         background-size: 0.4%, 60%;
         background-position: 0 0, 50% 55%;
-        min-height: 600px;
+        min-height: 450px;
     }
 
     #welcome-content h2 {
@@ -219,7 +219,7 @@ body {
     }
 
     .gameLink .gameLogo.hideandseek {
-        background-image: url('/images/hideandseek-03.png');  
+        background-image: url('/images/hideAndSeek/hideandseek-03.png');  
     }
 
     .gameLink span.gameName {
