@@ -147,7 +147,7 @@ body {
         background-color: #FA6900;
         background-image: url(/images/absurdity.png), url('/images/sama/shareAMoment.svg');
         background-repeat: repeat, no-repeat;
-        background-size: 0.4%, 60%;
+        background-size: 0.4%, 50%;
         background-position: 0 0, 50% 55%;
         min-height: 450px;
     }
@@ -362,9 +362,9 @@ body {
     }
     #welcome-content {               
         background-color: #FA6900;
-        background-image: url(/images/absurdity.png), url('/images/contact.svg');
+        background-image: url(/images/absurdity.png), url('/images/sama/shareAMoment.svg');
         background-repeat: repeat, no-repeat;
-        background-size: 0.4%, 80%;
+        background-size: 0.4%, 70%;
         background-position: 0 0, 50% 55%;
         min-height: 300px;
     }
