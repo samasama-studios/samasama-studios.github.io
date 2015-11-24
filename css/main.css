@@ -275,6 +275,10 @@ body {
         font-size: 0.8em;
     }
 
+    #about p span {
+        font-weight: 700;
+    }
+
     /*#team {
         padding-top: 0;
         background-image: url('/images/absurdity.png');
