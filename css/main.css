@@ -400,7 +400,16 @@ body {
     }
     
     .gameLink {
-        padding: 4%;
+        padding: 7%;
+    }
+    
+    .gameLink .label {
+        position: absolute;
+        top: 30%;    
+        font-family: 'Open Sans', sans-serif;        
+        height: 80px;
+        width: 85%; 
+        z-index: 10;
     }
 
 } /* max-width 640px, mobile-only styles, use when QAing mobile issues */
