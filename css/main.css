@@ -154,7 +154,7 @@ body {
 
     /*WELCOME*/
     #welcome-content {               
-        background-color: #FA6900;
+        background-color: #0e0f15; /*#FA6900;*/
         background-image: url(/images/absurdity.png), url('/images/sama/shareAMoment.svg');
         background-repeat: repeat, no-repeat;
         background-size: 0.4%, 50%;
@@ -178,7 +178,7 @@ body {
        background-color: #0e0f15;
         background-size: 0.4%;
         background-repeat: repeat;
-        box-shadow: 0px 4px 8px #000 inset;
+        /*box-shadow: 0px 4px 8px #000 inset;*/
         padding: 5% 5% 7%;
     }
 
@@ -273,6 +273,10 @@ body {
 
     #about p.spa {
         font-size: 0.8em;
+    }
+
+    #about p span {
+        font-weight: 700;
     }
 
     /*#team {
@@ -382,10 +386,10 @@ body {
         margin-left: 0;
     }
     #welcome-content {               
-        background-color: #FA6900;
+        background-color: #0e0f15; /*#FA6900;*/
         background-image: url(/images/absurdity.png), url('/images/sama/shareAMoment.svg');
         background-repeat: repeat, no-repeat;
-        background-size: 0.4%, 70%;
+        background-size: 0.4%, 85%;
         background-position: 0 0, 50% 55%;
         min-height: 300px;
     }
@@ -396,7 +400,16 @@ body {
     }
     
     .gameLink {
-        padding: 4%;
+        padding: 7%;
+    }
+    
+    .gameLink .label {
+        position: absolute;
+        top: 30%;    
+        font-family: 'Open Sans', sans-serif;        
+        height: 80px;
+        width: 85%; 
+        z-index: 10;
     }
 
 } /* max-width 640px, mobile-only styles, use when QAing mobile issues */
