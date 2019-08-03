@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">        
+    <head>
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>    
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">        
+    </head>
+    
+    <body>
+        <div id="main" class="container-fluid h-100">
+            <div class="row justify-content-between p-3">
+                <button type="button" class="btn btn-success priority">Priority</button>
+                <h1 id="phase">Phase</h1>
+                <button type="button" class="btn btn-danger priority">Priority</button>
+            </div>
+            <div class="row justify-content-center">
+                <h2 id="step">Step</h2>
+            </div>
+            <div class="row justify-content-center p-2">
+                <h3 id="action" class="text-center">Action</h3>
+            </div>
+            <div class="d-flex fixed-bottom justify-content-between p-3">
+<!--
+                <button id="btn-previous" type="button" class="btn btn-secondary" disabled>
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+-->
+                <button id="btn-reset" type="button" class="btn btn-secondary">
+                    <i class="fas fa-redo"></i>
+                </button>
+<!--
+                <button id="btn-next" type="button" class="btn btn-secondary">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+-->
+                <button id="btn-enter-fullscreen" type="button" class="btn btn-secondary">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button id="btn-exit-fullscreen" type="button" class="btn btn-secondary d-none">
+                    <i class="fas fa-compress"></i>
+                </button>
+            </div>
+        </div>
+        
+        <script>            
+        const PHASE_BEGINING = "Beginning";        
+        const PHASE_MAIN_1 = "Main 1";
+        const PHASE_COMBAT = "Combat";
+        const PHASE_MAIN_2 = "Main 2";
+        const PHASE_ENDING = "End";
+            
+        const STEP_UNTAP = "Untap";
+        const STEP_UPKEEP = "Upkeep";
+        const STEP_DRAW = "Draw";
+            
+        const STEP_COMBAT_BEGINNING = "Beginning";        
+        const STEP_COMBAT_ATTACKERS = "Attackers";
+        const STEP_COMBAT_BLOCKERS = "Blockers";
+        const STEP_COMBAT_DAMAGE = "Damage";
+        const STEP_COMBAT_END = "End";
+            
+        const STEP_MAIN_2_END = "End";
+        const STEP_MAIN_2_CLEANUP = "Cleanup";
+            
+        var SHOW_NUMBERS = !true;
+            
+        $(function(){
+            $("#localisations").load("localisations.html");
+        });        
+            
+        $(document).ready(function() {            
+            var indexPhase;
+            var indexStep;
+            var indexAction;
+            
+            var phaseSteps;
+            var stepActions;            
+            
+            setTimeout(function(){
+                reset();                
+            }, 10);            
+            
+            $('.priority').click(function(e) {
+                $('.priority').toggleClass("btn-success");
+                $('.priority').toggleClass("btn-danger");
+                e.stopPropagation();
+            });
+            
+            $('#main').click(function(e) {
+                var self = this;
+                $(this).prop('disabled', true);
+                setTimeout(function () { $(self).prop('disabled', false); }, 500);
+                
+                updateActionNext();                
+            });
+            
+            $('#main').dblclick(function(e) {                                
+                e.stopPropagation();
+            });
+            
+            
+            $('#btn-reset').click(function(e) {
+                reset();
+                e.stopPropagation();
+            });
+            
+            $('#btn-enter-fullscreen').click(function() {                
+                var main = $('#main').get(0);
+                enterFullscreen(main);
+                
+                $("#btn-enter-fullscreen").toggleClass("d-none");
+                $("#btn-exit-fullscreen").toggleClass("d-none");
+                
+                e.stopPropagation();
+            });
+            
+            $('#btn-exit-fullscreen').click(function() {
+                reset();
+                var main = $('#main').get(0);
+                exitFullscreen();
+                
+                $("#btn-enter-fullscreen").toggleClass("d-none");
+                $("#btn-exit-fullscreen").toggleClass("d-none");
+                
+                e.stopPropagation();
+            });
+            
+            $('#btn-previous').click(function() {
+                console.debug('prev!');
+            });
+                                     
+            $('#btn-next').click(function() {                
+                updateActionNext();
+            });
+            
+            $('#btn-previous').click(function() {
+                /*
+                if (indexAction > 0) {
+                    indexAction--;
+                } else {
+                    indexAction = stepActions.length - 1;                    
+                    if (indexStep > 0) {
+                        indexStep--;
+                    } else {
+                        indexStep = phaseSteps.length - 1;
+                        if (indexPhase > 0) {
+                            indexPhase--;
+                        } else {
+                            indexPhase = data.turn.length - 1;
+                        }
+                    }
+                }
+                updateAction();
+                */                
+            });
+            
+            function enterFullscreen(element) {
+                if(element.requestFullscreen)
+                    element.requestFullscreen();
+                else if(element.mozRequestFullScreen)
+                    element.mozRequestFullScreen();
+                else if(element.webkitRequestFullscreen)
+                    element.webkitRequestFullscreen();
+                else if(element.msRequestFullscreen)
+                    element.msRequestFullscreen();
+            }
+            
+            function exitFullscreen() {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+            
+            function updateActionNext() {
+                if (indexAction < stepActions.length - 1) {
+                    indexAction++;
+                } else {
+                    indexAction = 0;
+                    if (indexStep < phaseSteps.length - 1) {
+                        indexStep++;
+                    } else {
+                        indexStep = 0;
+                        if (indexPhase < data.turn.length - 1) {
+                            indexPhase++;
+                        } else {
+                            indexPhase = 0;
+                        }
+                    }
+                }
+                updateAction(); 
+            }
+            
+            function reset() {
+                indexAction = 0;
+                indexStep = 0;
+                indexPhase = 0;
+                updateAction ();
+            }
+            
+            function updateAction() {                
+                var phase = data.turn[indexPhase];                
+                var key = Object.keys(phase)[0];                
+                var text = $("#" + key).text();
+                if (SHOW_NUMBERS) {
+                    text = (indexPhase + 1) + ") " + text;
+                }
+                $("#phase").text(text);
+                
+                phaseSteps = phase[key];                
+                var step = phaseSteps[indexStep];               
+                key = Object.keys(step)[0];
+                text = $("#" + key).text();
+                if (SHOW_NUMBERS) {
+                    text = (indexPhase + 1) + "." + (indexStep + 1) + ") " + text;
+                }
+                $("#step").text(text);                
+                
+                stepActions = step[key];                
+                var action = stepActions[indexAction];                
+                text = $("#" + action).text();
+                if (SHOW_NUMBERS) {
+                    text = (indexPhase + 1) + "." + (indexStep + 1) + "." + (indexAction + 1) + ") " + text;
+                }
+                $("#action").text(text);
+                
+//                console.debug('---');
+//                console.debug('action=' + indexAction);
+//                console.debug('step=' + indexStep);
+//                console.debug('phase=' + indexPhase);                
+//                console.debug('stepActions.length=' + stepActions.length);
+//                console.debug('phaseSteps.length=' + phaseSteps.length);
+//                console.debug('data.turn.length=' + data.turn.length);
+            }
+            
+            
+        });
+            
+        const data = {
+            "turn":[
+                {
+                    "phase-beginning":[
+                        {
+                            "step-untap":[
+                                "action-phasing",
+                                "action-untap",
+                                "action-empty-mana"
+                            ]
+                        },
+                        {
+                            "step-upkeep":[
+                                "action-upkeep",
+                                "action-instants",
+                                "action-empty-mana"
+                            ]
+                        },
+                        {
+                            "step-draw":[
+                                "action-draw",
+                                "action-draw-abilities",
+                                "action-instants",
+                                "action-empty-mana"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "phase-main-1":[
+                        {
+                            "step-none":[
+                                "action-main-abilities",
+                                "action-main",
+                                "action-empty-mana"
+                            ]
+                        }                        
+                    ]
+                },
+                {
+                    "phase-combat":[
+                        {
+                            "step-combat-begin":[
+                                "action-combat-abilities",
+                                "action-instants",
+                                "action-empty-mana"
+                            ]
+                        },
+                        {
+                            "step-attackers":[
+                                "action-attackers",
+                                "action-attackers-abilities",
+                                "action-instants",
+                                "action-empty-mana"
+                            ]
+                        },
+                        {
+                            "step-blockers":[
+                                "action-blockers",
+                                "action-blockers-abilities",
+                                "action-instants",
+                                "action-empty-mana"
+                            ]
+                        },
+                        {
+                            "step-combat-damage":[
+                                "action-attackers-damage-assign",
+                                "action-attackers-damage-player",
+                                "action-blockers-damage-assign",
+                                "action-damage-resolution",
+                                "action-damage-ability",
+                                "action-instants",
+                                "action-empty-mana"
+                            ]
+                        },
+                        {
+                            "step-combat-end":[
+                                "action-combat-end",                                
+                                "action-instants",
+                                "action-combat-remove",
+                                "action-combat-until",
+                                "action-empty-mana"
+                            ]
+                        }                        
+                    ]
+                },
+                {
+                    "phase-main-2":[
+                        {
+                            "step-none":[
+                                "action-main-abilities",
+                                "action-main",
+                                "action-empty-mana"
+                            ]
+                        }                        
+                    ]
+                },
+                {
+                    "phase-end":[
+                        {
+                            "step-end":[
+                                "action-combat-abilities",
+                                "action-instants",
+                                "action-empty-mana"
+                            ]
+                        },
+                        {
+                            "step-cleanup":[
+                                "action-discard",
+                                "action-remove-damage",
+                                "action-end-abilitites",
+                                "action-empty-mana",
+                                "action-instants",
+                                "action-empty-mana",
+                                "action-repeat-cleanup"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };        
+        </script>
+        
+        <div id="localisations"/>
+        
+    </body>
+    
+</html>
