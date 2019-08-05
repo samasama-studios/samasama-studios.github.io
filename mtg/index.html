@@ -26,11 +26,13 @@
             
             <h2 id="step" class="row justify-content-center">Step</h2>
             
-            <h3 id="action" class="row p-2 justify-content-center text-center flex-fill">Action</h3>
+            <h3 id="action" class="row p-3 justify-content-center text-center flex-fill">Action</h3>
             
             <div id="page" class="row justify-content-center text-center">1/1</div>
             
-            <div class="row d-flex justify-content-between align-items-center p-2">
+            <span>&nbsp;</span>
+            
+            <div class="d-flex fixed-bottom justify-content-between align-items-center p-3">
                 
                 <div>
                     <button id="btn-previous" type="button" class="btn btn-secondary">
@@ -101,7 +103,7 @@
             });
             
             $('#main').click(function(e) {                
-                updateActionNext();                
+                updateActionNext();
             });                        
             
             $('#btn-reset').click(function(e) {
@@ -130,12 +132,14 @@
                 e.stopPropagation();
             });
             
-            $('#btn-previous').click(function() {
+            $('#btn-previous').click(function(e) {
                 updateActionPrevious();
+                e.stopPropagation();
             });
                                      
-            $('#btn-next').click(function() {                
+            $('#btn-next').click(function(e) {
                 updateActionNext();
+                e.stopPropagation();
             });            
             
             function enterFullscreen(element) {
@@ -170,14 +174,15 @@
                         indexStep++;
                     } else {
                         indexStep = 0;
-                        if (indexPhase < data.turn.length - 1) {
+                        if (indexPhase < data.phases.length - 1) {
                             indexPhase++;
                         } else {
                             indexPhase = 0;                            
                         }
                     }
                 }
-                updateAction(); 
+                updateAction();
+                updateLabels();
             }
             
             function updateActionPrevious() {
@@ -189,56 +194,71 @@
                     } else {
                         if (indexPhase > 0) {
                             indexPhase--;    
-                        } else {
-                            console.debug('?');
-                            indexPhase = data.turn.length - 1;
-                            indexStep = data.turn[indexPhase].length - 1;                            
+                        } else {                            
+                            indexPhase = data.phases.length - 1;      
                         }
-                    }                
-                }            
-                console.debug(indexAction + "," + indexStep + "," + indexPhase);
+                        updateAction();
+                        indexStep = phaseSteps.length - 1;
+                    }                    
+                    updateAction();
+                    indexAction = stepActions.length - 1;
+                }                
+                
+                updateAction();
+                updateLabels();
             }
             
             function reset() {
                 indexAction = 0;
                 indexStep = 0;
                 indexPhase = 0;
-                updateAction ();
+                updateAction();
+                updateLabels();
             }
             
-            function updateAction() {                
-                var phase = data.turn[indexPhase];
-                var key = Object.keys(phase)[0];                
-                var text = $("#" + key).text();
+            function updateLabels() {                
+                var key = Object.keys(data.phases[indexPhase])[0];
+                var text = $("#" + key).text();                
                 if (SHOW_NUMBERS) {
                     text = (indexPhase + 1) + ") " + text;
                 }
                 $("#phase").text(text);
                 
-                phaseSteps = phase[key];                
-                var step = phaseSteps[indexStep];               
-                key = Object.keys(step)[0];
+                var key = Object.keys(phaseSteps[indexStep])[0];
                 text = $("#" + key).text();
                 if (SHOW_NUMBERS) {
                     text = (indexPhase + 1) + "." + (indexStep + 1) + ") " + text;
                 }
                 $("#step").text(text);                
                 
-                stepActions = step[key];                
-                var action = stepActions[indexAction];                
-                text = $("#" + action).text();
+                text = $("#" + stepActions[indexAction]).text();
                 if (SHOW_NUMBERS) {
                     text = (indexPhase + 1) + "." + (indexStep + 1) + "." + (indexAction + 1) + ") " + text;
                 }
                 $("#action").text(text);
                 
-                $("#page").text((indexAction + 1) + " / " + stepActions.length);    
-            }            
+                $("#page").text((indexAction + 1) + " / " + stepActions.length);
+            }
+            
+            function updateAction() {                
+                var phase = data.phases[indexPhase];
+                var key = Object.keys(phase)[0];
+                phaseSteps = phase[key];
+                //console.debug('phase=' + key);
+                
+                var step = phaseSteps[indexStep];
+                key = Object.keys(step)[0]; 
+                stepActions = step[key];
+                //console.debug('step=' + key);
+                
+                var action = stepActions[indexAction];
+                //console.debug('action=' + action);
+            }          
             
         });
             
         const data = {
-            "turn":[
+            "phases":[
                 {
                     "phase-beginning":[
                         {
