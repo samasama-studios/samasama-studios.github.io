@@ -12,16 +12,26 @@
     </head>
     
     <body>
-        <div id="main" class="container-fluid h-100">
+        
+        <div id="main" class="container-fluid d-flex flex-column h-100">
+            
             <div class="row justify-content-between p-3">
+<!--
                 <button type="button" class="btn btn-success priority">Priority</button>                
                 <button type="button" class="btn btn-danger priority">Priority</button>
+-->
             </div>
-            <h1 id="phase" class="row justify-content-center">Phase</h1>            
-            <h2 id="step" class="row justify-content-center">Step</h2>            
-            <h3 id="action" class="class=row justify-content-center p-2 text-center">Action</h3>            
-            <p id="page" class="text-center">1 / 1</p>
-            <div class="d-flex fixed-bottom justify-content-between p-3">
+            
+            <h1 id="phase" class="row justify-content-center">Phase</h1>
+            
+            <h2 id="step" class="row justify-content-center">Step</h2>
+            
+            <h3 id="action" class="row p-2 justify-content-center text-center flex-fill">Action</h3>
+            
+            <div id="page" class="row justify-content-center text-center">1/1</div>
+            
+            <div class="row d-flex justify-content-between align-items-center p-2">
+                
                 <div>
                     <button id="btn-previous" type="button" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i>
@@ -29,18 +39,20 @@
                     <button id="btn-reset" type="button" class="btn btn-secondary">
                         <i class="fas fa-redo"></i>
                     </button>
-                </div>
-<!--
+                </div>                
+<!--            
                 <button id="btn-next" type="button" class="btn btn-secondary">
                     <i class="fas fa-arrow-right"></i>
                 </button>
--->                
+-->                             
                 <button id="btn-enter-fullscreen" type="button" class="btn btn-secondary">
                     <i class="fas fa-expand"></i>
                 </button>
+                
                 <button id="btn-exit-fullscreen" type="button" class="btn btn-secondary d-none">
                     <i class="fas fa-compress"></i>
                 </button>
+                
             </div>
         </div>
         
