@@ -11,79 +11,57 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">        
     </head>
     
-    <body>
-        
-        <div id="main" class="container-fluid d-flex flex-column h-100">
-            
-            <div class="row justify-content-between p-3">
-<!--
-                <button type="button" class="btn btn-success priority">Priority</button>                
-                <button type="button" class="btn btn-danger priority">Priority</button>
--->
+    <body>        
+        <div id="main" class="p-3">
+            <div class="row">
+                <div class="col text-center p-2">
+                    <h3 class="text-center">Phase</h3>
+                    <div id="phases" class="btn-group-vertical btn-block"></div>
+                </div>
+                <div class="col text-center p-2">
+                    <h3 class="text-center">Step</h3>
+                    <div id="steps" class="btn-group-vertical btn-block"></div>
+                </div>        
+                <div class="col-7 text-center p-2">
+                    <h3 class="text-center">Action</h3>
+                    <div id="actions" class="btn-group-vertical btn-block"></div>
+                </div>                
             </div>
             
-            <h1 id="phase" class="row justify-content-center">Phase</h1>
+            <div id="page" class="row justify-content-center text-center d-none">1/1</div>            
             
-            <h2 id="step" class="row justify-content-center">Step</h2>
-            
-            <h3 id="action" class="row p-3 justify-content-center text-center flex-fill">Action</h3>
-            
-            <div id="page" class="row justify-content-center text-center">1/1</div>
-            
-            <span>&nbsp;</span>
-            
-            <div class="d-flex fixed-bottom justify-content-between align-items-center p-3">
-                
-                <div>
+            <div class="row fixed-bottom p-2">                
+                <div class="col text-center">
                     <button id="btn-previous" type="button" class="btn btn-secondary btn-lg">
                         <i class="fas fa-arrow-left"></i>
                     </button>
+                    
                     <button id="btn-reset" type="button" class="btn btn-secondary btn-lg">
                         <i class="fas fa-redo"></i>
                     </button>
-                </div>                
-<!--            
-                <button id="btn-next" type="button" class="btn btn-secondary">
-                    <i class="fas fa-arrow-right"></i>
-                </button>
--->                             
-                <button id="btn-enter-fullscreen" type="button" class="btn btn-secondary btn-lg">
-                    <i class="fas fa-expand"></i>
-                </button>
-                
-                <button id="btn-exit-fullscreen" type="button" class="btn btn-secondary btn-lg d-none">
-                    <i class="fas fa-compress"></i>
-                </button>
-                
+                    
+                    <button id="btn-enter-fullscreen" type="button" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    
+                    <button id="btn-exit-fullscreen" type="button" class="btn btn-secondary btn-lg d-none">
+                        <i class="fas fa-compress"></i>
+                    </button>
+                    
+                    <button id="btn-next" type="button" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>                    
+                </div>
             </div>
         </div>
         
         <script>            
-        const PHASE_BEGINING = "Beginning";        
-        const PHASE_MAIN_1 = "Main 1";
-        const PHASE_COMBAT = "Combat";
-        const PHASE_MAIN_2 = "Main 2";
-        const PHASE_ENDING = "End";
-            
-        const STEP_UNTAP = "Untap";
-        const STEP_UPKEEP = "Upkeep";
-        const STEP_DRAW = "Draw";
-            
-        const STEP_COMBAT_BEGINNING = "Beginning";        
-        const STEP_COMBAT_ATTACKERS = "Attackers";
-        const STEP_COMBAT_BLOCKERS = "Blockers";
-        const STEP_COMBAT_DAMAGE = "Damage";
-        const STEP_COMBAT_END = "End";
-            
-        const STEP_MAIN_2_END = "End";
-        const STEP_MAIN_2_CLEANUP = "Cleanup";
-            
         var SHOW_NUMBERS = !true;
             
         $(function(){
             $("#localisations").load("localisations.html");
         });        
-            
+        
         $(document).ready(function() {            
             var indexPhase;
             var indexStep;
@@ -93,8 +71,12 @@
             var stepActions;            
             
             setTimeout(function(){
-                reset();                
-            }, 10);            
+                reset();
+                loadPhases();                
+                updateCurrentPhase();
+                updateCurrentStep();
+                updateCurrentAction();
+            }, 100);            
             
             $('.priority').click(function(e) {
                 $('.priority').toggleClass("btn-success");
@@ -103,7 +85,7 @@
             });
             
             $('#main').click(function(e) {                
-                updateActionNext();
+                //updateActionNext();
             });                        
             
             $('#btn-reset').click(function(e) {
@@ -136,11 +118,156 @@
                 updateActionPrevious();
                 e.stopPropagation();
             });
-                                     
+                              
             $('#btn-next').click(function(e) {
                 updateActionNext();
                 e.stopPropagation();
-            });            
+            });
+            
+            $('body').on('click', '.btn-phase', function() {
+                indexPhase = $(this).val();
+                indexStep = 0;
+                indexAction = 0;
+                
+                updateCurrentPhase();
+                updateCurrentStep();
+                updateCurrentAction();
+            });
+            
+            $('body').on('click', '.btn-step', function() {
+                indexStep = $(this).val();
+                indexAction = 0;
+                
+                updateCurrentStep();
+                updateCurrentAction();
+            });
+            
+            $('body').on('click', '.btn-action', function() {                
+                indexAction = $(this).val();
+                
+                updateCurrentAction();
+            });
+            
+            function resetButtonsHightlight() {
+                resetButtonsPhasesHightlight();
+                resetButtonsStepsHightlight();
+                resetButtonsActionsHightlight();
+            }
+            
+            function updateCurrentPhase() {                
+                resetButtonsHightlight();
+                
+                var button = $('#btn-phase-' + indexPhase);
+                button.removeClass('btn-secondary');
+                button.addClass('btn-primary');
+                
+                $('.btn-phase-' + indexPhase).each(function() {
+                    $(this).removeClass("d-none");
+                });
+                
+                updateAction();
+                updateLabels();
+            }            
+            
+            function resetButtonsPhasesHightlight() {
+                $('.btn-phase').each(function() {
+                    $(this).removeClass('btn-primary');
+                    $(this).addClass('btn-secondary');
+                });                
+            }
+            
+            function updateCurrentStep() {                
+                resetButtonsStepsHightlight();
+                
+                var button = $('#btn-phase-' + indexPhase + '-step-' + indexStep);
+                button.removeClass('btn-secondary');
+                button.addClass('btn-primary');      
+                
+                updateAction();
+                updateLabels();
+            }            
+            
+            function resetButtonsStepsHightlight() {
+                $('.btn-step').each(function() {
+                    $(this).addClass("d-none");
+                    $(this).addClass("btn-secondary");
+                });
+                $('.btn-phase-' + indexPhase).each(function() {
+                    $(this).removeClass("d-none");
+                });
+            }   
+            
+            function updateCurrentAction() {
+                resetButtonsActionsHightlight();
+                
+                var button = $('#btn-phase-' + indexPhase + '-step-' + indexStep + '-action-' + indexAction);                
+                button.removeClass('btn-secondary');
+                button.addClass('btn-primary');      
+                
+                updateAction();
+                updateLabels();
+            }
+            
+            function resetButtonsActionsHightlight() {
+                $('.btn-action').each(function() {
+                    $(this).addClass("d-none");
+                    $(this).addClass("btn-secondary");
+                });                
+                $('.btn-phase-' + indexPhase + '-step-' + indexStep).each(function() {
+                    $(this).removeClass("d-none");
+                });
+            }
+            
+            function loadPhases() {
+                var phases = data.phases[indexPhase];
+                $.each(data.phases, function(localIndexPhase, phase) {    
+                    var key = Object.keys(phase)[0];                    
+                    
+                    var button = $(document.createElement('button'));
+                    $(button).prop("type", "button");
+                    $(button).addClass("btn");
+                    $(button).addClass("btn-block");
+                    $(button).addClass("btn-secondary");
+                    $(button).addClass("btn-phase");
+                    $(button).prop("id", "btn-phase-" + localIndexPhase);     
+                    $(button).html($('#' + key).html());
+                    $(button).val(localIndexPhase);
+                    $('#phases').append(button);
+                    
+                    $.each(phase[key], function(localIndexStep, step) {
+                        key = Object.keys(step)[0];
+                        
+                        button = $(document.createElement('button'));
+                        $(button).prop("type", "button");
+                        $(button).addClass("btn");                        
+                        $(button).addClass("btn-secondary");
+                        $(button).addClass("btn-block");
+                        $(button).addClass("btn-step");
+                        $(button).addClass("btn-phase-" + localIndexPhase);
+                        $(button).prop("id", 'btn-phase-' + localIndexPhase + '-step-' + localIndexStep);                        
+                        $(button).html($('#' + key).html());
+                        $(button).val(localIndexStep);
+                        $('#steps').append(button);
+                        
+                        var stepActions = step[Object.keys(step)[0]];    
+                        
+                        for (var localIndexAction = 0; localIndexAction < stepActions.length; localIndexAction++) {
+                            key = stepActions[localIndexAction];   
+                            
+                            button = $(document.createElement('button'));
+                            $(button).prop("type", "button");
+                            $(button).addClass("btn");                        
+                            $(button).addClass("btn-secondary");  
+                            $(button).addClass("btn-action");
+                            $(button).addClass('btn-phase-' + localIndexPhase + '-step-' + localIndexStep);
+                            $(button).prop("id", 'btn-phase-' + localIndexPhase + '-step-' + localIndexStep + '-action-' + localIndexAction);
+                            $(button).html($('#' + key).html());
+                            $(button).val(localIndexAction);
+                            $('#actions').append(button);
+                        }                        
+                    });
+                });                
+            }            
             
             function enterFullscreen(element) {
                 if(element.requestFullscreen)
@@ -181,6 +308,10 @@
                         }
                     }
                 }
+                
+                updateCurrentPhase();
+                updateCurrentStep();
+                updateCurrentAction();
                 updateAction();
                 updateLabels();
             }
@@ -204,6 +335,9 @@
                     indexAction = stepActions.length - 1;
                 }                
                 
+                updateCurrentPhase();
+                updateCurrentStep();
+                updateCurrentAction();
                 updateAction();
                 updateLabels();
             }
@@ -212,13 +346,17 @@
                 indexAction = 0;
                 indexStep = 0;
                 indexPhase = 0;
+                
+                updateCurrentPhase();
+                updateCurrentStep();
+                updateCurrentAction();
                 updateAction();
                 updateLabels();
             }
             
             function updateLabels() {                
                 var key = Object.keys(data.phases[indexPhase])[0];
-                var text = $("#" + key).text();                
+                var text = $("#" + key).text();
                 if (SHOW_NUMBERS) {
                     text = (indexPhase + 1) + ") " + text;
                 }
@@ -235,18 +373,19 @@
                 if (SHOW_NUMBERS) {
                     text = (indexPhase + 1) + "." + (indexStep + 1) + "." + (indexAction + 1) + ") " + text;
                 }
-                $("#action").text(text);
+                //$("#action").text(text);
                 
-                $("#page").text((indexAction + 1) + " / " + stepActions.length);
-            }
+                $("#page").text((indexAction + 1) + " / " + stepActions.length);                
+            }                     
             
-            function updateAction() {                
-                var phase = data.phases[indexPhase];
+            function updateAction() {
+                var phase = data.phases[indexPhase];                
+                
                 var key = Object.keys(phase)[0];
                 phaseSteps = phase[key];
                 //console.debug('phase=' + key);
                 
-                var step = phaseSteps[indexStep];
+                var step = phaseSteps[indexStep];                
                 key = Object.keys(step)[0]; 
                 stepActions = step[key];
                 //console.debug('step=' + key);
@@ -288,7 +427,7 @@
                 {
                     "phase-main-1":[
                         {
-                            "step-none":[
+                            "step-main":[
                                 "action-main-abilities",
                                 "action-main",
                                 "action-empty-mana"
@@ -346,7 +485,7 @@
                 {
                     "phase-main-2":[
                         {
-                            "step-none":[
+                            "step-main":[
                                 "action-main-abilities",
                                 "action-main",
                                 "action-empty-mana"
@@ -380,7 +519,7 @@
         };        
         </script>
         
-        <div id="localisations"/>
+        <div id="localisations" class="d-none" />
         
     </body>
     
