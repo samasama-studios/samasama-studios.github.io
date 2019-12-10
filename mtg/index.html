@@ -12,18 +12,31 @@
     </head>
     
     <body>
-        <div id="main" class="p-2">
+        
+        <!-- Spinner -->
+        <div id="loading" class="container-fluid h-100 justify-content-center">
+            <div class="row justify-content-center align-middle h-100">
+                <div class="d-flex justify-content-center align-self-center">
+                    <div class="spinner-grow" role="status"></div>
+                    <div class="spinner-grow" role="status"></div>
+                    <div class="spinner-grow" role="status"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main -->
+        <div id="main" class="pl-3 pr-3 d-none">
             <div class="row">
-                <div class="col text-center p-2">
-                    <p class="text-center">Phase</p>
+                <div class="col text-center p-1">
+                    <p class="text-center m-1">Phase</p>
                     <div id="phases" class="btn-group-vertical btn-block"></div>
                 </div>
-                <div class="col text-center p-2">
-                    <p class="text-center">Step</p>
+                <div class="col text-center p-1">
+                    <p class="text-center m-1">Step</p>
                     <div id="steps" class="btn-group-vertical btn-block"></div>
                 </div>        
-                <div class="col-7 text-center p-2">
-                    <p class="text-center">Action</p>
+                <div class="col-7 text-center p-1">
+                    <p class="text-center m-1">Action</p>
                     <div id="actions" class="btn-group-vertical btn-block"></div>
                 </div>                
             </div>
@@ -70,13 +83,16 @@
             var phaseSteps;
             var stepActions;            
             
-            setTimeout(function(){
+            setTimeout(function() {
+                $('#main').removeClass('d-none');
+                $('#loading').addClass('d-none');
+                
                 reset();
                 loadPhases();                
                 updateCurrentPhase();
                 updateCurrentStep();
                 updateCurrentAction();
-            }, 100);            
+            }, 1000);            
             
             $('.priority').click(function(e) {
                 $('.priority').toggleClass("btn-success");
