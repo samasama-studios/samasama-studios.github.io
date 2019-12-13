@@ -99,7 +99,7 @@
             "phase-end":[
                 {
                     "step-end":[
-                        "action-combat-abilities",
+                        "action-end-abilities",
                         "action-instants",
                         "action-empty-mana"
                     ]
