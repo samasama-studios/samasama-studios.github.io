@@ -26,6 +26,7 @@ $(document).ready(function() {
         updateCurrentPhase();
         updateCurrentStep();
         updateCurrentAction();
+        updateConnectors();
     }, 1000);            
     
     $('.priority').click(function(e) {
@@ -40,6 +41,7 @@ $(document).ready(function() {
     
     $('#btn-reset').click(function(e) {
         reset();
+        updateConnectors();
         e.stopPropagation();
     });
     
@@ -66,11 +68,13 @@ $(document).ready(function() {
     
     $('#btn-previous').click(function(e) {
         updateActionPrevious();
+        updateConnectors();
         e.stopPropagation();
     });
                       
     $('#btn-next').click(function(e) {
         updateActionNext();
+        updateConnectors();
         e.stopPropagation();
     });
     
@@ -82,6 +86,7 @@ $(document).ready(function() {
         updateCurrentPhase();
         updateCurrentStep();
         updateCurrentAction();
+        updateConnectors();
     });
     
     $('body').on('click', '.btn-step', function() {
@@ -90,12 +95,14 @@ $(document).ready(function() {
         
         updateCurrentStep();
         updateCurrentAction();
+        updateConnectors();
     });
     
     $('body').on('click', '.btn-action', function() {                
         indexAction = $(this).val();
         
         updateCurrentAction();
+        updateConnectors();
     });
     
     function resetButtonsHightlight() {
@@ -171,17 +178,21 @@ $(document).ready(function() {
     function loadPhases() {
         var phases = data.phases[indexPhase];
         $.each(data.phases, function(localIndexPhase, phase) {    
-            var key = Object.keys(phase)[0];                    
+            var key = Object.keys(phase)[0]; 
             
             var button = $(document.createElement('button'));
             $(button).prop("type", "button");
-            $(button).addClass("btn");
+            $(button).addClass("btn text-left");
             $(button).addClass("btn-block");
             $(button).addClass("btn-secondary");
             $(button).addClass("btn-phase");
-            $(button).prop("id", "btn-phase-" + localIndexPhase);     
-            $(button).html($('#' + key).html());
+            $(button).prop("id", "btn-phase-" + localIndexPhase);            
             $(button).val(localIndexPhase);
+            if (SHOW_NUMBERS) {
+                $(button).html((localIndexPhase + 1) + '. ' + $('#' + key).html());
+            } else {
+                $(button).html($('#' + key).html());
+            }
             $('#phases').append(button);
             
             $.each(phase[key], function(localIndexStep, step) {
@@ -189,14 +200,19 @@ $(document).ready(function() {
                 
                 button = $(document.createElement('button'));
                 $(button).prop("type", "button");
-                $(button).addClass("btn");                        
+                $(button).addClass("btn text-left"); 
                 $(button).addClass("btn-secondary");
                 $(button).addClass("btn-block");
                 $(button).addClass("btn-step");
                 $(button).addClass("btn-phase-" + localIndexPhase);
-                $(button).prop("id", 'btn-phase-' + localIndexPhase + '-step-' + localIndexStep);                        
-                $(button).html($('#' + key).html());
+                $(button).prop("id", 'btn-phase-' + localIndexPhase + '-step-' + localIndexStep);   
                 $(button).val(localIndexStep);
+                if (SHOW_NUMBERS) {
+                    $(button).html((localIndexPhase + 1) + '.' + (localIndexStep + 1) + '. ' + $('#' + key).html());
+                } else {                
+                    $(button).html($('#' + key).html());
+                }
+                
                 $('#steps').append(button);
                 
                 var stepActions = step[Object.keys(step)[0]];    
@@ -206,13 +222,18 @@ $(document).ready(function() {
                     
                     button = $(document.createElement('button'));
                     $(button).prop("type", "button");
-                    $(button).addClass("btn");                        
+                    $(button).addClass("btn text-left"); 
                     $(button).addClass("btn-secondary");  
                     $(button).addClass("btn-action");
                     $(button).addClass('btn-phase-' + localIndexPhase + '-step-' + localIndexStep);
                     $(button).prop("id", 'btn-phase-' + localIndexPhase + '-step-' + localIndexStep + '-action-' + localIndexAction);
-                    $(button).html($('#' + key).html());
+                    if (SHOW_NUMBERS) {
+                        $(button).html((localIndexPhase + 1) + '.' + (localIndexStep + 1) + '.' + (localIndexAction + 1) + '. ' + $('#' + key).html());
+                    } else {
+                        $(button).html($('#' + key).html());
+                    }                    
                     $(button).val(localIndexAction);
+                    
                     $('#actions').append(button);
                 }                        
             });
@@ -301,7 +322,7 @@ $(document).ready(function() {
         updateCurrentStep();
         updateCurrentAction();
         updateAction();
-        updateLabels();
+        updateLabels();        
     }
     
     function updateLabels() {                
@@ -325,8 +346,42 @@ $(document).ready(function() {
         }
         //$("#action").text(text);
         
-        $("#page").text((indexAction + 1) + " / " + stepActions.length);                
-    }                     
+        $("#page").text((indexAction + 1) + " / " + stepActions.length);
+    }    
+    
+    function createLine(x1, y1, x2, y2) {
+        return d3.select("#lines").append("line")
+            .attr("x1", x1)
+            .attr("y1", y1)
+            .attr("x2", x2)
+            .attr("y2", y2)
+            .attr("stroke", "#007bff")
+            .attr("stroke-width", "3");
+    }
+    
+    function createConnectorBetweenElements(element1, element2) {        
+        var element1Right = $(element1).get(0).getBoundingClientRect().right;
+        var element1MidY = ($(element1).get(0).getBoundingClientRect().top + $(element1).get(0).getBoundingClientRect().bottom) / 2;
+        
+        var element2Left = $(element2).get(0).getBoundingClientRect().left;
+        var element2MidY = ($(element2).get(0).getBoundingClientRect().top + $(element2).get(0).getBoundingClientRect().bottom) / 2;
+        
+        var midX = (element1Right + element2Left) / 2;
+        createLine(element1Right, element1MidY, midX, element1MidY);
+        createLine(midX, element2MidY, element2Left, element2MidY);
+        createLine(midX, element1MidY, midX, element2MidY);
+    }
+    
+    function updateConnectors() {
+        $('#lines').empty();
+        
+        var btnPhase = $('#btn-phase-' + indexPhase);
+        var btnStep = $('#btn-phase-' + indexPhase + '-step-' + indexStep);
+        var btnAction = $('#btn-phase-' + indexPhase + '-step-' + indexStep + '-action-' + indexAction); 
+        
+        createConnectorBetweenElements(btnPhase, btnStep);
+        createConnectorBetweenElements(btnStep, btnAction);
+    }
     
     function updateAction() {
         var phase = data.phases[indexPhase];                

@@ -11,6 +11,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
     </head>
     
     <body>
@@ -28,19 +29,19 @@
         </div>
         
         <!-- Main -->
-        <div id="main" class="pl-3 pr-3 d-none">
+        <div id="main" class="pl-3 pr-3 d-none">            
             
             <!-- Turn buttons -->
             <div class="row">
-                <div class="col text-center p-1">
+                <div class="col text-center p-2">
                     <p class="text-center m-1">Phase</p>
                     <div id="phases" class="btn-group-vertical btn-block"></div>
                 </div>
-                <div class="col text-center p-1">
+                <div class="col text-center p-2">
                     <p class="text-center m-1">Step</p>
                     <div id="steps" class="btn-group-vertical btn-block"></div>
                 </div>        
-                <div class="col-7 text-center p-1">
+                <div class="col-7 text-center p-2">
                     <p class="text-center m-1">Action</p>
                     <div id="actions" class="btn-group-vertical btn-block"></div>
                 </div>                
@@ -70,7 +71,13 @@
                     </button>                    
                 </div>
             </div>
-        </div>            
+            
+            <!-- Lines -->            
+            <svg id="lines">
+<!--                <line x1="0" y1="0" x2="200" y2="200" stroke="black"/>-->
+            </svg>
+            
+        </div>
         
         <!-- Localisations -->
         <div id="localisations" class="d-none" />

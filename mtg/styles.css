@@ -30,3 +30,12 @@ html, body {
 :fullscreen {
   background-color: white;
 }
+
+#lines {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+}
