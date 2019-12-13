@@ -27,7 +27,11 @@ $(document).ready(function() {
         updateCurrentStep();
         updateCurrentAction();
         updateConnectors();
-    }, 1000);            
+    }, 1000);
+    
+    $(window).resize(function () {
+        updateConnectors();
+    });
     
     $('.priority').click(function(e) {
         $('.priority').toggleClass("btn-success");
