@@ -1,18 +1,25 @@
-/* line 10, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/landing/css/style.scss */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+/* line 12, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
 html, body {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: aquamarine; }
+  background-color: #EBEFDC; }
 
-/* line 19, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/landing/css/style.scss */
+/* line 21, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+a {
+  color: #10100F;
+  font-family: 'Inter', Helvetica, sans-serif;
+  font-size: 1em; }
+
+/* line 27, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
 #footer {
   display: flex;
+  justify-content: space-between;
   position: fixed;
   bottom: 0;
-  background-color: red;
   width: 100%; }
 
 /*# sourceMappingURL=style.css.map */
