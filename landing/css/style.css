@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
-/* line 12, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 13, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/landing/css/style.scss */
 html, body {
   width: 100%;
   height: 100%;
@@ -9,12 +9,12 @@ html, body {
   background-color: #EBEFDC;
   display: flex; }
 
-/* line 22, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 23, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/landing/css/style.scss */
 svg {
   width: 100%;
   height: 100%; }
 
-/* line 27, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 28, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/landing/css/style.scss */
 a {
   color: #10100F;
   font-family: 'Inter', Helvetica, sans-serif;
@@ -22,7 +22,7 @@ a {
   font-weight: 600;
   padding: 1em; }
 
-/* line 35, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 36, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/landing/css/style.scss */
 #footer {
   display: flex;
   justify-content: space-between;
@@ -30,7 +30,7 @@ a {
   bottom: 0;
   width: 100%; }
 
-/* line 43, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 44, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/landing/css/style.scss */
 #container-logo {
   margin: 0 auto;
   max-width: 65%; }
