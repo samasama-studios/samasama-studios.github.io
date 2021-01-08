@@ -16,12 +16,20 @@ html, body {
     padding: 0;    
     overflow: hidden;
     background-color: $color-whiteMana;
+    display: flex;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
 }
 
 a {
     color: $color-black;
     font-family: 'Inter', Helvetica, sans-serif;
-    font-size: 1em;
+    font-size: 1.1em;
+    font-weight: 600;
+    padding: 1em;
 }
 
 #footer {
@@ -30,4 +38,9 @@ a {
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+#container-logo {  
+  margin: 0 auto;    
+  max-width: 65%;
 }

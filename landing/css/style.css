@@ -6,20 +6,33 @@ html, body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #EBEFDC; }
+  background-color: #EBEFDC;
+  display: flex; }
 
-/* line 21, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 22, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+svg {
+  width: 100%;
+  height: 100%; }
+
+/* line 27, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
 a {
   color: #10100F;
   font-family: 'Inter', Helvetica, sans-serif;
-  font-size: 1em; }
+  font-size: 1.1em;
+  font-weight: 600;
+  padding: 1em; }
 
-/* line 27, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 35, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
 #footer {
   display: flex;
   justify-content: space-between;
   position: fixed;
   bottom: 0;
   width: 100%; }
+
+/* line 43, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+#container-logo {
+  margin: 0 auto;
+  max-width: 65%; }
 
 /*# sourceMappingURL=style.css.map */
