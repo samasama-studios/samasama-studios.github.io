@@ -65,9 +65,13 @@ section {
         display: flex;
         
         img {
-            display: block;            
+            display: block;  
             width: 70%;
             margin: 0 auto;
+                    
+            @media screen and (min-width: 600px) {
+                width: 30%;
+            }
         }
     }
     
@@ -76,10 +80,19 @@ section {
         width: 85%;
         text-align: center;
         line-height: 150%;
+        
+        @media screen and (min-width: 600px) {
+            width: 60%;
+        }
     }
     
     .button {
-        width: 75%;        
+        width: 75%;  
+        
+        @media screen and (min-width: 600px) {
+            width: auto;
+            padding: 10px 60px;
+        }
     }    
     
     &#codesters {
@@ -102,10 +115,12 @@ section {
         header, .button {
             background-color: $color-tipid;
             color: $color-white;
-            border: none;
-            
+            border: none;            
             img {
                 width: 40%;
+                @media screen and (min-width: 600px) {
+                    width: 15%;
+                }
             }
         }
     }

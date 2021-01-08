@@ -1,6 +1,13 @@
-$(document).ready(function() {
+$(document).ready(function() {    
     var body = $("body");
     //enterFullscreen(body);
+    
+    $(document).on('click', 'a[href^="#"]', function (event) {
+        event.preventDefault();
+        $('html, body').animate({
+            scrollTop: $($.attr(this, 'href')).offset().top
+        }, 500);
+    });
     
     function enterFullscreen(element) {
         if(element.requestFullscreen)
