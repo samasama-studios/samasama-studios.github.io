@@ -1,2 +1,18 @@
+/* line 1, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: aquamarine; }
+
+/* line 10, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+#footer {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  background-color: red;
+  width: 100%; }
 
 /*# sourceMappingURL=style.css.map */
