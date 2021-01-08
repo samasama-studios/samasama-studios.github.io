@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var body = $("body");
-    enterFullscreen(body);
+    //enterFullscreen(body);
     
     function enterFullscreen(element) {
         if(element.requestFullscreen)
