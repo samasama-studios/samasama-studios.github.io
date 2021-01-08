@@ -55,20 +55,18 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-//    background-color: aquamarine;
     
     .content {
         display: flex;        
     }
     
     header {        
-//        background-color: beige;
         height: 25%;
         display: flex;
         
         img {
             display: block;            
-            width: 60%;
+            width: 70%;
             margin: 0 auto;
         }
     }
@@ -107,7 +105,7 @@ section {
             border: none;
             
             img {
-                //height: 90%;
+                width: 40%;
             }
         }
     }
