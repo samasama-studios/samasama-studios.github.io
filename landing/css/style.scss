@@ -17,7 +17,9 @@ body {
     margin: 0;
     padding: 0;
 //    overflow: hidden;
-    background-color: $color-whiteMana;    
+    background: url('../assets/dust_scratches.png') repeat;
+    background-blend-mode: multiply;
+    background-color: $color-whiteMana;
 }
 
 .button {
@@ -104,24 +106,45 @@ section {
     &#codesters {
         header, .button {
             background-color: $color-green;
+        }
+        .button {
             color: $color-white;
             border: none;
-        }       
+            
+            &:hover {
+                color: $color-whiteMana;
+                background-color: #57AA53;
+                -webkit-transition: all 250ms ease-out;
+                -moz-transition: all 250ms ease-out;
+                -o-transition: all 250ms ease-out;
+                transition: all 250ms ease-out;
+            }
+        }
     }
     
     &#particular {
         header, .button {
             background-color: $color-orange;
+        }
+        .button {
             color: $color-white;
             border: none;
+            
+            &:hover {
+                color: $color-whiteMana;
+                background-color: #CD4B09;
+                -webkit-transition: all 250ms ease-out;
+                -moz-transition: all 250ms ease-out;
+                -o-transition: all 250ms ease-out;
+                transition: all 250ms ease-out;
+            }
         }
     }
     
     &#tipid {
         header, .button {
             background-color: $color-tipid;
-            color: $color-white;
-            border: none;            
+      
             img {
                 width: 40%;
                 @media screen and (min-width: 600px) {
@@ -129,13 +152,38 @@ section {
                 }
             }
         }
+        .button {
+            color: $color-white;
+            border: none;
+            
+            &:hover {
+                color: $color-whiteMana;
+                background-color: #55A8C1;
+                -webkit-transition: all 250ms ease-out;
+                -moz-transition: all 250ms ease-out;
+                -o-transition: all 250ms ease-out;
+                transition: all 250ms ease-out;
+            }
+        }
     }
     
     &#koit {
         header, .button {
             background-color: $color-yellow;
+        }
+        
+        .button {
             color: $color-white;
             border: none;
+            
+            &:hover {
+                color: $color-whiteMana;
+                background-color: #D79B03;
+                -webkit-transition: all 250ms ease-out;
+                -moz-transition: all 250ms ease-out;
+                -o-transition: all 250ms ease-out;
+                transition: all 250ms ease-out;
+            }
         }
     }
 }
@@ -155,7 +203,14 @@ a {
     font-weight: 600;    
 }
 
-#footer {
+footer {
+    font-family: 'Inter', helvetica, sans-serif;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+}
+
+#menuFooter {
     display: flex;
     justify-content: space-between;
     position: fixed;
