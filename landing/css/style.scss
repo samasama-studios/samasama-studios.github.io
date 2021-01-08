@@ -10,14 +10,106 @@ $color-white: #FAFAFA;
 $color-black: #10100F;
 $color-tipid: #76C7E0;
 
-html, body {
+body {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     margin: 0;
-    padding: 0;    
-    overflow: hidden;
-    background-color: $color-whiteMana;
+    padding: 0;
+//    overflow: hidden;
+    background-color: $color-whiteMana;    
+}
+
+.button {
+    text-align: center;
+    margin: 0 auto;
+    border: 2px solid $color-black;
+    background: transparent;
+    border-radius: 4px;
+    color: $color-black;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    padding: 10px;
+    
+    &:hover {
+        color: $color-whiteMana;
+        background: $color-black;
+        -webkit-transition: all 250ms ease-out;
+        -moz-transition: all 250ms ease-out;
+        -o-transition: all 250ms ease-out;
+        transition: all 250ms ease-out;
+    }
+    
+    &:focus {
+        box-shadow: rgba(12, 151, 139, .3) 0px 0px 0px 4px;
+        outline: 0px;
+        -webkit-transition: all 300ms ease-out;
+        -moz-transition: all 300ms ease-out;
+        -o-transition: all 300ms ease-out;
+        transition: all 300ms ease-out;
+    }
+}
+
+section {
+    height: 100%;
     display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+//    background-color: aquamarine;
+    
+    .content {
+        display: flex;        
+    }
+    
+    header {        
+//        background-color: beige;
+        height: 25%;
+        display: flex;
+        
+        img {
+            display: block;            
+            width: 60%;
+            margin: 0 auto;
+        }
+    }
+    
+    p {
+        margin: 0 auto;
+        width: 85%;
+        text-align: center;
+        line-height: 150%;
+    }
+    
+    .button {
+        width: 75%;        
+    }    
+    
+    &#codesters {
+        header, .button {
+            background-color: $color-green;
+            color: $color-white;
+            border: none;
+        }       
+    }
+    
+    &#particular {
+        header, .button {
+            background-color: $color-orange;
+            color: $color-white;
+            border: none;
+        }
+    }
+    
+    &#tipid {
+        header, .button {
+            background-color: $color-tipid;
+            color: $color-white;
+            border: none;
+            
+            img {
+                //height: 90%;
+            }
+        }
+    }
 }
 
 svg {
@@ -25,12 +117,14 @@ svg {
     height: 100%;
 }
 
-a {
+a, p {
     color: $color-black;
     font-family: 'Inter', Helvetica, sans-serif;
+}
+
+a {    
     font-size: 1.1em;
-    font-weight: 600;
-    padding: 1em;
+    font-weight: 600;    
 }
 
 #footer {
@@ -39,9 +133,13 @@ a {
     position: fixed;
     bottom: 0;
     width: 100%;
+    
+    a {
+        padding: 1em;
+    }
 }
 
-#container-logo {  
-  margin: 0 auto;    
-  max-width: 65%;
+#container-logo {    
+    margin: 0 auto;
+    max-width: 65%;
 }
