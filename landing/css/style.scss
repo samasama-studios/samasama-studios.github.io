@@ -81,7 +81,7 @@ section {
         @media screen and (min-width: 600px) {
             height: 50%;
             flex-direction: row;
-            padding: 0 2em;
+            padding: 0 4em 0 2em;
             margin-top: 2em;
             
             div {
@@ -100,11 +100,11 @@ section {
             }
             
             p {
-                width: 80%;
+                width: 70%;
             }
             
             img {
-//                width: 100%;
+                width: 40%;
             }
         }
     }
@@ -144,8 +144,7 @@ section {
         }
     }    
     
-    &#codesters {     
-        
+    &#codesters {        
         header, .button {
             background-color: $color-green;
         }
@@ -154,12 +153,7 @@ section {
             border: none;
             
             &:hover {
-                color: $color-whiteMana;
                 background-color: #57AA53;
-                -webkit-transition: all 250ms ease-out;
-                -moz-transition: all 250ms ease-out;
-                -o-transition: all 250ms ease-out;
-                transition: all 250ms ease-out;
             }
         }
     }
@@ -173,12 +167,13 @@ section {
             border: none;
             
             &:hover {
-                color: $color-whiteMana;
-                background-color: #CD4B09;
-                -webkit-transition: all 250ms ease-out;
-                -moz-transition: all 250ms ease-out;
-                -o-transition: all 250ms ease-out;
-                transition: all 250ms ease-out;
+                background-color: #CD4B09;                
+            }
+        }
+        
+        @media screen and (min-width: 600px) {
+            .content img {
+                transform: scaleX(-1);
             }
         }
     }
@@ -199,12 +194,13 @@ section {
             border: none;
             
             &:hover {
-                color: $color-whiteMana;
                 background-color: #55A8C1;
-                -webkit-transition: all 250ms ease-out;
-                -moz-transition: all 250ms ease-out;
-                -o-transition: all 250ms ease-out;
-                transition: all 250ms ease-out;
+            }
+        }
+        
+        @media screen and (min-width: 600px) {
+            .content img {
+                transform: scaleX(-1);
             }
         }
     }
@@ -219,12 +215,7 @@ section {
             border: none;
             
             &:hover {
-                color: $color-whiteMana;
                 background-color: #D79B03;
-                -webkit-transition: all 250ms ease-out;
-                -moz-transition: all 250ms ease-out;
-                -o-transition: all 250ms ease-out;
-                transition: all 250ms ease-out;
             }
         }
     }
@@ -250,7 +241,7 @@ footer {
     font-family: 'Inter', helvetica, sans-serif;
     font-size: 14px;
     text-align: center;
-    padding: 10px;
+    padding: 32px 10px 10px;
 }
 
 #menu-footer {
