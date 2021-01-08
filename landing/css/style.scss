@@ -53,8 +53,8 @@ body {
         transition: all 300ms ease-out;
     }
     
-    &.disabled {
-        opacity: 60%;
+    &.desktop {
+        display: none;
     }
 }
 
@@ -64,8 +64,46 @@ section {
     flex-direction: column;
     justify-content: space-around;
     
+    @media screen and (min-width: 600px) {
+//        height: 65%;
+//        justify-content: center;
+    }
+    
     .content {
-        display: flex;        
+        height: 70%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        
+        @media screen and (min-width: 600px) {
+            height: 50%;
+            flex-direction: row;
+            padding: 0 2em;
+            margin-top: 2em;
+            
+            div {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            
+            .button.mobile {
+                display: none;
+            }
+            
+            .button.desktop {
+                display: block;
+                margin-top: 2em;
+            }
+            
+            p {
+                width: 80%;
+            }
+            
+            img {
+//                width: 100%;
+            }
+        }
     }
     
     header {        
@@ -103,7 +141,8 @@ section {
         }
     }    
     
-    &#codesters {
+    &#codesters {     
+        
         header, .button {
             background-color: $color-green;
         }
