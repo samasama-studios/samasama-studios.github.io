@@ -9,6 +9,7 @@ $color-purpleHaze: #6A437E;
 $color-white: #FAFAFA;
 $color-black: #10100F;
 $color-tipid: #76C7E0;
+$color-yellow: #F4BA25;
 
 body {
     width: 100%;
@@ -127,6 +128,14 @@ section {
                     width: 15%;
                 }
             }
+        }
+    }
+    
+    &#koit {
+        header, .button {
+            background-color: $color-yellow;
+            color: $color-white;
+            border: none;
         }
     }
 }
