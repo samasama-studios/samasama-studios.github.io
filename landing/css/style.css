@@ -61,7 +61,7 @@ section {
       @media screen and (min-width: 600px) {
         /* line 73, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
         section header img {
-          width: 30%; } }
+          width: 20%; } }
   /* line 84, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section p {
     margin: 0 auto;
@@ -101,7 +101,7 @@ section {
       @media screen and (min-width: 600px) {
         /* line 125, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
         section#tipid header img, section#tipid .button img {
-          width: 15%; } }
+          width: 10%; } }
   /* line 135, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section#koit header, section#koit .button {
     background-color: #F4BA25;
