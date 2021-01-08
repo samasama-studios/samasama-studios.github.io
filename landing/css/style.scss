@@ -78,7 +78,7 @@ section {
         @media screen and (min-width: 600px) {
             height: 50%;
             flex-direction: row;
-            padding: 0 2em;
+            padding: 0 4em 0 2em;
             margin-top: 2em;
             
             div {
@@ -97,11 +97,11 @@ section {
             }
             
             p {
-                width: 80%;
+                width: 70%;
             }
             
             img {
-//                width: 100%;
+                width: 40%;
             }
         }
     }
@@ -141,8 +141,7 @@ section {
         }
     }    
     
-    &#codesters {     
-        
+    &#codesters {        
         header, .button {
             background-color: $color-green;
         }
@@ -168,6 +167,12 @@ section {
                 background-color: #CD4B09;                
             }
         }
+        
+        @media screen and (min-width: 600px) {
+            .content img {
+                transform: scaleX(-1);
+            }
+        }
     }
     
     &#tipid {
@@ -187,6 +192,12 @@ section {
             
             &:hover {
                 background-color: #55A8C1;
+            }
+        }
+        
+        @media screen and (min-width: 600px) {
+            .content img {
+                transform: scaleX(-1);
             }
         }
     }
