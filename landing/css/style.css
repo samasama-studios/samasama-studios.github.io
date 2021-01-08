@@ -8,8 +8,11 @@ body {
   background: url("../assets/dust_scratches.png") repeat;
   background-blend-mode: multiply;
   background-color: #EBEFDC; }
+  /* line 23, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  body#splash {
+    overflow: hidden; }
 
-/* line 25, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 28, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
 .button {
   cursor: pointer;
   text-decoration: none;
@@ -22,7 +25,7 @@ body {
   cursor: pointer;
   letter-spacing: 0.05em;
   padding: 10px; }
-  /* line 38, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 41, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   .button:hover {
     color: #EBEFDC;
     background: #10100F;
@@ -30,7 +33,7 @@ body {
     -moz-transition: all 250ms ease-out;
     -o-transition: all 250ms ease-out;
     transition: all 250ms ease-out; }
-  /* line 47, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 50, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   .button:focus {
     box-shadow: rgba(12, 151, 139, 0.3) 0px 0px 0px 4px;
     outline: 0px;
@@ -38,83 +41,83 @@ body {
     -moz-transition: all 300ms ease-out;
     -o-transition: all 300ms ease-out;
     transition: all 300ms ease-out; }
-  /* line 56, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 59, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   .button.desktop {
     display: none; }
 
-/* line 61, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 64, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
 section {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around; }
-  /* line 72, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 75, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section .content {
     height: 70%;
     display: flex;
     flex-direction: column;
     justify-content: space-around; }
     @media screen and (min-width: 600px) {
-      /* line 72, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+      /* line 75, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
       section .content {
         height: 50%;
         flex-direction: row;
         padding: 0 2em;
         margin-top: 2em; }
-        /* line 84, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+        /* line 87, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
         section .content div {
           display: flex;
           flex-direction: column;
           justify-content: center; }
-        /* line 90, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+        /* line 93, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
         section .content .button.mobile {
           display: none; }
-        /* line 94, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+        /* line 97, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
         section .content .button.desktop {
           display: block;
           margin-top: 2em; }
-        /* line 99, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+        /* line 102, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
         section .content p {
           width: 80%; } }
-  /* line 109, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 112, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section header {
     height: 25%;
     display: flex; }
-    /* line 113, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+    /* line 116, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
     section header img {
       display: block;
       width: 70%;
       margin: 0 auto; }
       @media screen and (min-width: 600px) {
-        /* line 113, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+        /* line 116, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
         section header img {
           width: 20%; } }
-  /* line 124, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 127, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section p {
     margin: 0 auto;
     width: 85%;
     text-align: center;
     line-height: 150%; }
     @media screen and (min-width: 600px) {
-      /* line 124, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+      /* line 127, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
       section p {
         width: 60%; } }
-  /* line 135, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 138, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section .button {
     width: 75%; }
     @media screen and (min-width: 600px) {
-      /* line 135, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+      /* line 138, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
       section .button {
         width: auto;
         padding: 10px 60px; } }
-  /* line 146, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 149, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section#codesters header, section#codesters .button {
     background-color: #7ACB76; }
-  /* line 149, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 152, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section#codesters .button {
     color: #FAFAFA;
     border: none; }
-    /* line 153, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+    /* line 156, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
     section#codesters .button:hover {
       color: #EBEFDC;
       background-color: #57AA53;
@@ -122,14 +125,14 @@ section {
       -moz-transition: all 250ms ease-out;
       -o-transition: all 250ms ease-out;
       transition: all 250ms ease-out; }
-  /* line 165, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 168, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section#particular header, section#particular .button {
     background-color: #F26A25; }
-  /* line 168, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 171, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section#particular .button {
     color: #FAFAFA;
     border: none; }
-    /* line 172, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+    /* line 175, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
     section#particular .button:hover {
       color: #EBEFDC;
       background-color: #CD4B09;
@@ -137,21 +140,21 @@ section {
       -moz-transition: all 250ms ease-out;
       -o-transition: all 250ms ease-out;
       transition: all 250ms ease-out; }
-  /* line 184, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 187, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section#tipid header, section#tipid .button {
     background-color: #76C7E0; }
-    /* line 187, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+    /* line 190, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
     section#tipid header img, section#tipid .button img {
       width: 40%; }
       @media screen and (min-width: 600px) {
-        /* line 187, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+        /* line 190, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
         section#tipid header img, section#tipid .button img {
           width: 10%; } }
-  /* line 194, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 197, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section#tipid .button {
     color: #FAFAFA;
     border: none; }
-    /* line 198, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+    /* line 201, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
     section#tipid .button:hover {
       color: #EBEFDC;
       background-color: #55A8C1;
@@ -159,14 +162,14 @@ section {
       -moz-transition: all 250ms ease-out;
       -o-transition: all 250ms ease-out;
       transition: all 250ms ease-out; }
-  /* line 210, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 213, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section#koit header, section#koit .button {
     background-color: #F4BA25; }
-  /* line 214, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  /* line 217, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
   section#koit .button {
     color: #FAFAFA;
     border: none; }
-    /* line 218, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+    /* line 221, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
     section#koit .button:hover {
       color: #EBEFDC;
       background-color: #D79B03;
@@ -175,40 +178,41 @@ section {
       -o-transition: all 250ms ease-out;
       transition: all 250ms ease-out; }
 
-/* line 230, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 233, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
 svg {
   width: 100%;
   height: 100%; }
 
-/* line 235, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 238, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
 a, p {
   color: #10100F;
   font-family: 'Inter', Helvetica, sans-serif; }
 
-/* line 240, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 243, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
 a {
   font-size: 1.1em;
-  font-weight: 600; }
+  font-weight: 600;
+  text-decoration: none; }
 
-/* line 245, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 249, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
 footer {
   font-family: 'Inter', helvetica, sans-serif;
   font-size: 14px;
   text-align: center;
   padding: 10px; }
 
-/* line 252, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
-#menuFooter {
+/* line 256, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+#menu-footer {
   display: flex;
   justify-content: space-between;
   position: fixed;
   bottom: 0;
   width: 100%; }
-  /* line 259, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
-  #menuFooter a {
+  /* line 263, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+  #menu-footer a {
     padding: 1em; }
 
-/* line 264, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
+/* line 268, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/landing/css/style.scss */
 #container-logo {
   margin: 0 auto;
   max-width: 65%; }

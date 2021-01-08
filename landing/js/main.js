@@ -1,6 +1,4 @@
-$(document).ready(function() {    
-    var body = $("body");
-    //enterFullscreen(body);
+$(document).ready(function() {
     
     $(document).on('click', 'a[href^="#"]', function (event) {
         event.preventDefault();
