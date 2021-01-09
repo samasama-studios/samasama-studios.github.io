@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
 $color-whiteMana: #EBEFDC;
 $color-orange: #F26A25;
 $color-green: #7ACB76;
@@ -10,6 +12,14 @@ $color-white: #FAFAFA;
 $color-black: #10100F;
 $color-tipid: #76C7E0;
 $color-yellow: #F4BA25;
+
+span {
+    &.text-artistic {
+        font-family: 'Indie Flower', cursive;
+        font-size: 1.3em;
+        font-weight: bold;        
+    }
+}
 
 body {
     width: 100%;
@@ -235,17 +245,13 @@ a {
     font-size: 1.1em;
     font-weight: 600;
     text-decoration: none;
-    position: relative;
-    
-    .underline {
-        display: block;
-        position: absolute;
-        bottom: -1.8px;
-        left: 0; // Animated via JS
-        width: 0; // Animated via JS
-        height: 2px;
-        background-color: $color-black;
-    }
+}
+
+footer {
+    font-family: 'Inter', helvetica, sans-serif;
+    font-size: 12px;
+    text-align: center;
+    padding: 32px 10px 10px;
 }
 
 #menu-footer {
@@ -256,18 +262,11 @@ a {
     width: 100%;
     
     a {
-        margin: 1em;
+        padding: 1em;
     }
 }
 
 #container-logo {    
     margin: 0 auto;
     max-width: 65%;
-}
-
-footer {
-    font-family: 'Inter', helvetica, sans-serif;
-    font-size: 14px;
-    text-align: center;
-    padding: 32px 10px 10px;
 }
