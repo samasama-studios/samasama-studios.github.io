@@ -245,13 +245,18 @@ a {
     font-size: 1.1em;
     font-weight: 600;
     text-decoration: none;
-}
+    position: relative;
+    
+    .underline {
+        display: block;
+        position: absolute;
+        bottom: -1.8px;
+        left: 0; // Animated via JS
+        width: 0; // Animated via JS
+        height: 2px;
+        background-color: $color-black;
+    }
 
-footer {
-    font-family: 'Inter', helvetica, sans-serif;
-    font-size: 12px;
-    text-align: center;
-    padding: 32px 10px 10px;
 }
 
 #menu-footer {
@@ -269,4 +274,11 @@ footer {
 #container-logo {    
     margin: 0 auto;
     max-width: 65%;
+}
+
+footer {
+    font-family: 'Inter', helvetica, sans-serif;
+    font-size: 12px;
+    text-align: center;
+    padding: 32px 10px 10px;
 }

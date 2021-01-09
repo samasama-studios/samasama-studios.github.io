@@ -190,29 +190,39 @@ a, p {
 a {
   font-size: 1.1em;
   font-weight: 600;
-  text-decoration: none; }
+  text-decoration: none;
+  position: relative; }
+  /* line 250, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  a .underline {
+    display: block;
+    position: absolute;
+    bottom: -1.8px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #10100F; }
 
-/* line 250, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
-footer {
-  font-family: 'Inter', helvetica, sans-serif;
-  font-size: 12px;
-  text-align: center;
-  padding: 32px 10px 10px; }
-
-/* line 257, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 262, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
 #menu-footer {
   display: flex;
   justify-content: space-between;
   position: fixed;
   bottom: 0;
   width: 100%; }
-  /* line 264, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 269, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
   #menu-footer a {
     padding: 1em; }
 
-/* line 269, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 274, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
 #container-logo {
   margin: 0 auto;
   max-width: 65%; }
+
+/* line 279, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+footer {
+  font-family: 'Inter', helvetica, sans-serif;
+  font-size: 12px;
+  text-align: center;
+  padding: 32px 10px 10px; }
 
 /*# sourceMappingURL=style.css.map */
