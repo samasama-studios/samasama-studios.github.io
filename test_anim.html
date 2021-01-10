@@ -8,35 +8,83 @@
         <script src="js/anime.min.js"></script>
         <script src="js/main.js"></script>
     </head>
-    <body>
+    <body style="display: flex; height: 300vw;">
         <div id="container-logo">
-            <svg class="logo" viewBox="0 0 640 215" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path id="atom" d="M394 119.9C386.1 121.6 371.1 131.2 367.8 141.1C364.6 150.6 360.6 162.6 369.9 171.7C378.4 180 389.5 181.6 400.3 178.2C414.2 173.9 425.2 167.5 431.5 154.9C438.2 141.2 432.8 132.7 416 122.2C413 120.3 402.9 117.9 394 119.9Z" stroke="#FA6900" stroke-width="18" stroke-miterlimit="10"/>
-                <path id="orbit" d="M200.1 44.3C95.5 -20.2 10.5 40.4 10.5 115.1C10.5 168.7 32.8 204.4 113.1 204.4C199.6 204.4 309.9 103.2 309.9 103.2C309.9 103.2 424.4 9 514.4 9C604.4 9 628.5 67.6 628.5 106.7C628.5 143.7 599.6 221.2 485.3 187.7" stroke="black" stroke-width="18" stroke-miterlimit="10" stroke-linecap="round"/>     
-            </svg>
-            <svg class="logo path" viewBox="0 0 640 215" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path id="orbitPath" d="M200.1 44.3C91.5 -14.5 10.5 40.4 10.5 115.1C10.5 168.7 32.8 204.4 113.1 204.4C199.6 204.4 309.9 103.2 309.9 103.2C309.9 103.2 424.4 9 514.4 9C604.4 9 628.5 67.6 628.5 106.7C628.5 143.7 570.1 224.4 485.3 187.7" stroke="black" stroke-width="1" stroke-miterlimit="10" stroke-linecap="round"/>
+            <svg class="logo" width="242" height="82" viewBox="0 0 242 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path id="orbit" d="M75.6628 17.7509C36.111 -6.63811 3.97034 16.2763 3.97034 44.5222C3.97034 64.7897 12.4025 78.2888 42.766 78.2888C75.4738 78.2888 117.181 40.0225 117.181 40.0225C117.181 40.0225 160.476 4.40314 194.508 4.40314C228.539 4.40314 237.652 26.5613 237.652 41.3459C237.652 55.3366 226.724 84.6413 183.504 71.9741" stroke="black" stroke-width="7" stroke-miterlimit="10" stroke-linecap="round"/>
+                <path id="atom" d="M148.981 46.3372C145.994 46.98 140.322 50.61 139.074 54.3535C137.864 57.9456 136.352 62.4831 139.868 65.9241C143.082 69.0625 147.28 69.6675 151.363 68.3819C156.619 66.756 160.779 64.336 163.161 59.5716C165.694 54.3913 163.652 51.1772 157.3 47.2069C156.166 46.4885 152.347 45.581 148.981 46.3372Z" stroke="#FA6900" stroke-width="7" stroke-miterlimit="10"/>
             </svg>
         </div>
-        <div id="footer">
-            <a>About</a>
-            <a>Contact</a>
-        </div>
+        
                  
         <script>
         document.addEventListener("DOMContentLoaded", function(event) {
-            var path = anime.path('.logo.path path');
+            var path = anime.path('#orbit');
 
             let orbitAnim = anime({
-                              targets: '.logo #atom',
+                              targets: '#atom',
                               translateX: path('x'),
                               translateY: path('y'),
                               rotate: path('angle'),
-                              easing: 'linear',
-                              duration: 1000,
+                              easing: 'easeInOutQuart',
+                              duration: 5000,
                               loop: true
                             });
         });
+            
+//            $(function() {
+//              var $window = $(window);
+//              var scrollTop = $window.scrollTop();
+//                var path = anime.path('#orbit');
+//
+//              let basicTimeline = anime({
+//                targets: "#atom",
+////                translateY: [0, $window.height() - $(".logo").height()],
+//                  translateX: path('x'),
+//                  translateY: path('y'),
+//                  rotate: path('angle'),
+//                autoplay: false,
+//                offset: 0,
+//                duration: 2000
+//            });
+//
+//              var raf = null, timeout = null, scrollPercent = 0;
+//
+//              $window.on("scroll", function() {
+//                var documentHeight = $(document).height();
+//                var windowHeight = $window.height();
+//                scrollTop = $(window).scrollTop();
+//                scrollPercent = Math.max(
+//                  scrollTop / (documentHeight - windowHeight),
+//                  0
+//                );
+//
+//                console.log('scrolling: ' + scrollPercent);
+//
+//                if (null === raf) {
+//                  raf = requestAnimationFrame(update);
+//                }                
+//              });
+//
+//              var update = function() {
+//                var progress = basicTimeline.progress / 100;
+//                var proxyProgress = scrollPercent;
+//                var diff = proxyProgress - progress;
+//
+//                console.log('diff:' + diff);
+//                progress += (proxyProgress - progress) * 0.05;    
+//                basicTimeline.seek(progress * 2000);
+//                console.log('updating:' + progress);
+//
+//                if (Math.abs(diff) > 0.000005) {
+//                  raf = requestAnimationFrame(update);  
+//                } else if (raf) {console.log('cancelling');
+//                  cancelAnimationFrame(raf);
+//                  raf = null;
+//                }       
+//            }    
+//            });
+            
         </script>
     </body>    
 </html>
