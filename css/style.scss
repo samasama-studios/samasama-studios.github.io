@@ -232,14 +232,7 @@ section {
     
     &#tipid {
         header, .button {
-            background-color: $color-tipid;
-      
-            img {
-                width: 30%;
-                @media screen and (min-width: 600px) {
-                    width: 10%;
-                }
-            }
+            background-color: $color-tipid;            
         }
         .button {
             color: $color-white;
@@ -260,10 +253,6 @@ section {
     &#koit {
         header, .button {
             background-color: $color-yellow;
-            
-            img {
-                width: 50%;                
-            }
         }
         
         .button {
