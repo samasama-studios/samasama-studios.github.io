@@ -110,7 +110,7 @@ section {
           width: 40%; } }
   /* line 141, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   section header {
-    height: 23%;
+    height: 22%;
     display: flex; }
     /* line 145, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
     section header img {
@@ -126,7 +126,7 @@ section {
           width: 20%; } }
   /* line 160, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   section p {
-    margin: 0 auto;
+    margin: 8px auto 0;
     width: 90%;
     text-align: center;
     line-height: 150%; }
