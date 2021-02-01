@@ -285,6 +285,30 @@ section {
     max-width: 65%;
 }
 
+#navbar {
+    display: flex;
+    position: fixed;
+    justify-content: space-between;
+    overflow: hidden;
+    background-color: $color-orange;
+    z-index: 9999;
+    opacity: 0;
+    
+    a {
+        float: right;
+        display: block;
+        color: $color-whiteMana;
+        padding: 14px;
+        text-decoration: none;
+    }
+    
+    #navbar-icon {
+        width: 15%;
+        height: auto;
+        margin-left: 1em;
+    }    
+}
+
 footer {
     font-family: 'Inter', helvetica, sans-serif;
     font-size: 12px;

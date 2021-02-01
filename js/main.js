@@ -1,34 +1,64 @@
 $(document).ready(function() {
     
+    var firstSection = $("#about");
+    var firstSectionHeaderTop = $(firstSection).find("header").offset().top;
+    var firstSectionHeaderBottom = firstSectionHeaderTop + $(firstSection).find("header").outerHeight();
+    var currentSection = firstSection;
+    var navbar = $("#navbar");    
+    
+    window.onscroll = function() {
+        updateSticky();
+    };    
+    
+    function updateSticky() {
+        var navbarBottom = window.pageYOffset + $(navbar).outerHeight();
+        
+        // Show/hide the navbar.
+        if (firstSectionHeaderBottom <= window.pageYOffset) {
+            anime({
+                targets: "#navbar",
+                opacity: 1,
+                duration: 500
+            });
+        } else {
+            anime({
+                targets: "#navbar",
+                opacity: 0,
+                duration: 500
+            });
+        }       
+        
+        // Calculate current section.
+        $("section").each(function() {            
+            var sectionBottom = $(this).offset().top + $(this).outerHeight(true);
+            var sectionHeader = $(this).find("header");           
+            
+            if (navbarBottom >= $(sectionHeader).offset().top && window.pageYOffset < sectionBottom) {
+                currentSection = $(this);
+                return false;
+            }
+        });
+        
+        // Little hack for about section without color.
+        var sectionColor = $(currentSection).find("header").css("background-color");
+        if (sectionColor == "rgba(0, 0, 0, 0)") {
+            sectionColor = "#F26A25";
+        }
+        
+        // Apply current section color.
+        anime({
+            targets: "#navbar",
+            backgroundColor: sectionColor, 
+            duration: 500
+        });
+    }    
+    
     $(document).on('click', 'a[href^="#"]', function (event) {
         event.preventDefault();
         $('html, body').animate({
-            scrollTop: $($.attr(this, 'href')).offset().top
+            scrollTop: $($.attr(this, 'href')).offset().top - $(navbar).outerHeight()
         }, 500);
     });
-    
-    function enterFullscreen(element) {
-        if(element.requestFullscreen)
-            element.requestFullscreen();
-        else if(element.mozRequestFullScreen)
-            element.mozRequestFullScreen();
-        else if(element.webkitRequestFullscreen)
-            element.webkitRequestFullscreen();
-        else if(element.msRequestFullscreen)
-            element.msRequestFullscreen();
-    }
-    
-    function exitFullscreen() {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        }
-    }
     
         
 /////////////////////////////////////////////////////////////////////
