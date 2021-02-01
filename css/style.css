@@ -214,11 +214,19 @@ section {
     font-weight: 600; }
 
 /* line 283, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-sandbox/samasama-studios.github.io/css/style.scss */
+#atom {
+  position: absolute;
+  top: -2rem;
+  left: -2rem;
+  width: 4rem;
+  height: 4rem; }
+
+/* line 291, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-sandbox/samasama-studios.github.io/css/style.scss */
 #container-logo {
   margin: 0 auto;
   max-width: 65%; }
 
-/* line 288, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-sandbox/samasama-studios.github.io/css/style.scss */
+/* line 296, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-sandbox/samasama-studios.github.io/css/style.scss */
 #navbar {
   display: flex;
   position: fixed;
@@ -227,20 +235,20 @@ section {
   background-color: #F26A25;
   z-index: 9999;
   opacity: 0; }
-  /* line 297, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-sandbox/samasama-studios.github.io/css/style.scss */
+  /* line 305, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-sandbox/samasama-studios.github.io/css/style.scss */
   #navbar a {
     float: right;
     display: block;
     color: #EBEFDC;
     padding: 14px;
     text-decoration: none; }
-  /* line 305, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-sandbox/samasama-studios.github.io/css/style.scss */
+  /* line 313, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-sandbox/samasama-studios.github.io/css/style.scss */
   #navbar #navbar-icon {
     width: 15%;
     height: auto;
     margin-left: 1em; }
 
-/* line 312, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-sandbox/samasama-studios.github.io/css/style.scss */
+/* line 320, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-sandbox/samasama-studios.github.io/css/style.scss */
 footer {
   font-family: 'Inter', helvetica, sans-serif;
   font-size: 12px;
