@@ -42,7 +42,7 @@ $(document).ready(function() {
         // Little hack for about section without color.
         var sectionColor = $(currentSection).find("header").css("background-color");
         if (sectionColor == "rgba(0, 0, 0, 0)") {
-            sectionColor = "#F26A25";
+            sectionColor = "#10100F";
         }
         
         // Apply current section color.

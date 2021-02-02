@@ -94,12 +94,6 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    margin-bottom: 20%;
-    
-    @media screen and (min-width: 600px) {
-//        height: 65%;
-//        justify-content: center;
-    }
     
     .content {
         height: 70%;
@@ -130,11 +124,7 @@ section {
             
             p {
                 width: 70%;
-            }
-            
-            img {
-                width: 40%;
-            }
+            }            
         }
     }
     
@@ -210,6 +200,8 @@ section {
     }
     
     &#particular {
+        margin-top: 10%;
+        
         header, .button {
             background-color: $color-orange;
         }
@@ -230,6 +222,8 @@ section {
     }
     
     &#tipid {
+        margin-top: 10%;
+        
         header, .button {
             background-color: $color-tipid;            
         }
@@ -250,6 +244,8 @@ section {
     }
     
     &#koit {
+        margin-top: 10%;
+        
         header, .button {
             background-color: $color-yellow;
         }
@@ -280,6 +276,11 @@ section {
     }
 }
 
+#about-ilus {
+    width: 25%;
+    margin: 0 auto;
+}
+
 #atom {    
     position: absolute;
     top: -2rem;
@@ -299,7 +300,7 @@ section {
     position: fixed;
     justify-content: space-between;
     overflow: hidden;
-    background-color: $color-orange;
+    background-color: $color-black;
     z-index: 9999;
     opacity: 0;
     height: 3em;
