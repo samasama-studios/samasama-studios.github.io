@@ -271,8 +271,12 @@ section {
 }
 
 #about-ilus {
-    width: 18%;
+    width: 32%;
     margin: 0 auto;
+    
+    @media screen and (min-width: 600px) {
+        width: 18%;
+    }
 }
 
 #atom {    
