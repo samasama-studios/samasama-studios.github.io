@@ -213,12 +213,6 @@ section {
                 background-color: #CD4B09;                
             }
         }
-        
-        @media screen and (min-width: 600px) {
-            .content img {
-                transform: scaleX(-1);
-            }
-        }
     }
     
     &#tipid {
@@ -236,11 +230,11 @@ section {
             }
         }
         
-        @media screen and (min-width: 600px) {
-            .content img {
-                transform: scaleX(-1);
-            }
-        }
+//        @media screen and (min-width: 600px) {
+//            .content img {
+//                transform: scaleX(-1);
+//            }
+//        }
     }
     
     &#koit {
@@ -277,8 +271,12 @@ section {
 }
 
 #about-ilus {
-    width: 25%;
+    width: 32%;
     margin: 0 auto;
+    
+    @media screen and (min-width: 600px) {
+        width: 18%;
+    }
 }
 
 #atom {    

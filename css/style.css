@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap");
-/* line 16, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 16, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
 body {
   width: 100%;
   height: 100vh;
@@ -9,25 +9,25 @@ body {
   background: url("../assets/dust_scratches.png") repeat;
   background-blend-mode: multiply;
   background-color: #EBEFDC; }
-  /* line 25, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 25, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   body#splash {
     overflow: hidden; }
 
-/* line 30, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 30, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
 svg {
   width: 100%;
   height: 100%; }
 
-/* line 35, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 35, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
 a, p {
   color: #10100F;
   font-family: 'Inter', Helvetica, sans-serif; }
 
-/* line 40, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 40, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
 a {
   text-decoration: none;
   position: relative; }
-  /* line 44, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 44, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   a .underline {
     display: block;
     position: absolute;
@@ -37,7 +37,7 @@ a {
     height: 2px;
     background-color: #10100F; }
 
-/* line 56, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 56, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
 .button {
   cursor: pointer;
   text-decoration: none;
@@ -50,7 +50,7 @@ a {
   cursor: pointer;
   letter-spacing: 0.05em;
   padding: 10px; }
-  /* line 69, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 69, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   .button:hover {
     color: #EBEFDC;
     background: #10100F;
@@ -58,7 +58,7 @@ a {
     -moz-transition: all 250ms ease-out;
     -o-transition: all 250ms ease-out;
     transition: all 250ms ease-out; }
-  /* line 78, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 78, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   .button:focus {
     box-shadow: rgba(12, 151, 139, 0.3) 0px 0px 0px 4px;
     outline: 0px;
@@ -66,164 +66,160 @@ a {
     -moz-transition: all 300ms ease-out;
     -o-transition: all 300ms ease-out;
     transition: all 300ms ease-out; }
-  /* line 87, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 87, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   .button.desktop {
     display: none; }
 
-/* line 92, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 92, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
 section {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly; }
-  /* line 98, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 98, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   section .content {
     height: 70%;
     display: flex;
     flex-direction: column;
     justify-content: space-around; }
     @media screen and (min-width: 600px) {
-      /* line 98, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+      /* line 98, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
       section .content {
         height: 50%;
         flex-direction: row;
         padding: 0 4em 0 2em;
         margin-top: 2em; }
-        /* line 110, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+        /* line 110, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
         section .content div {
           display: flex;
           flex-direction: column;
           justify-content: center; }
-        /* line 116, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+        /* line 116, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
         section .content .button.mobile {
           display: none; }
-        /* line 120, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+        /* line 120, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
         section .content .button.desktop {
           display: block;
           margin-top: 2em; }
-        /* line 125, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+        /* line 125, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
         section .content p {
           width: 70%; } }
-  /* line 131, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 131, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   section header {
     height: 22%;
     display: flex; }
-    /* line 135, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+    /* line 135, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
     section header img {
       display: block;
       width: 70%;
       margin: 0 auto; }
-      /* line 140, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+      /* line 140, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
       section header img.logo {
         width: 50%; }
       @media screen and (min-width: 600px) {
-        /* line 135, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+        /* line 135, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
         section header img {
           width: 20%; } }
-  /* line 150, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 150, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   section p {
     margin: 8px auto 0;
     width: 90%;
     text-align: center;
     line-height: 150%; }
     @media screen and (min-width: 600px) {
-      /* line 150, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+      /* line 150, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
       section p {
         width: 60%; } }
-  /* line 162, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 162, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   section a.link {
     text-align: center;
     margin: 0 auto; }
-  /* line 167, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 167, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   section a.button {
     width: 75%; }
     @media screen and (min-width: 600px) {
-      /* line 167, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+      /* line 167, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
       section a.button {
         width: auto;
         padding: 10px 60px; } }
   @media screen and (min-width: 600px) {
-    /* line 180, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+    /* line 180, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
     section#about header img {
       width: 25%; } }
-  /* line 189, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 189, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   section#codesters header, section#codesters .button {
     background-color: #7ACB76; }
-  /* line 192, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 192, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   section#codesters .button {
     color: #FAFAFA;
     border: none; }
-    /* line 196, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+    /* line 196, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
     section#codesters .button:hover {
       background-color: #57AA53; }
-  /* line 202, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 202, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   section#particular {
     margin-top: 10%; }
-    /* line 205, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+    /* line 205, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
     section#particular header, section#particular .button {
       background-color: #F26A25; }
-    /* line 208, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+    /* line 208, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
     section#particular .button {
       color: #FAFAFA;
       border: none; }
-      /* line 212, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+      /* line 212, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
       section#particular .button:hover {
         background-color: #CD4B09; }
-    @media screen and (min-width: 600px) {
-      /* line 218, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
-      section#particular .content img {
-        transform: scaleX(-1); } }
-  /* line 224, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 218, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   section#tipid {
     margin-top: 10%; }
-    /* line 227, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+    /* line 221, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
     section#tipid header, section#tipid .button {
       background-color: #76C7E0; }
-    /* line 230, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+    /* line 224, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
     section#tipid .button {
       color: #FAFAFA;
       border: none; }
-      /* line 234, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+      /* line 228, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
       section#tipid .button:hover {
         background-color: #55A8C1; }
-    @media screen and (min-width: 600px) {
-      /* line 240, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
-      section#tipid .content img {
-        transform: scaleX(-1); } }
-  /* line 246, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 240, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   section#koit {
     margin-top: 10%; }
-    /* line 249, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+    /* line 243, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
     section#koit header, section#koit .button {
       background-color: #F4BA25; }
-    /* line 253, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+    /* line 247, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
     section#koit .button {
       color: #FAFAFA;
       border: none; }
-      /* line 257, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+      /* line 251, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
       section#koit .button:hover {
         background-color: #D79B03; }
 
-/* line 264, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 258, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
 #menu-footer {
   display: flex;
   justify-content: space-between;
   position: fixed;
   bottom: 0;
   width: 100%; }
-  /* line 271, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 265, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   #menu-footer a {
     margin: 0;
     padding: 1em;
     font-size: 1.1em;
     font-weight: 600; }
 
-/* line 279, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 273, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
 #about-ilus {
-  width: 25%;
+  width: 32%;
   margin: 0 auto; }
+  @media screen and (min-width: 600px) {
+    /* line 273, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
+    #about-ilus {
+      width: 18%; } }
 
-/* line 284, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 282, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
 #atom {
   position: absolute;
   top: -2rem;
@@ -231,12 +227,12 @@ section {
   width: 4rem;
   height: 4rem; }
 
-/* line 292, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 290, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
 #container-logo {
   margin: 0 auto;
   max-width: 65%; }
 
-/* line 297, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 295, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
 #navbar {
   display: flex;
   width: 100%;
@@ -247,28 +243,28 @@ section {
   z-index: 9999;
   opacity: 0;
   height: 3em; }
-  /* line 308, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 306, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   #navbar a {
     float: right;
     display: block;
     color: #EBEFDC;
     padding: 14px;
     text-decoration: none; }
-  /* line 316, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+  /* line 314, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
   #navbar #navbar-icon {
     width: 15%;
     height: auto;
     margin-left: 1em; }
     @media screen and (min-width: 600px) {
-      /* line 316, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+      /* line 314, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
       #navbar #navbar-icon {
         width: 10%; } }
     @media screen and (min-width: 900px) {
-      /* line 316, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+      /* line 314, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
       #navbar #navbar-icon {
         width: 5%; } }
 
-/* line 331, /Users/kapitanpattimura/Development/Sama Sama Studios/samasama-studios.github.io/css/style.scss */
+/* line 329, /Users/juanmanuelynz/Creative Cloud Files/Sama Sama/samasama-studios.github.io/css/style.scss */
 footer {
   font-family: 'Inter', helvetica, sans-serif;
   font-size: 12px;
