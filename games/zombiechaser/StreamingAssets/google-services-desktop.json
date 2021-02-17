@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "146994075553",
+    "project_id": "zombie-chaser",
+    "storage_bucket": "zombie-chaser.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146994075553:android:7acb63dec7383215365de0",
+        "android_client_info": {
+          "package_name": "club.codesters.zombiechaser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "146994075553-b9kn07aq2hapmf7n3i8n359githltae6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsT3kp3nmivpA1gmCIiUA-sUUkimGN1FQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "146994075553-b9kn07aq2hapmf7n3i8n359githltae6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
