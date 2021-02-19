@@ -236,7 +236,7 @@ section {
 
 .wrapper {
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 100vh;
     width: 100vw;
@@ -246,7 +246,7 @@ section {
     .col {
         display: flex;
         flex-direction: column;
-        justify-content: space-around;        
+        justify-content: space-between;        
         
         &.left {
            width: 90%;
@@ -378,7 +378,7 @@ section {
         cursor: pointer;
         position: absolute;
         width: auto;
-        padding: 0 16px;
+        padding: 16px;
         user-select: none;
 
         &:hover {      
@@ -406,13 +406,14 @@ section {
 
     .prev {
         left: 0;
+        
         &:hover {
             transform: translateX(-1vw);
         }
     }
 
     .next {
-      right: 0;
+        right: 0;
 
         &:hover {
             transform: translateX(1vw);
@@ -421,8 +422,7 @@ section {
 }
 
 .project {
-    display: none;
-    
+    display: none;    
     
     p {
         margin: 0 auto 5vh;
@@ -438,9 +438,15 @@ section {
         @media screen and (min-width: 600px) {
             font-size: 21px;  
         }
-    }
+    }    
     
     &#codesters {
+        height: 108vh;
+        
+        @media screen and (min-width: 600px) {
+            height: 100vh;
+        }
+        
         .button {
             background-color: $color-green;
             color: $color-white;
