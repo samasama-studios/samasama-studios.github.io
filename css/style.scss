@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap');
 
 $color-whiteMana: #EBEFDC;
 $color-orange: #F26A25;
@@ -15,7 +15,7 @@ $color-yellow: #F4BA25;
 
 body {
     width: 100%;
-    height: 100vh;
+    //height: 100vh;
     margin: 0;
     padding: 0;    
     background: url('../assets/dust_scratches.png') repeat;
@@ -27,14 +27,57 @@ body {
     }
 }
 
+h1 {
+    
+}
+
+h2 {
+    font-family: 'Noto Serif', serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 63px;
+    text-align: center;
+    letter-spacing: -0.01em;
+    color: $color-black;
+    
+    @media screen and (min-width: 600px) {
+        font-size: 48px;
+    }
+}
+
+h3 {
+    font-family: 'Inter', Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 21px;
+    line-height: 40px;
+    text-align: center;
+    letter-spacing: -0.01em;
+    color: $color-black;
+    margin: 5vh 0 10vh;
+    
+    @media screen and (min-width: 600px) {        
+        margin: 5vh 0 10vh;
+        font-size: 24px;
+    }
+}
+
 svg {
     width: 100%;
     height: 100%;
 }
 
-a, p {
+a, p, button, .button {
     color: $color-black;
     font-family: 'Inter', Helvetica, sans-serif;
+    font-size: 18px;
+}
+
+p {
+    text-align: center;
+    line-height: 150%;
+    letter-spacing: -0.01em;
 }
 
 a {    
@@ -50,10 +93,19 @@ a {
         height: 2px;
         background-color: $color-black;
     }
+    
+    &:focus {
+        box-shadow: rgba(12, 151, 139, .3) 0px 0px 0px 4px;
+        outline: 0px;
+        -webkit-transition: all 300ms ease-out;
+        -moz-transition: all 300ms ease-out;
+        -o-transition: all 300ms ease-out;
+        transition: all 300ms ease-out;
+    }
 
 }
 
-.button {
+.button, button {
     cursor: pointer;
     text-decoration: none;
     text-align: center;
@@ -63,8 +115,7 @@ a {
     border-radius: 4px;
     color: $color-black;
     cursor: pointer;
-    letter-spacing: 0.05em;
-    padding: 10px;
+    letter-spacing: 0.05em;  
     
     &:hover {
         color: $color-whiteMana;
@@ -84,212 +135,29 @@ a {
         transition: all 300ms ease-out;
     }
     
-    &.desktop {
-        display: none;
-    }
-}
+    width: 75%;
+    padding: 10px;
 
-section {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    
-    .content {
-        height: 70%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        
-        @media screen and (min-width: 600px) {
-            height: 50%;
-            flex-direction: row;
-            padding: 0 4em 0 2em;
-            margin-top: 2em;
-            
-            div {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
-            
-            .button.mobile {
-                display: none;
-            }
-            
-            .button.desktop {
-                display: block;
-                margin-top: 2em;
-            }
-            
-            p {
-                width: 70%;
-            }            
-        }
-    }
-    
-    header {        
-        height: 22%;
-        display: flex;
-        
-        img {
-            display: block;  
-            width: 70%;
-            margin: 0 auto;
-            
-            &.logo {
-                width: 50%;
-            }
-                    
-            @media screen and (min-width: 600px) {
-                width: 20%;
-            }
-        }
-    }
-    
-    p {
-        margin: 8px auto 0;
-        width: 90%;
-        text-align: center;
-        line-height: 150%;
-        
-        @media screen and (min-width: 600px) {
-            width: 60%;
-        }
-    }
-    
-    a {
-        &.link {
-            text-align: center;
-            margin: 0 auto;
-        }
-        
-        &.button {
-            width: 75%;  
-
-            @media screen and (min-width: 600px) {
-                width: auto;
-                padding: 10px 60px;
-            }
-        }   
-    }
-    
-    &#about {
-        header {
-            @media screen and (min-width: 600px) {
-                img {
-                    width: 25%;
-                }
-            }
-        }
-        
-    }
-    
-    &#codesters {        
-        header, .button {
-            background-color: $color-green;
-        }
-        .button {
-            color: $color-white;
-            border: none;
-            
-            &:hover {
-                background-color: #57AA53;
-            }
-        }
-    }
-    
-    &#particular {
-        margin-top: 10%;
-        
-        header, .button {
-            background-color: $color-orange;
-        }
-        .button {
-            color: $color-white;
-            border: none;
-            
-            &:hover {
-                background-color: #CD4B09;                
-            }
-        }
-    }
-    
-    &#tipid {
-        margin-top: 10%;
-        
-        header, .button {
-            background-color: $color-tipid;            
-        }
-        .button {
-            color: $color-white;
-            border: none;
-            
-            &:hover {
-                background-color: #55A8C1;
-            }
-        }
-        
-//        @media screen and (min-width: 600px) {
-//            .content img {
-//                transform: scaleX(-1);
-//            }
-//        }
-    }
-    
-    &#koit {
-        margin-top: 10%;
-        
-        header, .button {
-            background-color: $color-yellow;
-        }
-        
-        .button {
-            color: $color-white;
-            border: none;
-            
-            &:hover {
-                background-color: #D79B03;
-            }
-        }
-    }
-}
-
-#menu-footer {
-    display: flex;
-    justify-content: space-between;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    
-    a {
-        margin: 0;
-        padding: 1em;
-        font-size: 1.1em;
-        font-weight: 600;
-    }
-}
-
-#about-ilus {
-    width: 32%;
-    margin: 0 auto;
-    
     @media screen and (min-width: 600px) {
-        width: 18%;
+        width: auto;
+        padding: 10px 40px;
     }
 }
 
-#atom {    
-    position: absolute;
-    top: -2rem;
-    left: -2rem;
-    width: 4rem;
-    height: 4rem;    
-}
-
-#container-logo {    
-    margin: 0 auto;
-    max-width: 65%;
+header {
+    display: flex;
+    justify-content: center;
+    
+    img {  
+        width: 55vw;
+        
+        @media screen and (min-width: 430px) and (max-width: 1024px) {
+            width: 25vw;
+        }
+        @media screen and (min-width: 1025px) {
+            width: 20vw;
+        }
+    }
 }
 
 #navbar {
@@ -297,18 +165,17 @@ section {
     width: 100%;
     position: fixed;
     justify-content: space-between;
-    overflow: hidden;
-    background-color: $color-black;
+    
+    background: rgba( 235, 239, 220, 0.20 );
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    
     z-index: 9999;
     opacity: 0;
     height: 3em;
     
     a {
-        float: right;
-        display: block;
-        color: $color-whiteMana;
         padding: 14px;
-        text-decoration: none;
     }
     
     #navbar-icon {
@@ -331,4 +198,282 @@ footer {
     font-size: 12px;
     text-align: center;
     padding: 10px;
+    margin-top: 10vw;
+    
+    @media screen and (min-width: 600px) {
+        margin-top: 0;
+    }
+}
+
+section {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    
+    p {
+        margin: 8px auto 0;
+        width: 90%;
+        
+        @media screen and (min-width: 600px) {
+            width: 60%;
+        }
+    }
+    
+    a {
+        &.link {
+            text-align: center;
+            margin: 0 auto;
+        }       
+    }
+}
+
+
+.projectWrapper {  
+  position: relative;  
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 5vh;
+    
+    @media screen and (min-width: 600px) {
+        height: 90vh;
+        display: flex;
+        align-items: center;
+    }
+    
+    .bkg {
+        opacity: .18;
+        width: 604px;
+        height: auto;                
+        position: absolute;
+        top: -5vh;
+        z-index: -10;
+
+        @media screen and (min-width: 600px) {
+            width: 954px;
+            height: 824px;
+            left: -13vw;
+            top: 0;
+        }
+        @media screen and (min-width: 1025px) and (max-width: 1280px) {
+            left: -23vw;
+        }
+        @media screen and (min-width: 769px) and (max-width: 1024px) {
+            left: -33vw;
+        }
+        @media screen and (max-width: 768px) {
+            left: -70vw;
+        }
+    }
+    
+    /* Next & previous buttons */
+    .prev, .next {
+        background: transparent;
+        border: none;
+        margin: 0;        
+
+        cursor: pointer;
+        position: absolute;
+        width: auto;
+        padding: 16px;
+        user-select: none;
+
+        &:hover {      
+            background: transparent;
+
+            -webkit-transition: all 250ms ease-out;
+            -moz-transition: all 250ms ease-out;
+            -o-transition: all 250ms ease-out;
+            transition: all 250ms ease-out;        
+        }
+
+        img {
+            width: 30px;
+            height: auto;
+        }
+        
+        @media screen and (min-width: 600px) {
+            margin: 16px;
+            
+            img {
+                width: 40px;
+            }
+        }
+    }
+
+    .prev {
+        &:hover {
+            transform: translateX(-1vw);
+        }
+    }
+
+    .next {
+      right: 0;
+
+        &:hover {
+            transform: translateX(1vw);
+        }
+    }
+}
+
+.project {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 100vw;
+    
+    .col {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;        
+        
+        &.left {
+           width: 90%;
+           position: relative;
+            
+            h2 {
+                 margin-top: 0;
+            }
+        }
+        &.right {
+            width: 90%;
+            justify-content: flex-end;
+        }
+    }
+    
+    p {
+        margin: 0 auto 5vh;
+        width: 90%;
+        
+        @media screen and (min-width: 600px) {
+            width: 60%;
+            font-size: 21px;  
+        }
+    }
+    
+    a {
+        @media screen and (min-width: 600px) {
+            font-size: 21px;  
+        }
+    }
+    
+    .ilus {
+        width: auto;        
+        
+        @media screen and (min-width: 600px) {
+            height: 100vh;
+        }
+    }
+    
+    @media screen and (min-width: 600px) {
+        flex-direction: row;
+        justify-content: space-between;
+        
+        .col {
+            &.left {
+               width: 54%;
+                
+                h2 {                    
+                     margin-top: 0;
+                }
+            }
+             &.right {
+                width: 36%;
+                margin-right: 5%;
+            }   
+        }
+    }
+    
+    &#codesters {
+        .button {
+            background-color: $color-green;
+            color: $color-white;
+            border: none;
+            
+            &:hover {
+                background-color: #57AA53;
+            }
+        }
+    }
+    
+    &#particular {
+        .button {
+            background-color: $color-orange;
+            color: $color-white;
+            border: none;
+            
+            &:hover {
+                background-color: #CD4B09;                
+            }
+        }
+    }
+    
+    &#tipid {
+        .button {
+            background-color: $color-tipid;
+            color: $color-white;
+            border: none;
+            
+            &:hover {
+                background-color: #55A8C1;
+            }
+        }
+    }
+    
+    &#koit {
+        .button {
+            background-color: $color-yellow;
+            color: $color-white;
+            border: none;
+            
+            &:hover {
+                background-color: #D79B03;
+            }
+        }
+    }
+    
+}
+
+
+#about-ilus {
+    width: 32vw;
+    margin: 0 auto;
+    
+    @media screen and (min-width: 600px) {
+        width: 10vw;
+    }
+}
+
+#atom {    
+    position: absolute;
+    top: -2rem;
+    left: -2rem;
+    width: 4rem;
+    height: 4rem;    
+}
+
+#container-logo {    
+    margin: 0 auto;
+    max-width: 65%;
+}
+
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
 }

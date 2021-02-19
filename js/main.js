@@ -26,31 +26,37 @@ $(document).ready(function() {
                 opacity: 0,
                 duration: 500
             });
+            anime({
+                targets: '#navbar-icon .atom',
+                stroke: '#F26A25',
+                easing: 'easeInCirc',
+                duration: 200
+            });
         }       
         
-        // Calculate current section.
-        $("section").each(function() {            
-            var sectionBottom = $(this).offset().top + $(this).outerHeight(true);
-            var sectionHeader = $(this).find("header");           
-            
-            if (navbarBottom >= $(sectionHeader).offset().top && window.pageYOffset < sectionBottom) {
-                currentSection = $(this);
-                return false;
-            }
-        });
-        
-        // Little hack for about section without color.
-        var sectionColor = $(currentSection).find("header").css("background-color");
-        if (sectionColor == "rgba(0, 0, 0, 0)") {
-            sectionColor = "#10100F";
-        }
-        
-        // Apply current section color.
-        anime({
-            targets: "#navbar",
-            backgroundColor: sectionColor, 
-            duration: 500
-        });
+//        // Calculate current section.
+//        $("section").each(function() {            
+//            var sectionBottom = $(this).offset().top + $(this).outerHeight(true);
+//            var sectionHeader = $(this).find("header");           
+//            
+//            if (navbarBottom >= $(sectionHeader).offset().top && window.pageYOffset < sectionBottom) {
+//                currentSection = $(this);
+//                return false;
+//            }
+//        });
+//        
+//        // Little hack for about section without color.
+//        var sectionColor = $(currentSection).find("header").css("background-color");
+//        if (sectionColor == "rgba(0, 0, 0, 0)") {
+//            sectionColor = "#10100F";
+//        }
+//        
+//        // Apply current section color.
+//        anime({
+//            targets: "#navbar",
+//            backgroundColor: sectionColor, 
+//            duration: 500
+//        });
     }    
     
     $(document).on('click', 'a[href^="#"]', function (event) {
@@ -91,7 +97,7 @@ $(document).ready(function() {
     let workLinks = document.querySelectorAll(".link");
     
     workLinks.forEach(activateLinks);
-        
+
     function activateLinks(link, index, value) {
         
         link.addEventListener("mouseenter", function(e) {
@@ -105,5 +111,6 @@ $(document).ready(function() {
 /////////////////////////////////////////////////////////////////////
 ////////////////////  - link underline effect  //////////////////////
 /////////////////////////////////////////////////////////////////////
-    
+   
+
 });
