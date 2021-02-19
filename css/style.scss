@@ -148,6 +148,7 @@ a {
 header {
     display: flex;
     justify-content: center;
+    max-height: 100px;
     
     img {  
         width: 55vw;
@@ -158,6 +159,10 @@ header {
         @media screen and (min-width: 1025px) {
             width: 20vw;
         }
+    }
+    
+    @media screen and (min-width: 600px) {
+        max-height: 150px;
     }
 }
 
@@ -308,7 +313,7 @@ section {
             left: -33vw;
         }
         @media screen and (max-width: 768px) {
-            left: -70vw;
+            left: -90vw;
         }
     }
     
@@ -373,7 +378,7 @@ section {
         cursor: pointer;
         position: absolute;
         width: auto;
-        padding: 16px;
+        padding: 0 16px;
         user-select: none;
 
         &:hover {      
@@ -400,6 +405,7 @@ section {
     }
 
     .prev {
+        left: 0;
         &:hover {
             transform: translateX(-1vw);
         }
