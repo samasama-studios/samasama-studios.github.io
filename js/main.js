@@ -1,62 +1,65 @@
 $(document).ready(function() {
     
-    var firstSection = $("#about");
-    var firstSectionHeaderTop = $(firstSection).find("header").offset().top;
-    var firstSectionHeaderBottom = firstSectionHeaderTop + $(firstSection).find("header").outerHeight();
-    var currentSection = firstSection;
-    var navbar = $("#navbar");    
-    
-    window.onscroll = function() {
-        updateSticky();
-    };    
-    
-    function updateSticky() {
-        var navbarBottom = window.pageYOffset + $(navbar).outerHeight();
-        
-        // Show/hide the navbar.
-        if (firstSectionHeaderBottom <= window.pageYOffset) {
-            anime({
-                targets: "#navbar",
-                opacity: 1,
-                duration: 500
-            });
-        } else {
-            anime({
-                targets: "#navbar",
-                opacity: 0,
-                duration: 500
-            });
-            anime({
-                targets: '#navbar-icon .atom',
-                stroke: '#F26A25',
-                easing: 'easeInCirc',
-                duration: 200
-            });
-        }       
-        
-//        // Calculate current section.
-//        $("section").each(function() {            
-//            var sectionBottom = $(this).offset().top + $(this).outerHeight(true);
-//            var sectionHeader = $(this).find("header");           
-//            
-//            if (navbarBottom >= $(sectionHeader).offset().top && window.pageYOffset < sectionBottom) {
-//                currentSection = $(this);
-//                return false;
-//            }
-//        });
-//        
-//        // Little hack for about section without color.
-//        var sectionColor = $(currentSection).find("header").css("background-color");
-//        if (sectionColor == "rgba(0, 0, 0, 0)") {
-//            sectionColor = "#10100F";
-//        }
-//        
-//        // Apply current section color.
-//        anime({
-//            targets: "#navbar",
-//            backgroundColor: sectionColor, 
-//            duration: 500
-//        });
+    if (location.pathname != "/contact.html") {
+        var firstSection = $(".first");
+        var firstSectionHeaderTop = $(firstSection).find("header").offset().top;
+        var firstSectionHeaderBottom = firstSectionHeaderTop + $(firstSection).find("header").outerHeight();
+        var currentSection = firstSection;
+        var navbar = $("#navbar");    
+
+        window.onscroll = function() {
+            updateSticky();
+        };    
+
+        function updateSticky() {
+            var navbarBottom = window.pageYOffset + $(navbar).outerHeight();
+
+            // Show/hide the navbar.
+            if (firstSectionHeaderBottom <= window.pageYOffset) {
+                anime({
+                    targets: "#navbar",
+                    opacity: 1,
+                    duration: 500
+                });
+            } else {
+                anime({
+                    targets: "#navbar",
+                    opacity: 0,
+                    duration: 500
+                });
+
+                anime({
+                    targets: '#navbar-icon .atom',
+                    stroke: '#F26A25',
+                    easing: 'easeInCirc',
+                    duration: 100
+                });
+            }       
+
+    //        // Calculate current section.
+    //        $("section").each(function() {            
+    //            var sectionBottom = $(this).offset().top + $(this).outerHeight(true);
+    //            var sectionHeader = $(this).find("header");           
+    //            
+    //            if (navbarBottom >= $(sectionHeader).offset().top && window.pageYOffset < sectionBottom) {
+    //                currentSection = $(this);
+    //                return false;
+    //            }
+    //        });
+    //        
+    //        // Little hack for about section without color.
+    //        var sectionColor = $(currentSection).find("header").css("background-color");
+    //        if (sectionColor == "rgba(0, 0, 0, 0)") {
+    //            sectionColor = "#10100F";
+    //        }
+    //        
+    //        // Apply current section color.
+    //        anime({
+    //            targets: "#navbar",
+    //            backgroundColor: sectionColor, 
+    //            duration: 500
+    //        });
+        }
     }    
     
     $(document).on('click', 'a[href^="#"]', function (event) {
