@@ -9,23 +9,26 @@ $(document).ready(function() {
 
         window.onscroll = function() {
             updateSticky();
+            
+//            console.log(currentSection);
         };    
 
         function updateSticky() {
             var navbarBottom = window.pageYOffset + $(navbar).outerHeight();
 
-            // Show/hide the navbar.
+            // Show/hide the navbar icon
             if (firstSectionHeaderBottom <= window.pageYOffset) {
                 anime({
-                    targets: "#navbar",
+                    targets: "#navbar-icon",
                     opacity: 1,
-                    duration: 500
+                    duration: 300
                 });
+                
             } else {
                 anime({
-                    targets: "#navbar",
+                    targets: "#navbar-icon",
                     opacity: 0,
-                    duration: 500
+                    duration: 300
                 });
 
                 anime({
@@ -34,32 +37,20 @@ $(document).ready(function() {
                     easing: 'easeInCirc',
                     duration: 100
                 });
-            }       
-
-    //        // Calculate current section.
-    //        $("section").each(function() {            
-    //            var sectionBottom = $(this).offset().top + $(this).outerHeight(true);
-    //            var sectionHeader = $(this).find("header");           
-    //            
-    //            if (navbarBottom >= $(sectionHeader).offset().top && window.pageYOffset < sectionBottom) {
-    //                currentSection = $(this);
-    //                return false;
-    //            }
-    //        });
-    //        
-    //        // Little hack for about section without color.
-    //        var sectionColor = $(currentSection).find("header").css("background-color");
-    //        if (sectionColor == "rgba(0, 0, 0, 0)") {
-    //            sectionColor = "#10100F";
-    //        }
-    //        
-    //        // Apply current section color.
-    //        anime({
-    //            targets: "#navbar",
-    //            backgroundColor: sectionColor, 
-    //            duration: 500
-    //        });
+            }
+            
+            //Calculate current section.
+//            $("section").each(function() {            
+//                var sectionBottom = $(this).offset().top + $(this).outerHeight(true);
+//                var sectionHeader = $(this).find(".mark");           
+//
+//                if (navbarBottom >= $(sectionHeader).offset().top && window.pageYOffset < sectionBottom) {
+//                    currentSection = $(this);
+//                    return false;
+//                }
+//            });
         }
+        
     }    
     
     $(document).on('click', 'a[href^="#"]', function (event) {

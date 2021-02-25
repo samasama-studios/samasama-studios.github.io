@@ -48,7 +48,7 @@ h2 {
 }
 
 h3 {
-    font-family: 'Inter', Helvetica, sans-serif;
+    font-family: 'Noto Serif', serif;
     font-style: normal;
     font-weight: bold;
     font-size: 21px;
@@ -56,10 +56,10 @@ h3 {
     text-align: center;
     letter-spacing: -0.01em;
     color: $color-black;
-    margin: 5vh 0 10vh;
+    margin: 5vh 0;
     
     @media screen and (min-width: 600px) {        
-        margin: 5vh 0 10vh;
+        margin: 5vh 0 2vh;
         font-size: 24px;
     }
 }
@@ -79,6 +79,13 @@ p {
     text-align: center;
     line-height: 150%;
     letter-spacing: -0.01em;
+    
+    &.big {
+       font-size: 21px;
+    }
+    &.xbig {
+       font-size: 24px;
+    }
 }
 
 a {    
@@ -154,10 +161,10 @@ header {
         width: 55vw;
         
         @media screen and (min-width: 430px) and (max-width: 1024px) {
-            width: 25vw;
+            width: 35vw;
         }
         @media screen and (min-width: 1025px) {
-            width: 20vw;
+            width: 30vw;
         }
     }
     
@@ -177,17 +184,18 @@ header {
     -webkit-backdrop-filter: blur(6px);
     
     z-index: 9999;
-    opacity: 0;
+    opacity: 1;
     height: 3em;
     
     a {
-        padding: 14px;
+        padding: 16px 32px;
     }
     
     #navbar-icon {
         width: 15%;
         height: auto;
         margin-left: 1em;
+        opacity: 0;
         
         @media screen and (min-width: 600px) {
             width: 10%;
@@ -216,9 +224,14 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    position: relative;
+    
+    .mark {
+        position: absolute;
+    }
     
     p {
-        margin: 8px auto 0;
+        margin: 0 auto 0;
         width: 90%;
         
         @media screen and (min-width: 600px) {
@@ -231,6 +244,23 @@ section {
             text-align: center;
             margin: 0 auto;
         }       
+    }
+    
+    &.hero {
+        p {
+            width: 36%;
+        }
+    }
+    
+    &.about {
+        p {
+            width: 45%;
+        }
+    }
+    
+    &.cta {
+        height: 60vh;
+        justify-content: center;
     }
 }
 
@@ -358,7 +388,6 @@ section {
 }
 
 .projectWrapper {  
-  position: relative;  
     display: flex;
     align-items: flex-start;
     margin-bottom: 5vh;
