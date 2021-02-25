@@ -249,6 +249,10 @@ section {
     &.cta {
         height: 50vh;
         justify-content: center;
+        
+        @media screen and (min-width: 600px) {
+            height: 60vh;
+        }
     }
     
     @media screen and (min-width: 600px) {
@@ -327,7 +331,7 @@ section {
     }
 }
 
-.project {
+.project, .wrapper {
     display: none;  
     flex-direction: column;
     justify-content: flex-start;
@@ -491,13 +495,14 @@ section {
             right: -42vw;
         }
         @media screen and (max-width: 768px) {
-            right: -74vw;
+            right: -81vw;
         }
     }
         
 }
 
 #contact {
+    display: flex;
     padding-top: 13vh;
     height: auto;
     
