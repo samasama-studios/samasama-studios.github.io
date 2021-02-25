@@ -246,21 +246,23 @@ section {
         }       
     }
     
-    &.hero {
-        p {
-            width: 36%;
-        }
-    }
-    
-    &.about {
-        p {
-            width: 45%;
-        }
-    }
-    
     &.cta {
         height: 60vh;
         justify-content: center;
+    }
+    
+    @media screen and (min-width: 600px) {
+        &.hero {
+            p {
+                width: 36%;
+            }
+        }
+
+        &.about {
+            p {
+                width: 45%;
+            }
+        }
     }
 }
 
