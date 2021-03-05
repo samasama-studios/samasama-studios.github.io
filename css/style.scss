@@ -2,7 +2,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap');
 
-$color-whiteMana: #EBEFDC;
+$color-whiteMana: #EFF0EB; //#EBEFDC
 $color-orange: #F26A25;
 $color-green: #7ACB76;
 $color-blue: #10314C;
@@ -179,7 +179,8 @@ header {
     position: fixed;
     justify-content: space-between;
     
-    background: rgba( 235, 239, 220, 0.20 );
+    background: none;
+//    background: rgba(235, 239, 220, 0.2);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     

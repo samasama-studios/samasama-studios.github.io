@@ -23,12 +23,23 @@ $(document).ready(function() {
                     opacity: 1,
                     duration: 300
                 });
+                anime({
+                    targets: "#navbar",
+                    background: 'rgba( 239, 240, 235, 0.20)',
+                    duration: 250
+                });
                 
             } else {
                 anime({
+                    targets: "#navbar",
+                    background: 'none',
+                    duration: 200
+                });
+                
+                anime({
                     targets: "#navbar-icon",
                     opacity: 0,
-                    duration: 300
+                    duration: 250
                 });
 
                 anime({
@@ -36,7 +47,7 @@ $(document).ready(function() {
                     stroke: '#F26A25',
                     easing: 'easeInCirc',
                     duration: 100
-                });
+                });               
             }
             
             //Calculate current section.
