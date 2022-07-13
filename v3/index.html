@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sama Sama Studios</title>
+        <link rel="icon" type="type/svg+xml" href="./assets/atom.svg">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/style.css" />        
+
+         <!-- This is Vue -->
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="app">
+            <!-- <div id="navbar">
+                <svg id="navbar-icon" width="640" height="215" viewBox="0 0 640 215" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M200.1 44.3C95.5 -20.2 10.5 40.4 10.5 115.1C10.5 168.7 32.8 204.4 113.1 204.4C199.6 204.4 309.9 103.2 309.9 103.2C309.9 103.2 424.4 9 514.4 9C604.4 9 628.5 67.6 628.5 106.7C628.5 143.7 599.6 221.2 485.3 187.7" stroke="#10100F" stroke-width="23" stroke-miterlimit="10" stroke-linecap="round"/>
+                    <path class="atom" d="M394 119.9C386.1 121.6 371.1 131.2 367.8 141.1C364.6 150.6 360.6 162.6 369.9 171.7C378.4 180 389.5 181.6 400.3 178.2C414.2 173.9 425.2 167.5 431.5 154.9C438.2 141.2 432.8 132.7 416 122.2C413 120.3 402.9 117.9 394 119.9Z" stroke="#F16142" stroke-width="23" stroke-miterlimit="10"/>
+                </svg>
+            </div> -->
+            <section class="hero">
+                <div class="col center">
+                    <img class="logo" src="assets/logo_sama_no_text_white.svg"/>
+                    <h2>The studio is open</h2>
+                    <p class="">From digital to phsysical, come and meet a space to turn ideas into reality.</p>
+                    <a href="#" target="_blank" class="button">Book now!</a>
+                </div>      
+            </section>
+            
+            <section class="studio">
+                <div class="col left text">
+                    <div class="heading">
+                        <h5>The dream came true</h5>
+                        <h2>Meet the space</h2>
+                    </div>
+                    <p class="">After years of dreams and ideation, we’ve just opened a new space in the heart of Viljandi, Estonia. A versatile studio and the perfect place to create, develop and present your next idea. 
+                        <br><br>
+                        Set-up the space depending on your needs. Clear the space for concerts, gatherings or yoga lessons. Chill down your event with couches and open bar. 
+                        <br><br>
+                        Music and audio equipment available for renting. 
+                    </p>
+                    <a href="#" target="_blank" class="button">Book an event</a>
+                </div>            
+                <div class="col right gallery">
+                    <img class="cover" :src="currentGalleryItem"/>
+                        <button class="arrow prev" @click="showGallery(-1)"><img src="assets/icons/leftArrow.svg"/></button>
+                        <button class="arrow next" @click="showGallery(1)"><img src="assets/icons/rightArrow.svg"/></button>
+                </div>
+            </section>
+            
+            <section class="digi color">
+                <div class="col justified text">
+                    <div class="heading">
+                        <h5>Born digital</h5>
+                        <h2>Sama Sama also creates digital products</h2>
+                    </div>                    
+                    <p class="">We support projects with positive impact in the World. 
+                        <br><br>
+                        +15 years of experience ideating, designing and developing videogames & digital products. 
+                        <br>
+                        +5 years of experience creating content and mentoring youngsters in the process of digital product development.
+                        <br><br>
+                        Check out our top projects.
+                    </p>
+                    <a href="#" target="_blank" class="button">Let’s work together</a>
+                </div>            
+            </section>
+            
+            <section class="portfolio">
+                <!-- <div class="project" v-for="item in projects"> -->
+                    <div class="col left gallery">
+                        <img class="cover" :src="currentProject.image"/>
+                        <button class="arrow prev" @click="showProject(-1)"><img src="assets/icons/leftArrow.svg"/></button>
+                        <button class="arrow next" @click="showProject(1)"><img src="assets/icons/rightArrow.svg"/></button>
+                    </div>
+                    <div class="col right text">
+                        <div class="heading">
+                            <h5>{{ currentProject.subtitle }}</h5>
+                            <h2>{{ currentProject.title }}</h2>
+                        </div>
+                        <p>
+                            {{ currentProject.body }}
+                        </p>
+                        <a :href="currentProject.url" target="_blank" class="button">{{ currentProject.buttonLabel }}</a>
+                    </div>
+                <!-- </div> -->
+
+            </section>
+
+            <section class="cta">
+            <img src="/assets/ilus_samaTower.svg"/>
+            </section>
+            
+                
+            <footer>
+                <img class="logo full" src="assets/logo_sama.svg"/>
+                <div class="locations">
+                    <div class="">
+                        <p>C.R. Jackobsoni 18<br>Viljandi, Estonia<br>🇪🇪</p>
+                    </div>
+                    <div class="">
+                        <p>De las Margaritas 6195<br>Ciudad Jardín, Argentina<br>🇦🇷</p>
+                    </div>
+                </div>
+                <span class="copyright">Copyright &copy; 2022, with love by Sama Sama</span>
+            </footer>
+        
+        </div>
+
+        <script src="/js/anime.min.js"></script>
+        <script type="module" src="/js/script.js"></script>   
+    </body>    
+</html>
