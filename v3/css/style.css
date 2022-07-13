@@ -375,7 +375,6 @@ section .col.gallery img.cover {
   section .col.gallery img.cover {
     width: auto;
     height: 90vh;
-    margin: 0 -5%;
   }
 }
 
