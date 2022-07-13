@@ -29,7 +29,7 @@ const VueApp = {
                 {                    
                     image: '/v3/assets/portfolio/codesters.jpg',
                     title: 'codesters.club',
-                    subtitle: 'Content creation & Mentoring',
+                    subtitle: 'Product & Mentoring',
                     body: 'An initiative to mentor high school students to build digital products, started and supported by the Riesenkampff Foundation.\n\nStudents are ideating, desgining and prototyping their own ideas and we guide them through the process.',
                     buttonLabel: 'Join the club',
                     color: '',
