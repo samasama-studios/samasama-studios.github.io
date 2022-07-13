@@ -56,7 +56,7 @@ const VueApp = {
                 {                    
                     image: '/v3/assets/portfolio/koidumaja.jpg',
                     title: 'Koidumaja',
-                    subtitle: 'Giving back to the community',
+                    subtitle: 'Art & Community',
                     body: 'An artistic center, theater & art residencies provider, in Viljandi ― the heart of the cultural movement in Estonia.\n\nSama Sama as part of the cooperative, organise events, assists the residencies & gives support with digital developments.',
                     buttonLabel: 'Check what’s happening',
                     color: '',
