@@ -39,7 +39,7 @@ const VueApp = {
                     image: '/v3/assets/portfolio/algoparticular.jpg',
                     title: 'algo.particular',
                     subtitle: 'Illustration & purpose',
-                    body: 'A minimalistic comic that reflects philosophical and spiritual situations &amp; concepts from our daily lives.\n\nIt shares a perspective from an old truth: we are all the same, we are all one and we are (not from) here.',
+                    body: 'A minimalistic comic that reflects philosophical and spiritual situations & concepts from our daily lives.\n\nIt shares a perspective from an old truth: we are all the same, we are all one and we are (not from) here.',
                     buttonLabel: 'Navigate the Universe',
                     color: '',
                     url: 'https://algoparticular.com'
