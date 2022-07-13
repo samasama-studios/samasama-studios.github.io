@@ -349,7 +349,7 @@ section {
 }
 
 section.hero {
-    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.36)), url('/assets/studio_portrait.jpg');    
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.36)), url('/v3/assets/studio_portrait.jpg');    
     background-size: cover;
     
     height: 90vh;
@@ -370,7 +370,7 @@ section.hero {
     }
 
     @media screen and (min-width: 600px) {
-        background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.36)), url('/assets/studio_landscape.jpg');
+        background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.36)), url('/v3/assets/studio_landscape.jpg');
         
         p {
             width: 70%;
@@ -385,7 +385,7 @@ section.portfolio {
 
 section.color {
     background-color: $color-orange;
-    background-image: url('/assets/atom_bkg_portrait.svg');
+    background-image: url('/v3/assets/atom_bkg_portrait.svg');
     background-size: 90%;
     background-position: 50%; 
     background-repeat: repeat-y;
@@ -413,7 +413,7 @@ section.color {
     }
 
     @media screen and (min-width: 600px) {
-        background-image: url('/assets/atom_bkg_landscape.svg');
+        background-image: url('/v3/assets/atom_bkg_landscape.svg');
     }    
 }
 

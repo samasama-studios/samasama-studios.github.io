@@ -12,8 +12,8 @@ const VueApp = {
             currentGalleryIndex: 0,
             currentGalleryItem: '',
             gallery: [
-                '/assets/portfolio/koidumaja.jpg',
-                '/assets/portfolio/codesters.jpg'
+                '/v3/assets/portfolio/koidumaja.jpg',
+                '/v3/assets/portfolio/codesters.jpg'
             ],
             currentProjectIndex: 0,
             currentProject: {
@@ -27,7 +27,7 @@ const VueApp = {
             },
             projects: [
                 {                    
-                    image: '/assets/portfolio/codesters.jpg',
+                    image: '/v3/assets/portfolio/codesters.jpg',
                     title: 'codesters.club',
                     subtitle: 'Content creation & Mentoring',
                     body: 'An initiative to mentor high school students to build digital products, started and supported by the Riesenkampff Foundation.\n\nStudents are ideating, desgining and prototyping their own ideas and we guide them through the process.',
@@ -36,7 +36,7 @@ const VueApp = {
                     url: 'https://codesters.club'
                 },
                 {                    
-                    image: '/assets/portfolio/algoparticular.jpg',
+                    image: '/v3/assets/portfolio/algoparticular.jpg',
                     title: 'algo.particular',
                     subtitle: 'Illustration & purpose',
                     body: 'A minimalistic comic that reflects philosophical and spiritual situations &amp; concepts from our daily lives.\n\nIt shares a perspective from an old truth: we are all the same, we are all one and we are (not from) here.',
@@ -45,7 +45,7 @@ const VueApp = {
                     url: 'https://algoparticular.com'
                 },
                 {                    
-                    image: '/assets/portfolio/tipid.jpg',
+                    image: '/v3/assets/portfolio/tipid.jpg',
                     title: 'Tipid',
                     subtitle: 'Supporting local projects',
                     body: 'Long-legged cuddly dolls made of 100% recycled materials & filled with wool.\n\nWe’re developing an interactive webshop to create, customize, request and give life to your own TIPI doll.',
@@ -54,7 +54,7 @@ const VueApp = {
                     url: 'https://tipid.ee'
                 },
                 {                    
-                    image: '/assets/portfolio/koidumaja.jpg',
+                    image: '/v3/assets/portfolio/koidumaja.jpg',
                     title: 'Koidumaja',
                     subtitle: 'Giving back to the community',
                     body: 'An artistic center, theater & art residencies provider, in Viljandi ― the heart of the cultural movement in Estonia.\n\nSama Sama as part of the cooperative, organise events, assists the residencies & gives support with digital developments.',

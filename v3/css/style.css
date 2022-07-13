@@ -380,8 +380,8 @@ section .col.gallery img.cover {
 }
 
 section.hero {
-  background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.36)), to(rgba(0, 0, 0, 0.36))), url("/assets/studio_portrait.jpg");
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.36)), url("/assets/studio_portrait.jpg");
+  background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.36)), to(rgba(0, 0, 0, 0.36))), url("/v3/assets/studio_portrait.jpg");
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.36)), url("/v3/assets/studio_portrait.jpg");
   background-size: cover;
   height: 90vh;
   padding: 0 24px;
@@ -403,8 +403,8 @@ section.hero .button {
 
 @media screen and (min-width: 600px) {
   section.hero {
-    background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.36)), to(rgba(0, 0, 0, 0.36))), url("/assets/studio_landscape.jpg");
-    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.36)), url("/assets/studio_landscape.jpg");
+    background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.36)), to(rgba(0, 0, 0, 0.36))), url("/v3/assets/studio_landscape.jpg");
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.36)), url("/v3/assets/studio_landscape.jpg");
   }
   section.hero p {
     width: 70%;
@@ -418,7 +418,7 @@ section.portfolio {
 
 section.color {
   background-color: #F16142;
-  background-image: url("/assets/atom_bkg_portrait.svg");
+  background-image: url("/v3/assets/atom_bkg_portrait.svg");
   background-size: 90%;
   background-position: 50%;
   background-repeat: repeat-y;
@@ -448,7 +448,7 @@ section.color .button:hover {
 
 @media screen and (min-width: 600px) {
   section.color {
-    background-image: url("/assets/atom_bkg_landscape.svg");
+    background-image: url("/v3/assets/atom_bkg_landscape.svg");
   }
 }
 
