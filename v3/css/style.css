@@ -385,6 +385,7 @@ section.hero .logo {
 
 section.hero h2, section.hero p {
   color: #EFF0EB;
+  text-align: center;
 }
 
 section.hero .button {
