@@ -274,7 +274,6 @@ footer span.copyright {
 }
 
 section {
-  padding: 100px 24px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -291,6 +290,11 @@ section {
 section h2, section h5 {
   margin: 0;
   text-align: left;
+}
+
+section .heading img {
+  width: 90px;
+  margin-bottom: 8px;
 }
 
 section p {
@@ -335,7 +339,7 @@ section .col.center p {
 }
 
 section .col.text {
-  padding: 70px 24px;
+  padding: 80px 24px;
 }
 
 section .col.gallery {
@@ -367,7 +371,7 @@ section .col.gallery img.cover {
   }
   section .col.gallery img.cover {
     width: auto;
-    height: 90vh;
+    height: 100vh;
   }
 }
 

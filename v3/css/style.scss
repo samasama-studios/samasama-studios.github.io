@@ -258,7 +258,6 @@ footer {
 }
 
 section {    
-    padding: 100px 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -267,6 +266,13 @@ section {
     h2,h5 {
         margin: 0;
         text-align: left;
+    }
+
+    .heading {
+        img {
+            width: 90px;
+            margin-bottom: 8px;
+        }
     }
     
     p {
@@ -302,7 +308,7 @@ section {
         }
 
         &.text {
-            padding: 70px 24px;
+            padding: 80px 24px;
         }
         
         &.gallery {
@@ -334,7 +340,7 @@ section {
             &.gallery {
                 img.cover {
                     width: auto;
-                    height: 90vh;
+                    height: 100vh;
                     // margin: 0 -5%;
                 }
             }
