@@ -12,8 +12,10 @@ const VueApp = {
             currentGalleryIndex: 0,
             currentGalleryItem: '',
             gallery: [
-                '/v3/assets/portfolio/koidumaja.jpg',
-                '/v3/assets/portfolio/codesters.jpg'
+                '/v3/assets/gallery/0.jpg',
+                '/v3/assets/gallery/1.jpg',
+                '/v3/assets/gallery/2.jpg',
+                '/v3/assets/gallery/3.jpg',
             ],
             currentProjectIndex: 0,
             currentProject: {

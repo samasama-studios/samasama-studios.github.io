@@ -386,7 +386,7 @@ section.portfolio {
 }
 
 section.color {
-    padding: 50px 0;
+    padding: 108px 0;
     background-color: $color-orange;
     background-image: url('/v3/assets/atom_bkg_portrait.svg');
     background-size: 90%;
@@ -410,8 +410,10 @@ section.color {
 
         &:hover {
             color: $color-whiteMana;
-            background: transparent;
+            background: rgba(255,255,255,.09);
             border-color: $color-whiteMana;
+            box-shadow: 0px 0px 4px $color-whiteMana;
+            backdrop-filter: blur(2px);
         }
     }
 
