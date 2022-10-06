@@ -2,7 +2,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap');
 
-$color-whiteMana: #EFF0EB; //#EBEFDC
+$color-notThatWhite: #EFF0EB; //#EBEFDC
 $color-orange: #F16142;
 $color-liquen: #10BAAD;
 $color-white: #FAFAFA;
@@ -22,7 +22,7 @@ body {
     padding: 0;    
     // background: url('../assets/dust_scratches.png') repeat;
     // background-blend-mode: multiply;
-    background-color: $color-whiteMana;
+    background-color: $color-notThatWhite;
     
     &#splash {
         overflow: hidden;
@@ -127,7 +127,7 @@ a {
     // margin: 0 auto;
     background: $color-black;
     border: 1px solid $color-black;
-    border-radius: 8px;
+    border-radius: 13px;
     color: $color-white;
     cursor: pointer;
     letter-spacing: 0.05em;  
@@ -135,7 +135,7 @@ a {
     padding: 12px 5%;
     
     &:hover {
-        color: $color-whiteMana;
+        color: $color-notThatWhite;
         background: $color-orange;
         border-color: $color-orange;
         -webkit-transition: all 250ms ease-out;
@@ -228,7 +228,7 @@ footer {
     }
 
     p, span {
-        color: $color-whiteMana;
+        color: $color-notThatWhite;
     }
 
     .locations {
@@ -313,10 +313,40 @@ section {
         
         &.gallery {
             position: relative;
-            overflow: hidden;
+            overflow: hidden;            
 
-            img.cover {
+            .galleryItem {
+                min-height: 520px;
                 width: 100%;
+                height: 100%;
+
+                background-size: cover;
+                background-repeat: no-repeat;
+
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                padding-bottom: 40px;;
+
+                .caption {
+                    color: $color-notThatWhite;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+
+                    span {
+                        font-family: 'Inter', helvetica, sans-serif;
+                        font-weight: 300;
+                        font-size: 16px;
+                        line-height: 19px;
+                        text-align: center;
+                        letter-spacing: 0.18em;
+                        
+                        &.event {
+                            font-weight: 700;
+                        }
+                    }
+                }
             }
         }
     }
@@ -338,10 +368,12 @@ section {
             }
 
             &.gallery {
-                img.cover {
-                    width: auto;
-                    height: 100vh;
-                    // margin: 0 -5%;
+                .galleryItem {
+                    min-height: 854px;
+
+                    .caption {
+                        flex-direction: row;
+                    }
                 }
             }
         }
@@ -361,18 +393,19 @@ section.hero {
     }
 
     h2, p {
-        color: $color-whiteMana; 
+        color: $color-notThatWhite; 
         text-align: center;       
     }    
 
     .button {
         color: $color-black;
-        background: $color-whiteMana;
-        border-color: $color-whiteMana;
+        background: $color-notThatWhite;
+        border-color: $color-notThatWhite;
     }
 
     @media screen and (min-width: 600px) {
-        background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.36)), url('/v3/assets/studio_landscape.jpg');
+        background: radial-gradient(50% 50% at 50% 50%, rgba(16, 16, 15, 0.56) 42%, rgba(16, 16, 15, 0.09) 75%), url('/v3/assets/studio_landscape.jpg');
+        background-size: cover;
         
         p {
             width: 70%;
@@ -396,7 +429,7 @@ section.color {
     box-shadow: inset 0px 4px 36px rgba(16, 16, 15, 0.18);
 
     h2, p {
-        color: $color-whiteMana;
+        color: $color-notThatWhite;
     }
 
     h5 {
@@ -405,14 +438,14 @@ section.color {
 
     .button {
         color: $color-orange;
-        background: $color-whiteMana;
-        border-color: $color-whiteMana;
+        background: $color-notThatWhite;
+        border-color: $color-notThatWhite;
 
         &:hover {
-            color: $color-whiteMana;
+            color: $color-notThatWhite;
             background: rgba(255,255,255,.09);
-            border-color: $color-whiteMana;
-            box-shadow: 0px 0px 4px $color-whiteMana;
+            border-color: $color-notThatWhite;
+            box-shadow: 0px 0px 4px $color-notThatWhite;
             backdrop-filter: blur(2px);
         }
     }

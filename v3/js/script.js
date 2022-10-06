@@ -12,10 +12,26 @@ const VueApp = {
             currentGalleryIndex: 0,
             currentGalleryItem: '',
             gallery: [
-                '/v3/assets/gallery/0.jpg',
-                '/v3/assets/gallery/1.jpg',
-                '/v3/assets/gallery/2.jpg',
-                '/v3/assets/gallery/3.jpg',
+                {
+                    image: '/v3/assets/gallery/0.jpg',
+                    client: 'GJ & The Evocations',
+                    event: 'live concert'
+                },
+                {
+                    image: '/v3/assets/gallery/1.jpg',
+                    client: 'Comedy Estonia',
+                    event: 'show'
+                },
+                {
+                    image: '/v3/assets/gallery/2.jpg',
+                    client: 'The Crosslegs',
+                    event: 'album recording'
+                },
+                {
+                    image: '/v3/assets/gallery/3.jpg',
+                    client: 'Araukaaria',
+                    event: 'live concert'
+                }
             ],
             currentProjectIndex: 0,
             currentProject: {

@@ -21,8 +21,8 @@
                 <div class="col center">
                     <img class="logo" src="/v3/assets/logo_sama_no_text_white.svg"/>
                     <h2>samasama is open</h2>
-                    <p class="">A space to turn your ideas into reallity.<br>Host your event in the living room of Viljandi.</p>
-                    <a href="#" target="_blank" class="button">Book now!</a>
+                    <p class="">A space to turn your ideas into reallity. Host your event in the living room of Viljandi.</p>
+                    <a href="mailto:jose@samasama.studio" target="_blank" class="button">Book now!</a>
                 </div>      
             </section>
             
@@ -39,12 +39,18 @@
                         <br><br>
                         Music and audio equipment available for renting. 
                     </p>
-                    <a href="#" target="_blank" class="button">Book an event</a>
+                    <a href="mailto:jose@samasama.studio" target="_blank" class="button">Book an event</a>
                 </div>            
-                <div class="col right gallery">
-                    <img class="cover" :src="currentGalleryItem"/>
-                        <button class="arrow prev" @click="showGallery(-1)"><img src="assets/icons/leftArrow.svg"/></button>
-                        <button class="arrow next" @click="showGallery(1)"><img src="assets/icons/rightArrow.svg"/></button>
+                <div class="col right gallery">                    
+                    <div class="galleryItem"  :style="{ backgroundImage: 'url(' + currentGalleryItem.image + ')'}">
+                        <div class="caption">
+                            <span class="client">{{ currentGalleryItem.client }}</span>
+                            <span class="event">{{ currentGalleryItem.event }}</span> 
+                        </div>
+                        <!-- <img class="cover" :src="currentGalleryItem.image"/> -->
+                    </div>
+                    <button class="arrow prev" @click="showGallery(-1)"><img src="assets/icons/leftArrow.svg"/></button>
+                    <button class="arrow next" @click="showGallery(1)"><img src="assets/icons/rightArrow.svg"/></button>
                 </div>
             </section>
             
@@ -62,14 +68,15 @@
                         <br><br>
                         Check out our top projects.
                     </p>
-                    <a href="#" target="_blank" class="button">Let’s work together</a>
+                    <a href="mailto:hello@samasama.studio" target="_blank" class="button">Let’s work together</a>
                 </div>            
             </section>
             
             <section class="portfolio">
                 <!-- <div class="project" v-for="item in projects"> -->
                     <div class="col left gallery">
-                        <img class="cover" :src="currentProject.image"/>
+                        <div class="galleryItem"  :style="{ backgroundImage: 'url(' + currentProject.image + ')'}"></div>
+
                         <button class="arrow prev" @click="showProject(-1)"><img src="assets/icons/leftArrow.svg"/></button>
                         <button class="arrow next" @click="showProject(1)"><img src="assets/icons/rightArrow.svg"/></button>
                     </div>
@@ -101,7 +108,7 @@
                         <p>De las Margaritas 6195<br>Ciudad Jardín, Argentina<br>🇦🇷</p>
                     </div>
                 </div>
-                <span class="copyright">Copyright &copy; 2022, with love by Sama Sama</span>
+                <span class="copyright">&copy; with love by Sama Sama</span>
             </footer>
         
         </div>
