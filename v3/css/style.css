@@ -292,9 +292,20 @@ section h2, section h5 {
   text-align: left;
 }
 
-section .heading img {
+section img {
   width: 90px;
   margin-bottom: 8px;
+}
+
+section .heading {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 4px;
 }
 
 section p {
@@ -411,20 +422,29 @@ section .col.gallery .galleryItem .caption span.event {
   section .col.gallery .galleryItem {
     min-height: 854px;
   }
-  section .col.gallery .galleryItem .caption {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: row;
-            flex-direction: row;
-  }
 }
 
 section.hero {
-  background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.36)), to(rgba(0, 0, 0, 0.36))), url("/v3/assets/studio_portrait.jpg");
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.36)), url("/v3/assets/studio_portrait.jpg");
+  background-image: url("/v3/assets/studio/studio_portrait.jpg");
   background-size: cover;
   height: 90vh;
-  padding: 0 24px;
+  padding: 0 10vw 9vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+section.hero .col {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  width: 330px;
 }
 
 section.hero .logo {
@@ -433,7 +453,7 @@ section.hero .logo {
 
 section.hero h2, section.hero p {
   color: #EFF0EB;
-  text-align: center;
+  text-align: left;
 }
 
 section.hero .button {
@@ -444,11 +464,16 @@ section.hero .button {
 
 @media screen and (min-width: 600px) {
   section.hero {
-    background: radial-gradient(50% 50% at 50% 50%, rgba(16, 16, 15, 0.56) 42%, rgba(16, 16, 15, 0.09) 75%), url("/v3/assets/studio_landscape.jpg");
+    background: url("/v3/assets/studio/studio_landscape.jpg");
     background-size: cover;
+    height: 82vh;
+    padding: 0 10vw 13vh;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
   }
-  section.hero p {
-    width: 70%;
+  section.hero .col {
+    width: 394px;
   }
 }
 
@@ -466,6 +491,10 @@ section.color {
   background-repeat: repeat-y;
   -webkit-box-shadow: inset 0px 4px 36px rgba(16, 16, 15, 0.18);
           box-shadow: inset 0px 4px 36px rgba(16, 16, 15, 0.18);
+}
+
+section.color img {
+  width: 144px;
 }
 
 section.color h2, section.color p {

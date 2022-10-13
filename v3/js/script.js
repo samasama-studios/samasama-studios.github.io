@@ -20,7 +20,7 @@ const VueApp = {
                 {
                     image: '/v3/assets/gallery/1.jpg',
                     client: 'Comedy Estonia',
-                    event: 'show'
+                    event: 'live show'
                 },
                 {
                     image: '/v3/assets/gallery/2.jpg',
@@ -28,9 +28,9 @@ const VueApp = {
                     event: 'album recording'
                 },
                 {
-                    image: '/v3/assets/gallery/3.jpg',
-                    client: 'Araukaaria',
-                    event: 'live concert'
+                    image: '/v3/assets/gallery/4.jpg',
+                    client: 'Marti Tärn & Erki Pärnoja',
+                    event: 'live performance'
                 }
             ],
             currentProjectIndex: 0,
@@ -50,7 +50,7 @@ const VueApp = {
                     subtitle: 'Product & Mentoring',
                     body: 'An initiative to mentor high school students to build digital products, started and supported by the Riesenkampff Foundation.\n\nStudents are ideating, desgining and prototyping their own ideas and we guide them through the process.',
                     buttonLabel: 'Join the club',
-                    color: '',
+                    color: '#7ACB76',
                     url: 'https://codesters.club'
                 },
                 {                    
@@ -59,7 +59,7 @@ const VueApp = {
                     subtitle: 'Illustration & purpose',
                     body: 'A minimalistic comic that reflects philosophical and spiritual situations & concepts from our daily lives.\n\nIt shares a perspective from an old truth: we are all the same, we are all one and we are (not from) here.',
                     buttonLabel: 'Navigate the Universe',
-                    color: '',
+                    color: '#FF6F61',
                     url: 'https://algoparticular.com'
                 },
                 {                    
@@ -68,7 +68,7 @@ const VueApp = {
                     subtitle: 'Supporting local projects',
                     body: 'Long-legged cuddly dolls made of 100% recycled materials & filled with wool.\n\nWe’re developing an interactive webshop to create, customize, request and give life to your own TIPI doll.',
                     buttonLabel: 'Create your own',
-                    color: '',
+                    color: '#76C7E0',
                     url: 'https://tipid.ee'
                 },
                 {                    
@@ -77,7 +77,7 @@ const VueApp = {
                     subtitle: 'Art & Community',
                     body: 'An artistic center, theater & art residencies provider, in Viljandi ― the heart of the cultural movement in Estonia.\n\nSama Sama as part of the cooperative, organise events, assists the residencies & gives support with digital developments.',
                     buttonLabel: 'Check what’s happening',
-                    color: '',
+                    color: '#F3B420',
                     url: 'https://www.koidumaja.ee/gallery'
                 }
             ],
