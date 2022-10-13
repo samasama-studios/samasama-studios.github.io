@@ -293,7 +293,7 @@ section h2, section h5 {
 }
 
 section img {
-  width: 90px;
+  width: 110px;
   margin-bottom: 8px;
 }
 
@@ -509,7 +509,7 @@ section.color {
 }
 
 section.color img {
-  width: 144px;
+  width: 150px;
 }
 
 section.color h2, section.color p {
