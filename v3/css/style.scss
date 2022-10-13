@@ -399,15 +399,15 @@ section.hero {
     background-size: cover;
     
     height: 90vh;
-    padding: 0 10vw 9vh;
+    padding: 0 5vw 9vh;
     
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: flex-end;
 
     .col {
         align-items: flex-start;
-        width: 330px;
+        width: 100%;
     }
 
     .logo {
@@ -431,6 +431,7 @@ section.hero {
         height: 82vh;
         padding: 0 10vw 13vh;
 
+        align-items: flex-end;
         justify-content: flex-start;
         
         .col {

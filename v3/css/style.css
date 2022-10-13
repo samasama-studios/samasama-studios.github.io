@@ -440,13 +440,13 @@ section.hero {
   background-image: url("/v3/assets/studio/studio_portrait.jpg");
   background-size: cover;
   height: 90vh;
-  padding: 0 10vw 9vh;
+  padding: 0 5vw 9vh;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
@@ -456,7 +456,7 @@ section.hero .col {
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
-  width: 330px;
+  width: 100%;
 }
 
 section.hero .logo {
@@ -480,6 +480,9 @@ section.hero .button {
     background-size: cover;
     height: 82vh;
     padding: 0 10vw 13vh;
+    -webkit-box-align: end;
+        -ms-flex-align: end;
+            align-items: flex-end;
     -webkit-box-pack: start;
         -ms-flex-pack: start;
             justify-content: flex-start;
