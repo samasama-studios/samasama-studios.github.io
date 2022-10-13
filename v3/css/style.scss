@@ -299,7 +299,6 @@ section {
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        // width: 100%;
         gap: 32px;
 
         &.center {
@@ -309,7 +308,7 @@ section {
             p {
                 text-align: center;
             }
-        }
+        }        
 
         &.text {
             padding: 80px 24px;
@@ -330,7 +329,7 @@ section {
                 display: flex;
                 justify-content: center;
                 align-items: flex-end;
-                padding-bottom: 40px;;
+                padding-bottom: 80px;
 
                 .caption {
                     color: $color-notThatWhite;
@@ -364,16 +363,26 @@ section {
         }
 
         .col {
-            width: 50%;
+            width: 50%;            
 
             &.text {
                 width: 40%;
                 padding: 0 5%;
             }
 
+            &.bottom {
+                align-items: flex-start;   
+                justify-content: flex-end;   
+                padding-bottom: 80px;
+    
+                p {
+                    text-align: left;
+                }
+            }
+
             &.gallery {
                 .galleryItem {
-                    min-height: 854px;
+                    min-height: 720px;
 
                     .caption {
                         // flex-direction: row;

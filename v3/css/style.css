@@ -373,7 +373,7 @@ section .col.gallery .galleryItem {
   -webkit-box-align: end;
       -ms-flex-align: end;
           align-items: flex-end;
-  padding-bottom: 40px;
+  padding-bottom: 80px;
 }
 
 section .col.gallery .galleryItem .caption {
@@ -419,8 +419,20 @@ section .col.gallery .galleryItem .caption span.event {
     width: 40%;
     padding: 0 5%;
   }
+  section .col.bottom {
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    padding-bottom: 80px;
+  }
+  section .col.bottom p {
+    text-align: left;
+  }
   section .col.gallery .galleryItem {
-    min-height: 854px;
+    min-height: 720px;
   }
 }
 
