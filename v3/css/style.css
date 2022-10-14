@@ -294,7 +294,6 @@ section h2, section h5 {
 
 section img {
   width: 110px;
-  margin-bottom: 8px;
 }
 
 section .heading {
@@ -440,32 +439,33 @@ section.hero {
   background-image: url("/v3/assets/studio/studio_portrait.jpg");
   background-size: cover;
   height: 90vh;
-  padding: 0 5vw 9vh;
+  padding: 0 7vw 9vh;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
 }
 
 section.hero .col {
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   width: 100%;
+  gap: 24px;
 }
 
 section.hero .logo {
-  width: 270px;
+  width: 230px;
 }
 
 section.hero h2, section.hero p {
   color: #EFF0EB;
-  text-align: left;
+  text-align: center;
 }
 
 section.hero .button {
@@ -489,6 +489,13 @@ section.hero .button {
   }
   section.hero .col {
     width: 394px;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    gap: 32px;
+  }
+  section.hero h2, section.hero p {
+    text-align: left;
   }
 }
 
@@ -498,7 +505,7 @@ section.portfolio {
 }
 
 section.color {
-  padding: 108px 0;
+  padding: 40px 0;
   background-color: #F16142;
   background-image: url("/v3/assets/atom_bkg_portrait.svg");
   background-size: 90%;
@@ -575,7 +582,7 @@ section.cta img {
 
 /* Next & previous buttons */
 .prev, .next {
-  background: rgba(250, 250, 250, 0.32);
+  background: rgba(250, 250, 250, 0.28);
   border: none;
   border-radius: 0;
   margin: 0;
@@ -583,7 +590,7 @@ section.cta img {
   position: absolute;
   width: auto;
   height: 100%;
-  padding: 16px;
+  padding: 12px;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;

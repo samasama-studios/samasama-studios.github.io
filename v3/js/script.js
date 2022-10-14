@@ -29,7 +29,7 @@ const VueApp = {
                 },
                 {
                     image: '/v3/assets/gallery/4.jpg',
-                    client: 'Marti Tärn & Erki Pärnoja',
+                    client: 'M. Tärn & E. Pärnoja',
                     event: 'live performance'
                 }
             ],
