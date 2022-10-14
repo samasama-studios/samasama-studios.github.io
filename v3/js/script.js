@@ -65,7 +65,7 @@ const VueApp = {
                 {                    
                     image: '/v3/assets/portfolio/tipid.jpg',
                     title: 'Tipid',
-                    subtitle: 'Supporting local projects',
+                    subtitle: 'Support & Guidance',
                     body: 'Long-legged cuddly dolls made of 100% recycled materials & filled with wool.\n\nWe’re developing an interactive webshop to create, customize, request and give life to your own TIPI doll.',
                     buttonLabel: 'Create your own',
                     color: '#76C7E0',

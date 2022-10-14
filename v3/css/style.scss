@@ -266,17 +266,22 @@ section {
     h2,h5 {
         margin: 0;
         text-align: left;
-    }
-
-    img {
-        width: 110px;
-        // margin-bottom: 8px;
-    }
+    }    
 
     .heading {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 16px;        
+    }
+
+    .title {
+        display: flex;
+        flex-direction: column;
+        gap: 0px;
+    }
+
+    .smallIlus {
+        width: 110px;
     }
     
     p {
@@ -319,12 +324,13 @@ section {
             overflow: hidden;            
 
             .galleryItem {
-                min-height: 520px;
+                min-height: 440px;
                 width: 100%;
                 height: 100%;
 
                 background-size: cover;
                 background-repeat: no-repeat;
+                background-position: center;
 
                 display: flex;
                 justify-content: center;
@@ -463,16 +469,16 @@ section.color {
 
     box-shadow: inset 0px 4px 36px rgba(16, 16, 15, 0.18);
 
-    img {
+    .smallIlus {
         width: 150px;
     }
 
-    h2, p {
-        color: $color-notThatWhite;
-    }
+    // h2, p {
+    //     color: $color-notThatWhite;
+    // }
 
     h5 {
-        color: $color-yellow;
+        color: $color-notThatWhite; //$color-yellow;
     }
 
     .button {
