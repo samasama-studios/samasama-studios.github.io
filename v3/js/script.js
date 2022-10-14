@@ -58,7 +58,7 @@ const VueApp = {
                     title: 'algo.particular',
                     subtitle: 'Illustration & purpose',
                     body: 'A minimalistic comic that reflects philosophical and spiritual situations & concepts from our daily lives.\n\nIt shares a perspective from an old truth: we are all the same, we are all one and we are (not from) here.',
-                    buttonLabel: 'Navigate the Universe',
+                    buttonLabel: 'Navigate the universe',
                     color: '#FF6F61',
                     url: 'https://algoparticular.com'
                 },
