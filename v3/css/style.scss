@@ -83,7 +83,7 @@ a, p, button, .button {
 
 p {
     white-space: pre-line;
-    text-align: justify;
+    text-align: left;
     line-height: 150%;
     letter-spacing: -0.01em;
     
@@ -397,9 +397,10 @@ section {
 section.hero {
     background-image: url('/v3/assets/studio/studio_portrait.jpg');    
     background-size: cover;
+    background-position: bottom;
     
-    height: 90vh;
-    padding: 0 7vw 9vh;
+    height: 80vh;
+    padding: 0 5vw 15vh;
     
     display: flex;
     align-items: center;
@@ -428,7 +429,7 @@ section.hero {
 
     @media screen and (min-width: 600px) {
         background: url('/v3/assets/studio/studio_landscape.jpg');
-        background-size: cover;
+        background-position: center;
         height: 82vh;
         padding: 0 10vw 13vh;
 
@@ -490,6 +491,11 @@ section.color {
 
     @media screen and (min-width: 600px) {
         background-image: url('/v3/assets/atom_bkg_landscape.svg');
+        padding: 100px 0;
+
+        h2, p {
+            max-width: 580px;
+        }
     }    
 }
 
