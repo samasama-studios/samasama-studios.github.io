@@ -439,8 +439,8 @@ section.hero {
   background-image: url("/v3/assets/studio/studio_portrait.jpg");
   background-size: cover;
   background-position: bottom;
-  height: 80vh;
-  padding: 0 5vw 15vh;
+  height: 81.5vh;
+  padding: 0 5vw 13.5vh;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
