@@ -434,7 +434,7 @@ section.hero {
     }
 
     @media screen and (min-width: 600px) {
-        background: url('/v3/assets/studio/studio_landscape.jpg');
+        background-image: url('/v3/assets/studio/studio_landscape.jpg');
         background-position: center;
         height: 82vh;
         padding: 0 10vw 13vh;
