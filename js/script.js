@@ -13,22 +13,22 @@ const VueApp = {
             currentGalleryItem: '',
             gallery: [
                 {
-                    image: '/v3/assets/gallery/0.jpg',
+                    image: '/assets/gallery/0.jpg',
                     client: 'GJ & The Evocations',
                     event: 'live concert'
                 },
                 {
-                    image: '/v3/assets/gallery/1.jpg',
+                    image: '/assets/gallery/1.jpg',
                     client: 'Comedy Estonia',
                     event: 'live show'
                 },
                 {
-                    image: '/v3/assets/gallery/2.jpg',
+                    image: '/assets/gallery/2.jpg',
                     client: 'The Crosslegs',
                     event: 'album recording'
                 },
                 {
-                    image: '/v3/assets/gallery/4.jpg',
+                    image: '/assets/gallery/4.jpg',
                     client: 'M. Tärn & E. Pärnoja',
                     event: 'live performance'
                 }
@@ -45,7 +45,7 @@ const VueApp = {
             },
             projects: [
                 {                    
-                    image: '/v3/assets/portfolio/codesters.jpg',
+                    image: '/assets/portfolio/codesters.jpg',
                     title: 'codesters.club',
                     subtitle: 'Product & Mentoring',
                     body: 'An initiative to mentor high school students to build digital products, started and supported by the Riesenkampff Foundation.\n\nStudents are ideating, desgining and prototyping their own ideas and we guide them through the process.',
@@ -54,7 +54,7 @@ const VueApp = {
                     url: 'https://codesters.club'
                 },
                 {                    
-                    image: '/v3/assets/portfolio/algoparticular.jpg',
+                    image: '/assets/portfolio/algoparticular.jpg',
                     title: 'algo.particular',
                     subtitle: 'Illustration & purpose',
                     body: 'A minimalistic comic that reflects philosophical and spiritual situations & concepts from our daily lives.\n\nIt shares a perspective from an old truth: we are all the same, we are all one and we are (not from) here.',
@@ -63,7 +63,7 @@ const VueApp = {
                     url: 'https://algoparticular.com'
                 },
                 {                    
-                    image: '/v3/assets/portfolio/tipid.jpg',
+                    image: '/assets/portfolio/tipid.jpg',
                     title: 'Tipid',
                     subtitle: 'Support & Guidance',
                     body: 'Long-legged cuddly dolls made of 100% recycled materials & filled with wool.\n\nWe’re developing an interactive webshop to create, customize, request and give life to your own TIPI doll.',
@@ -72,7 +72,7 @@ const VueApp = {
                     url: 'https://tipid.ee'
                 },
                 {                    
-                    image: '/v3/assets/portfolio/koidumaja.jpg',
+                    image: '/assets/portfolio/koidumaja.jpg',
                     title: 'Koidumaja',
                     subtitle: 'Art & Community',
                     body: 'An artistic center, theater & art residencies provider, in Viljandi ― the heart of the cultural movement in Estonia.\n\nSama Sama as part of the cooperative, organise events, assists the residencies & gives support with digital developments.',

@@ -2,165 +2,123 @@
 <html>
     <head>
         <title>Sama Sama Studios</title>
-        <link rel="icon" type="type/svg+xml" href="./assets/atom.svg">
+        <link rel="icon" type="type/svg+xml" href="/assets/atom.svg">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/style.css" />
-        
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="js/anime.min.js"></script>
-        <script src="js/main.js"></script>
+        <link rel="stylesheet" href="/css/style.css" />        
+
+         <!-- This is Vue -->
+        <script src="https://unpkg.com/vue@next"></script>
     </head>
     <body>
-        <div id="navbar">
-            <a href="#about" class="link">Home<span class="underline"></span></a>
-            <svg id="navbar-icon" width="640" height="215" viewBox="0 0 640 215" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M200.1 44.3C95.5 -20.2 10.5 40.4 10.5 115.1C10.5 168.7 32.8 204.4 113.1 204.4C199.6 204.4 309.9 103.2 309.9 103.2C309.9 103.2 424.4 9 514.4 9C604.4 9 628.5 67.6 628.5 106.7C628.5 143.7 599.6 221.2 485.3 187.7" stroke="#10100F" stroke-width="23" stroke-miterlimit="10" stroke-linecap="round"/>
-                <path class="atom" d="M394 119.9C386.1 121.6 371.1 131.2 367.8 141.1C364.6 150.6 360.6 162.6 369.9 171.7C378.4 180 389.5 181.6 400.3 178.2C414.2 173.9 425.2 167.5 431.5 154.9C438.2 141.2 432.8 132.7 416 122.2C413 120.3 402.9 117.9 394 119.9Z" stroke="#F26A25" stroke-width="23" stroke-miterlimit="10"/>
-            </svg>
-            <a href="contact.html" class="link">Contact<span class="underline"></span></a>
-        </div>
-        <section class="hero first">
-            <div class="mark"></div>
-            <header>
-                <img class="logo full" src="assets/logo_sama.svg"/>
-            </header>
-            <p class="xbig">We are digital product development studio with a ludic &amp; artistic touch.</p>
-        </section>
-        <section class="about">
-            <div class="mark"></div>
-            <p class="xbig">We support projects with positive impact in the World, creating the space to turn ideas into reality.<br><br>We are Sama Sama Studios.</p>
-            <img id="about-ilus" src="assets/ilus_sama.svg"/>
-        </section>
-        
-        <h3>Our projects</h3>
-    
-        <section class="projectWrapper">
-            <div class="mark"></div>
-            <section id="codesters" class="project fade" data-color="#7ACB76">
-                <div class="col left">
-                    <h2>codesters.club</h2>
-                    <p>An initiative to mentor high school students to build digital products, started and supported by the <a class="link" href="https://www.riesenkampff-stiftung.com" target="_blank">Riesenkampff Foundation<span class="underline"></span></a>.
+        <div id="app">
+            <!-- <div id="navbar">
+                <svg id="navbar-icon" width="640" height="215" viewBox="0 0 640 215" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M200.1 44.3C95.5 -20.2 10.5 40.4 10.5 115.1C10.5 168.7 32.8 204.4 113.1 204.4C199.6 204.4 309.9 103.2 309.9 103.2C309.9 103.2 424.4 9 514.4 9C604.4 9 628.5 67.6 628.5 106.7C628.5 143.7 599.6 221.2 485.3 187.7" stroke="#10100F" stroke-width="23" stroke-miterlimit="10" stroke-linecap="round"/>
+                    <path class="atom" d="M394 119.9C386.1 121.6 371.1 131.2 367.8 141.1C364.6 150.6 360.6 162.6 369.9 171.7C378.4 180 389.5 181.6 400.3 178.2C414.2 173.9 425.2 167.5 431.5 154.9C438.2 141.2 432.8 132.7 416 122.2C413 120.3 402.9 117.9 394 119.9Z" stroke="#F16142" stroke-width="23" stroke-miterlimit="10"/>
+                </svg>
+            </div> -->
+            <section class="hero">
+                <div class="col">
+                    <img class="logo" src="/assets/logo_sama_no_text_white.svg"/>
+                    <h2>samasama is open</h2>
+                    <p class="">Host your event in the living room of Viljandi.</p>
+                    <a href="https://forms.gle/e2zSE6GGJ55oucKw7" target="_blank" class="button">Book now!</a>
+                </div>      
+            </section>
+            
+            <section class="studio">
+                <div class="col left text bottom">                    
+                    <div class="heading">
+                        <img class="smallIlus" src="/assets/ilus_samaTower.svg"/>
+                        <div class="title">
+                            <h5>De corazón</h5>
+                            <h2>Meet the space</h2>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="">A versatile studio and the perfect place to create, develop and present your next idea:</p>
+                        <ul>                        
+                            <li><p>Set-up the space according to your needs – clear the space for concerts, gatherings or workshops.</p></li>
+                            <li><p>Chill down your event with comfy couches and an open bar.</p></li>
+                            <li><p>Audio and illumination equipment available for renting.</p></li>
+                        </ul>
+                    </div>                    
+                    <a href="https://forms.gle/e2zSE6GGJ55oucKw7" target="_blank" class="button">Book an event</a>
+                </div>            
+                <div class="col right gallery">                    
+                    <div class="galleryItem"  :style="{ backgroundImage: 'url(' + currentGalleryItem.image + ')'}">
+                        <div class="caption">
+                            <span class="client">{{ currentGalleryItem.client }}</span>
+                            <span class="event">{{ currentGalleryItem.event }}</span> 
+                        </div>
+                        <!-- <img class="cover" :src="currentGalleryItem.image"/> -->
+                    </div>
+                    <button class="arrow prev" @click="showGallery(-1)"><img src="assets/icons/leftArrow.svg"/></button>
+                    <button class="arrow next" @click="showGallery(1)"><img src="assets/icons/rightArrow.svg"/></button>
+                </div>
+            </section>
+            
+            <section class="digi color">
+                <div class="col justified text">                    
+                    <div class="heading">
+                        <img class="smallIlus" src="/assets/ilus_samaDigital.svg"/>
+                        <div class="title">
+                            <h5>Born digital</h5>
+                            <h2>samasama also creates digital products</h2>
+                        </div>
+                    </div>                     
+                    <p class="">We support projects with positive impact, from conception to realization. Check out our top ones below.
                         <br><br>
-                        Students are ideating, desgining and prototyping their own ideas and we guide them through the process.
+                        +15 years of experience ideating, designing and developing videogames & digital products. 
+                        <br>
+                        +5 years of experience creating content and mentoring youngsters in the process of digital product development.                        
                     </p>
-                    <a href="https://codesters.club" target="_blank" class="button">Join the club</a>
-                </div>
-                <div class="col right">
-                    <img class="ilus" src="assets/ilus_codesters.svg"/>                            
-                </div>
+                    <a href="mailto:jose@samasama.studio" target="_blank" class="button">Let’s work together</a>
+                </div>            
+            </section>
+            
+            <section class="portfolio">
+                <!-- <div class="project" v-for="item in projects"> -->
+                    <div class="col left gallery">
+                        <div class="galleryItem"  :style="{ backgroundImage: 'url(' + currentProject.image + ')'}"></div>
+
+                        <button class="arrow prev" @click="showProject(-1)"><img src="assets/icons/leftArrow.svg"/></button>
+                        <button class="arrow next" @click="showProject(1)"><img src="assets/icons/rightArrow.svg"/></button>
+                    </div>
+                    <div class="col right text">
+                        <div class="heading">
+                            <h5>{{ currentProject.subtitle }}</h5>
+                            <h2>{{ currentProject.title }}</h2>
+                        </div>
+                        <p>
+                            {{ currentProject.body }}
+                        </p>
+                        <a :href="currentProject.url" target="_blank" class="button">{{ currentProject.buttonLabel }}</a>
+                    </div>
+                <!-- </div> -->
+
             </section>
 
-            <section id="particular" class="project fade" data-color="#F26A25">
-                <div class="col left">
-                    <h2>Algo Particular</h2>
-                    <p>
-                        A minimalistic comic that reflects philosophical and spiritual situations &amp; concepts from our daily lives.
-                        <br><br>It shares a perspective from an old truth: we are all the same, we are all one<br>and we are (not from) here.
-                    </p>
-
-                    <a href="https://instagram.com/algo.particular" target="_blank" class="button">Enjoy the Universe</a>
-                </div>
-                <div class="col right">
-                    <img class="ilus" src="assets/ilus_particular.svg"/>                            
-                </div>
-            </section>
+            <!-- <section class="cta">
+            <img src="/v3/assets/ilus_samaTower.svg"/>
+            </section> -->
             
-            <section id="tipid" class="project fade" data-color="#76C7E0">
-                <div class="col left">
-                    <h2>Tipid</h2>
-                    <p>
-                        Long-legged cuddly dolls<br>made of 100% recycled materials<br>&amp; filled with wool.
-                        <br><br>We're developing an interactive webshop to create, customize, request and give life to your own TIPI doll.
-                    </p>
-                    <a href="https://tipid.ee" target="_blank" class="button">Create your own</a>                    
+            <footer>
+                <img class="logo full" src="/assets/logo_sama.svg"/>
+                <div class="locations">
+                    <div class="">
+                        <p>C. R. Jakobsoni 18<br>Viljandi, Estonia<br>🇪🇪</p>
+                    </div>
+                    <div class="">
+                        <p>De las Margaritas 6195<br>Ciudad Jardín, Argentina<br>🇦🇷</p>
+                    </div>
                 </div>
-                <div class="col right">
-                    <img class="ilus" src="assets/ilus_tipid.svg"/>                            
-                </div>
-            </section>
-            
-            <section id="koit" class="project fade" data-color="#F4BA25">
-                <div class="col left">
-                    <h2>Koidumaja</h2>
-                    <p>
-                        An artistic center, theater &amp; art residencies provider, in Viljandi &#8213; the heart of the cultural movement in Estonia.
-                        <br><br>Sama Sama as part of the cooperative, organise events, assists the residencies &amp; gives support with digital developments.
-                    </p>
-                    <a href="https://www.koidumaja.ee/gallery" target="_blank" class="button">Check what's happening</a>
-                </div>
-                <div class="col right">
-                    <img class="ilus" src="assets/ilus_koit.svg"/>                            
-                </div>
-            </section>
-            
-            <button class="arrow prev" onclick="plusSlides(-1)"><img src="assets/icons/leftArrow.svg"/></button>
-            <button class="arrow next" onclick="plusSlides(1)"><img src="assets/icons/rightArrow.svg"/></button>
-            
-            <svg class="bkg left" viewBox="0 0 954 824" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path class="atom" d="M406.066 10.2345C298.648 33.3018 94.689 163.564 49.8181 297.897C6.30699 426.803 -48.0819 589.631 78.3724 713.109C193.949 825.732 344.878 847.442 491.728 801.307C680.73 742.961 830.299 656.119 915.962 485.15C1007.06 299.254 933.639 183.918 705.205 41.4431C664.413 15.662 527.081 -16.9035 406.066 10.2345Z" fill="#EBEFDC"/>
-            </svg>
-        </section>
+                <span class="copyright">&copy; with love by Sama Sama</span>
+            </footer>
         
-        <section class="cta">
-            <div class="mark"></div>
-            <h3 class="big">Ready to create with us?</h3>
-            <a class="button" href="mailto:jose@samasama.studio">Get in contact</a>
-        </section>
-        
-            
-        <footer>Copyright &copy; 2021, with love by Sama Sama</footer>
-        
-        <script>
-            ////////////////////////////////////////////////////////
-            ////////////////////  + Carousel  //////////////////////
-            ////////////////////////////////////////////////////////
+        </div>
 
-                var slideIndex = 1;
-                showSlides(slideIndex);
-
-                // Next/previous controls
-                function plusSlides(n) {
-                  showSlides(slideIndex += n);
-                }
-
-                // Thumbnail image controls
-                function currentSlide(n) {
-                  showSlides(slideIndex = n);
-                }
-
-                function showSlides(n) {
-                  var i;
-                  var slides = document.getElementsByClassName("project");
-                  if (n > slides.length) {slideIndex = 1}
-                  if (n < 1) {slideIndex = slides.length}
-                  for (i = 0; i < slides.length; i++) {
-                      slides[i].style.display = "none";
-                  }
-
-                  slides[slideIndex-1].style.display = "flex";        
-
-                    anime({
-                        targets: '.bkg path',
-                        fill: $('.project')[slideIndex-1].dataset.color,
-                        easing: 'easeInCirc',
-                        duration: 200
-                    });
-
-                    anime({
-                        targets: '#navbar-icon .atom',
-                        stroke: $('.project')[slideIndex-1].dataset.color,
-                        easing: 'easeInCirc',
-                        duration: 200
-                    });
-
-                    anime({
-                        targets: '.ilus',
-                        translateX: ['4vw', '0vw'], // from x to y
-                        easing: 'easeOutCirc',
-                        duration: 250
-                    });
-                }
-
-        </script>
+        <script src="/js/anime.min.js"></script>
+        <script type="module" src="/js/script.js"></script>   
     </body>    
 </html>
