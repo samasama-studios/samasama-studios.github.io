@@ -332,14 +332,16 @@ section .col.gallery .galleryItem .caption span.event {
 }
 
 section.hero {
-  background-image: url("/assets/studio/studio_portrait.jpg");
+  background-image: url("/assets/studio/studio_landscape.jpg");
   background-size: cover;
   background-position: bottom;
   height: 81.5vh;
   padding: 0 5vw 13.5vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+  gap: 1rem;
 }
 section.hero .col {
   align-items: center;
@@ -350,7 +352,6 @@ section.hero .logo {
   width: 230px;
 }
 section.hero h2, section.hero p {
-  color: #EFF0EB;
   text-align: center;
 }
 section.hero .button {
@@ -364,8 +365,6 @@ section.hero .button {
     background-position: center;
     height: 82vh;
     padding: 0 10vw 13vh;
-    align-items: flex-end;
-    justify-content: flex-start;
   }
   section.hero .col {
     width: 394px;
@@ -454,7 +453,6 @@ section.cta img {
   padding: 12px;
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
 }
 .prev:hover, .next:hover {
@@ -499,17 +497,7 @@ section.cta img {
   -webkit-animation-name: fade;
   -webkit-animation-duration: 1.5s;
   animation-name: fade;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-}
-
-@-webkit-keyframes fade {
-  from {
-    opacity: 0.4;
-  }
-  to {
-    opacity: 1;
-  }
+  animation-duration: 1s;
 }
 @keyframes fade {
   from {

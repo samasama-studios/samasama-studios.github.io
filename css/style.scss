@@ -369,7 +369,7 @@ section {
         }
 
         .col {
-            width: 50%;            
+            width: 50%;
 
             &.text {
                 width: 40%;
@@ -401,7 +401,7 @@ section {
 }
 
 section.hero {
-    background-image: url('/assets/studio/studio_portrait.jpg');    
+    background-image: url('/assets/studio/studio_landscape.jpg');
     background-size: cover;
     background-position: bottom;
     
@@ -409,8 +409,10 @@ section.hero {
     padding: 0 5vw 13.5vh;
     
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
+    gap: 1rem;
 
     .col {
         align-items: center;
@@ -423,7 +425,7 @@ section.hero {
     }
 
     h2, p {
-        color: $color-notThatWhite; 
+        
         text-align: center;       
     }    
 
@@ -437,10 +439,7 @@ section.hero {
         background-image: url('/assets/studio/studio_landscape.jpg');
         background-position: center;
         height: 82vh;
-        padding: 0 10vw 13vh;
-
-        align-items: flex-end;
-        justify-content: flex-start;
+        padding: 0 10vw 13vh;        
         
         .col {
             width: 394px;

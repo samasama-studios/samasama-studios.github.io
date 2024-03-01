@@ -61,25 +61,25 @@ const VueApp = {
                     buttonLabel: 'Navigate the universe',
                     color: '#FF6F61',
                     url: 'https://algoparticular.com'
-                },
-                {                    
-                    image: '/assets/portfolio/tipid.jpg',
-                    title: 'Tipid',
-                    subtitle: 'Support & Guidance',
-                    body: 'Long-legged cuddly dolls made of 100% recycled materials & filled with wool.\n\nWe’re developing an interactive webshop to create, customize, request and give life to your own TIPI doll.',
-                    buttonLabel: 'Create your own',
-                    color: '#76C7E0',
-                    url: 'https://tipid.ee'
-                },
-                {                    
-                    image: '/assets/portfolio/koidumaja.jpg',
-                    title: 'Koidumaja',
-                    subtitle: 'Art & Community',
-                    body: 'An artistic center, theater & art residencies provider, in Viljandi ― the heart of the cultural movement in Estonia.\n\nSama Sama as part of the cooperative, organise events, assists the residencies & gives support with digital developments.',
-                    buttonLabel: 'Check what’s happening',
-                    color: '#F3B420',
-                    url: 'https://www.koidumaja.ee/gallery'
                 }
+//                {                    
+//                    image: '/assets/portfolio/tipid.jpg',
+//                    title: 'Tipid',
+//                    subtitle: 'Support & Guidance',
+//                    body: 'Long-legged cuddly dolls made of 100% recycled materials & filled with wool.\n\nWe’re developing an interactive webshop to create, customize, request and give life to your own TIPI doll.',
+//                    buttonLabel: 'Create your own',
+//                    color: '#76C7E0',
+//                    url: 'https://tipid.ee'
+//                },
+//                {                    
+//                    image: '/assets/portfolio/koidumaja.jpg',
+//                    title: 'Koidumaja',
+//                    subtitle: 'Art & Community',
+//                    body: 'An artistic center, theater & art residencies provider, in Viljandi ― the heart of the cultural movement in Estonia.\n\nSama Sama as part of the cooperative, organise events, assists the residencies & gives support with digital developments.',
+//                    buttonLabel: 'Check what’s happening',
+//                    color: '#F3B420',
+//                    url: 'https://www.koidumaja.ee/gallery'
+//                }
             ],
         }
     },    
