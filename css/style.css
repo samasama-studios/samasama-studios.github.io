@@ -361,8 +361,8 @@ section.hero .button {
 }
 @media screen and (min-width: 600px) {
   section.hero {
-    background-image: url("/assets/studio/studio_landscape.jpg");
-    background-position: center;
+    background-color: #000000;
+    background-image: none;
     height: 82vh;
     padding: 0 10vw 13vh;
   }
