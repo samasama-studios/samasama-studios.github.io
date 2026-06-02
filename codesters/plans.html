@@ -13,6 +13,8 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+
+
 body {
   font-family: 'Poppins', Arial, sans-serif;
   background: #1a1a1a;
@@ -30,19 +32,31 @@ body {
   padding: 20px 0 32px;
   margin-bottom: 8px;
 }
-.logo-text { text-align: center; display: flex; flex-direction: column; align-items: center; }
-.logo-inner { display: inline-flex; flex-direction: column; align-items: stretch; }
+.logo-text {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center; }
+.logo-inner {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center; }
 .logo-svg { display: block; }
-.logo-svg svg { width: clamp(160px, 28vw, 260px); height: auto; display: block; }
+.logo-svg svg {
+  width: clamp(220px, 32vw, 520px);
+  height: auto;
+  display: block;
+}
 .logo-tagline {
+  width: 100%;
+  text-align: center;
   font-family: 'League Spartan', 'Poppins', Arial, sans-serif;
   color: #d4e84a;
   font-style: normal;
   font-weight: 400;
   margin-top: 3px;
-  display: flex;
-  justify-content: space-between;
-  font-size: clamp(7px, 1vw, 10px);
+  font-size: clamp(8px, 1.1vw, 12px);
   letter-spacing: 0.01em;
   white-space: nowrap;
 }
@@ -199,7 +213,7 @@ body {
 <div class="header">
   <div class="logo-text">
     <div class="logo-inner">
-      <div class="logo-svg"><svg width="748" height="88" viewBox="0 0 748 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <div class="logo-svg"><svg viewBox="0 0 748 88" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M0 58.7743C0 41.2044 14.3268 29.9668 30.534 29.9668C40.6523 29.9668 48.8007 34.6937 53.9941 41.8287L42.3536 50.0339C39.8464 46.5556 35.1902 44.4151 30.7131 44.4151C21.9379 44.4151 15.9386 50.7474 15.9386 58.7743C15.9386 66.9795 21.9379 73.2226 30.7131 73.2226C35.2797 73.2226 39.8464 71.0821 42.3536 67.6038L53.9941 75.809C48.7111 83.0332 40.6523 87.6709 30.534 87.6709C14.3268 87.7601 0 76.3441 0 58.7743Z" fill="white"/>
 <path d="M58.113 58.8638C58.113 41.2939 72.1712 29.8779 88.0202 29.8779C103.869 29.8779 117.927 41.2939 117.927 58.8638C117.927 76.3444 103.869 87.6712 88.0202 87.6712C72.1712 87.6712 58.113 76.3444 58.113 58.8638ZM102.168 58.8638C102.168 50.2126 95.8104 44.4154 88.1098 44.4154C80.4091 44.4154 73.9621 50.2126 73.9621 58.8638C73.9621 67.4257 80.3196 73.2229 88.0202 73.2229C95.7209 73.2229 102.168 67.4257 102.168 58.8638Z" fill="white"/>
 <path d="M185.622 1.78369V86.6899H170.041V79.8225C166.101 85.2629 158.401 87.7601 152.133 87.7601C137.806 87.7601 124.822 76.7009 124.822 58.9527C124.822 41.2044 137.806 30.1452 152.133 30.1452C158.58 30.1452 166.101 32.5533 170.041 38.0829V1.78369H185.622ZM169.504 58.8635C169.504 50.3015 162.341 44.5935 155.088 44.5935C147.208 44.5935 140.671 50.6583 140.671 58.8635C140.671 66.9795 147.208 73.2226 155.088 73.2226C162.699 73.2226 169.504 67.3363 169.504 58.8635Z" fill="white"/>
@@ -242,18 +256,18 @@ body {
 
 <!-- TABS -->
 <div class="tabs">
-  <button class="tab active" onclick="switchTab('lite')">
-    Lite
+  <button class="tab inactive" onclick="switchTab('lite')">
+    Lite Programme
     <span class="tab-label">9 courses</span>
   </button>
-  <button class="tab inactive" onclick="switchTab('full')">
-    Full
+  <button class="tab active" onclick="switchTab('full')">
+    Full Programme
     <span class="tab-label">14 courses</span>
   </button>
 </div>
 
 <!-- ════════════════════════════════ LITE PANEL ════════════════════════════════ -->
-<div id="panel-lite" class="panel active">
+<div id="panel-lite" class="panel">
 
   <div class="card">
     <div class="top-bar"></div>
@@ -274,7 +288,7 @@ body {
         </div>
       </div>
       <div class="col-right">
-        <div class="section-title">Each week &mdash; 50/50 split</div>
+        <div class="section-title">Weekly learning model</div>
         <div class="split-blocks">
           <div class="split-block mentor">
             <div class="split-num">1</div>
@@ -333,7 +347,7 @@ body {
 
 
 <!-- ════════════════════════════════ FULL PANEL ════════════════════════════════ -->
-<div id="panel-full" class="panel">
+<div id="panel-full" class="panel active">
 
   <div class="card">
     <div class="top-bar"></div>
@@ -354,7 +368,7 @@ body {
         </div>
       </div>
       <div class="col-right">
-        <div class="section-title">Each week &mdash; 33/67 split</div>
+        <div class="section-title">Weekly learning model</div>
         <div class="split-blocks">
           <div class="split-block mentor">
             <div class="split-num">1</div>
