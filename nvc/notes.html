@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVC Mediation Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f0; --surface: #ffffff; --surface2: #f0ede6;
+    --border: #ddd9d0; --border-strong: #bfbab0;
+    --text: #1c1a17; --text-2: #5a5650; --text-3: #8a877f;
+    --accent: #2d5a3d; --accent-light: #e8f0ea; --accent-text: #1e3d2a;
+    --warn: #7a4e1a; --warn-light: #f5ead8;
+    --info: #1a3d6b; --info-light: #dde8f5;
+    --danger: #6b1a1a; --danger-light: #f5dddd;
+    --neutral-light: #efefed; --neutral-text: #4a4844;
+    --radius: 10px; --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem; }
+  .page { max-width: 760px; margin: 0 auto; }
+  header { margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  header h1 { font-family: 'Lora', serif; font-size: 1.75rem; font-weight: 400; color: var(--text); margin-bottom: 0.4rem; letter-spacing: -0.01em; }
+  header p { font-size: 0.9rem; color: var(--text-3); font-weight: 300; }
+  .lang-switch { display: flex; gap: 4px; align-items: center; flex-shrink: 0; margin-top: 4px; }
+  .lang-btn, .email-btn, .tab {
+    padding: 6px 15px; border: 1px solid var(--border); border-radius: 99px;
+    font-size: 0.82rem; font-family: 'DM Sans', sans-serif; cursor: pointer;
+    background: var(--surface); color: var(--text-2); transition: all 0.15s ease; font-weight: 400;
+  }
+  .lang-btn { padding: 5px 13px; font-size: 0.8rem; }
+  .lang-btn:hover, .email-btn:hover, .tab:hover { background: var(--surface2); border-color: var(--border-strong); }
+  .lang-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 500; }
+  .email-btn.active { background: var(--info); color: #fff; border-color: var(--info); font-weight: 500; }
+  .tab.active { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 500; }
+  .email-selector { margin-bottom: 1.25rem; }
+  .email-selector .selector-label { font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-3); font-weight: 500; margin-bottom: 8px; }
+  .email-selector .btns { display: flex; gap: 7px; flex-wrap: wrap; }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.75rem; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .email-section { display: none; }
+  .email-section.active { display: block; }
+  .intro { font-size: 0.9rem; color: var(--text-2); line-height: 1.75; margin-bottom: 1.25rem; font-style: italic; font-family: 'Lora', serif; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.1rem 1.25rem; margin-bottom: 10px; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 0.73rem; font-weight: 500; margin-bottom: 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .badge-obs    { background: var(--info-light);    color: var(--info); }
+  .badge-feel   { background: var(--warn-light);    color: var(--warn); }
+  .badge-need   { background: var(--accent-light);  color: var(--accent-text); }
+  .badge-req    { background: var(--neutral-light); color: var(--neutral-text); border: 1px solid var(--border); }
+  .badge-tension{ background: var(--danger-light);  color: var(--danger); }
+  .badge-ok     { background: var(--accent-light);  color: var(--accent-text); }
+  .card-title { font-size: 0.975rem; font-weight: 500; color: var(--text); margin-bottom: 6px; line-height: 1.4; font-family: 'Lora', serif; }
+  .card-body { font-size: 0.875rem; color: var(--text-2); line-height: 1.7; }
+  .card-body strong { color: var(--text); font-weight: 500; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
+  .q-block { background: var(--accent-light); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 0.75rem 1rem; margin: 10px 0; font-size: 0.875rem; color: var(--accent-text); line-height: 1.65; font-family: 'Lora', serif; font-style: italic; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
+  @media (max-width: 520px) { .two-col { grid-template-columns: 1fr; } }
+  .side-label { font-size: 0.75rem; font-weight: 500; color: var(--text-3); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .tip-block { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.65rem 0.9rem; margin-bottom: 7px; font-size: 0.86rem; line-height: 1.6; color: var(--text-2); background: var(--surface); }
+  .tip-block strong { color: var(--text); font-weight: 500; }
+  .note { font-size: 0.82rem; color: var(--text-3); line-height: 1.7; padding: 0.75rem 1rem; background: var(--surface2); border-radius: var(--radius-sm); margin-top: 1rem; }
+  .note strong { color: var(--text-2); font-weight: 500; }
+  .card-label { font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-3); margin-bottom: 5px; font-weight: 500; }
+  .section-context { font-size: 0.8rem; color: var(--info); background: var(--info-light); border-radius: var(--radius-sm); padding: 0.5rem 0.9rem; margin-bottom: 1.25rem; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div>
+      <h1>
+        <span data-lang="en">NVC Mediation Prep</span>
+        <span data-lang="et">NVC Vahenduse Ettevalmistus</span>
+      </h1>
+      <p>
+        <span data-lang="en">University meeting · Nonviolent Communication framework</span>
+        <span data-lang="et">Ülikoolikoosolek · Vägivallatu suhtluse raamistik</span>
+      </p>
+    </div>
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLang('en', this)">EN</button>
+      <button class="lang-btn" onclick="setLang('et', this)">ET</button>
+    </div>
+  </header>
+
+  <!-- Email selector -->
+  <div class="email-selector">
+    <div class="selector-label">
+      <span data-lang="en">Analysing email from</span><span data-lang="et">Analüüsitav kiri</span>
+    </div>
+    <div class="btns">
+      <button class="email-btn active" onclick="setEmail('students', this)">
+        <span data-lang="en">1 · Students' email</span><span data-lang="et">1 · Tudengite kiri</span>
+      </button>
+      <button class="email-btn" onclick="setEmail('teacher', this)">
+        <span data-lang="en">2 · Coordinator's reply</span><span data-lang="et">2 · Koordinaatori vastus</span>
+      </button>
+      <button class="email-btn" onclick="setEmail('director', this)">
+        <span data-lang="en">3 · Director's reply</span><span data-lang="et">3 · Programmijuhi vastus</span>
+      </button>
+      <button class="email-btn" onclick="setEmail('students2', this)">
+        <span data-lang="en">4 · Students' reply</span><span data-lang="et">4 · Tudengite vastus</span>
+      </button>
+      <button class="email-btn" onclick="setEmail('teacher2', this)">
+        <span data-lang="en">5 · Teacher</span><span data-lang="et">5 · Õppejõud</span>
+      </button>
+      <button class="email-btn" onclick="setEmail('myrole', this)">
+        <span data-lang="en">My role tomorrow</span><span data-lang="et">Minu roll homme</span>
+      </button>
+      <button class="email-btn" onclick="setEmail('together', this)">
+        <span data-lang="en">6 · Full picture &amp; meeting prep</span><span data-lang="et">6 · Täispilt ja koosolek</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- TABS (shared across email sections 1 & 2, hidden for section 3) -->
+  <div class="tabs" id="tab-bar">
+    <button class="tab active" onclick="show('observations', this)">
+      <span data-lang="en">1 · Observations</span><span data-lang="et">1 · Tähelepanekud</span>
+    </button>
+    <button class="tab" onclick="show('feelings', this)">
+      <span data-lang="en">2 · Feelings</span><span data-lang="et">2 · Tunded</span>
+    </button>
+    <button class="tab" onclick="show('needs', this)">
+      <span data-lang="en">3 · Needs</span><span data-lang="et">3 · Vajadused</span>
+    </button>
+    <button class="tab" onclick="show('requests', this)">
+      <span data-lang="en">4 · Requests</span><span data-lang="et">4 · Palved</span>
+    </button>
+    <button class="tab" onclick="show('both-sides', this)">
+      <span data-lang="en">Both sides</span><span data-lang="et">Mõlemad pooled</span>
+    </button>
+    <button class="tab" onclick="show('facilitation', this)">
+      <span data-lang="en">Facilitation guide</span><span data-lang="et">Vahenduse juhend</span>
+    </button>
+  </div>
+
+  <!-- ===================== EMAIL 1: STUDENTS ===================== -->
+  <div class="email-section active" id="email-students">
+
+    <div id="students-observations" class="panel active">
+      <p class="intro">
+        <span data-lang="en">NVC starts by separating what actually happened from interpretations. These are the concrete facts — stripped of blame language.</span>
+        <span data-lang="et">NVC algab sellest, et eristame, mis tegelikult juhtus, tõlgendustest. Siin on konkreetsed faktid — ilma süüdistava keeleta.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">Three students did promotional and organisational work at the last minute</span><span data-lang="et">Kolm üliõpilast tegid viimasel hetkel reklaami- ja korraldustöö ära</span></div>
+        <div class="card-body"><span data-lang="en">This happened alongside exam preparation and was not shared across the whole cohort.</span><span data-lang="et">See toimus paralleelselt eksamiteks valmistumisega ega jaotunud kogu kursuse peale.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">At the opening meeting, students were told they would not need to worry about the organisational side</span><span data-lang="et">Avakoosolekul lubati tudengitele, et nad ei pea korraldusliku poole pärast muretsema</span></div>
+        <div class="card-body"><span data-lang="en">This is a specific, checkable promise. Whether it was said in those exact words matters — it shapes the legitimacy of the grievance.</span><span data-lang="et">See on konkreetne, kontrollitav lubadus. Täpne sõnastus on oluline — see mõjutab kaebuse õigustatust.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">The course learning outcomes (ÕIS) include "organisational work and logistics"</span><span data-lang="et">Aine õpiväljundid (ÕIS-is) sisaldavad "korraldustööd ja logistikat"</span></div>
+        <div class="card-body"><span data-lang="en">Students highlight that rhythm music students share the same subject code, but the practical meaning differs by specialisation.</span><span data-lang="et">Tudengid rõhutavad, et rütmimuusikud jagavad sama ainekoodi, kuid praktiline tähendus erineb erialati.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">Roles and responsibilities were not clearly communicated</span><span data-lang="et">Rollid ja kohustused ei olnud selgelt kommunikeeritud</span></div>
+        <div class="card-body"><span data-lang="en">What is a student obligation vs. what belongs to paid staff was left ambiguous — at least from the students' perspective.</span><span data-lang="et">Mis on tudengite kohustus ja mis kuulub palgaliste töötajate vastutusalasse, jäi ebaselgeks — vähemalt tudengite vaatenurgast.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">This is not the first time this issue has arisen</span><span data-lang="et">See ei ole esimene kord, kui see probleem tõusetub</span></div>
+        <div class="card-body"><span data-lang="en">References to previous conversations indicate a recurring pattern, not a one-off frustration.</span><span data-lang="et">Viited varasematele vestlustele näitavad korduvat mustrit, mitte ühekordset pettumust.</span></div>
+      </div>
+    </div>
+
+    <div id="students-feelings" class="panel">
+      <p class="intro">
+        <span data-lang="en">What feelings are likely underneath the email's tone? NVC distinguishes feelings from "faux feelings" — judgements disguised as feelings.</span>
+        <span data-lang="et">Millised tunded peituvad kirja tooni taga? NVC eristab tundeid "võltstunnetest" — hinnangutest, mis on maskeeritud tunnetena.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Frustrated and burdened</span><span data-lang="et">Pettunud ja koormatud</span></div>
+        <div class="card-body"><span data-lang="en">Work fell on a few students unexpectedly, at a high-stakes time. The workload felt unfair relative to what was promised.</span><span data-lang="et">Töö langes ootamatult mõne üliõpilase õlule pingelisel ajal. Töökoormus tundus ebaõiglane arvestades lubatut.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Unheard and dismissed</span><span data-lang="et">Kuulamata jäetud ja tõrjutud</span></div>
+        <div class="card-body"><span data-lang="en">References to receiving vague answers previously suggest earlier attempts to raise the issue were not taken seriously.</span><span data-lang="et">Viited varasematele ebamäärastele vastustele viitavad sellele, et varasemaid katseid probleemi tõstatada ei võetud tõsiselt.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Disrespected — effort not seen</span><span data-lang="et">Austamata — pingutust ei märgata</span></div>
+        <div class="card-body"><span data-lang="en">They did extra unpaid work, care about their programme, yet feel no reciprocal energy from the school side.</span><span data-lang="et">Nad tegid lisatööd tasuta, hoolivad oma erialast, kuid ei tunne kooli poolt vastastikust energiat.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Anxious about the future</span><span data-lang="et">Ärev tuleviku pärast</span></div>
+        <div class="card-body"><span data-lang="en">The email is oriented toward next year — the students are worried the same situation will repeat.</span><span data-lang="et">Kiri on suunatud järgmisele aastale — tudengid kardavad, et sama olukord kordub.</span></div>
+      </div>
+      <div class="note">
+        <strong><span data-lang="en">Note for facilitation:</span><span data-lang="et">Märkus vahendamiseks:</span></strong>
+        <span data-lang="en"> The sharp tone will likely have landed as aggressive. Acknowledge the tone landed hard, while making space for the feelings underneath. Both can be true.</span>
+        <span data-lang="et"> Terav toon võis saajale tunduda agressiivne. Tunnusta, et toon mõjus raskelt, luues samal ajal ruumi alltunnetele. Mõlemad asjad võivad korraga tõsi olla.</span>
+      </div>
+    </div>
+
+    <div id="students-needs" class="panel">
+      <p class="intro">
+        <span data-lang="en">Universal human needs are the heart of NVC. These are what the email is really asking for.</span>
+        <span data-lang="et">Universaalsed inimvajadused on NVC tuum. See on see, mida kiri tegelikult palub.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">Clarity and predictability</span><span data-lang="et">Selgus ja etteaimatavus</span></div>
+        <div class="card-body"><span data-lang="en">Who is responsible for what, decided in advance and communicated clearly — not ambiguity that resolves into student labour.</span><span data-lang="et">Kes mille eest vastutab, otsustatakse ette ja kommunikeeritakse selgelt.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">Fairness and equity</span><span data-lang="et">Õiglus ja võrdsus</span></div>
+        <div class="card-body"><span data-lang="en">Work aligned with what students are actually assessed on. Unpaid organisational labour should not fall on a few by default.</span><span data-lang="et">Töö peaks olema kooskõlas sellega, mille eest tudengeid tegelikult hinnatakse.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">Respect and recognition</span><span data-lang="et">Austus ja tunnustus</span></div>
+        <div class="card-body"><span data-lang="en">Their care for the programme to be seen and met with equal care from the institution.</span><span data-lang="et">Nende hoolitsemine eriala eest vajab märkamist ja institutsioonipoolset vastastikust hoolt.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">Focus in their studies</span><span data-lang="et">Keskendumine õpingutele</span></div>
+        <div class="card-body"><span data-lang="en">To concentrate on what they are graded on — not split between exam prep and event logistics.</span><span data-lang="et">Keskenduda sellele, mille eest neid hinnatakse.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">Honesty and accountability</span><span data-lang="et">Ausus ja vastutus</span></div>
+        <div class="card-body"><span data-lang="en">If a promise was made, students need it acknowledged — or a genuine explanation of what changed.</span><span data-lang="et">Kui lubadus anti, vajavad tudengid selle tunnustamist — või siirast selgitust, mis muutus.</span></div>
+      </div>
+    </div>
+
+    <div id="students-requests" class="panel">
+      <p class="intro">
+        <span data-lang="en">NVC requests are concrete, positive, and doable. The email contains implicit requests reframed here as clear asks.</span>
+        <span data-lang="et">NVC palved on konkreetsed, positiivsed ja teostatavad. Kirja varjatud palved on siin ümber sõnastatud.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">Implicit → reframed</span><span data-lang="et">Varjatud → ümber sõnastatud</span></span>
+        <div class="card-title"><span data-lang="en">Agree on who owns event organisation before next year</span><span data-lang="et">Leppida kokku, kes vastutab ürituse eest enne järgmist aastat</span></div>
+        <div class="card-body"><span data-lang="en">"Can we decide together, today, who will be responsible for the organisational side in future years?"</span><span data-lang="et">"Kas saame täna koos otsustada, kes vastutab selle ürituse korraldusliku poole eest tulevikus?"</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">Implicit → reframed</span><span data-lang="et">Varjatud → ümber sõnastatud</span></span>
+        <div class="card-title"><span data-lang="en">Acknowledge what was promised at the opening meeting</span><span data-lang="et">Tunnustada avakoosolekul antud lubadust</span></div>
+        <div class="card-body"><span data-lang="en">"Can someone clarify what was communicated at the start, and if something changed, explain when and how?"</span><span data-lang="et">"Kas keegi saab selgitada, mida alguses kommunikeeriti, ja kui midagi muutus, öelda millal ja kuidas?"</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">Implicit → reframed</span><span data-lang="et">Varjatud → ümber sõnastatud</span></span>
+        <div class="card-title"><span data-lang="en">Involve cultural management students or dedicated staff</span><span data-lang="et">Kaasata kultuurikorralduse tudengeid või selleks määratud töötajaid</span></div>
+        <div class="card-body"><span data-lang="en">"What would it take to have a coordinator handle logistics, so production students can focus on music?"</span><span data-lang="et">"Mida oleks vaja, et koordinaator saaks logistikaga tegeleda, nii et produtsendid saavad muusikale keskenduda?"</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">Implicit → reframed</span><span data-lang="et">Varjatud → ümber sõnastatud</span></span>
+        <div class="card-title"><span data-lang="en">Document the agreement so this conversation doesn't repeat</span><span data-lang="et">Dokumenteerida kokkulepe, et see vestlus ei korduks</span></div>
+        <div class="card-body"><span data-lang="en">"Can we write down the agreed roles today so there's a shared reference for next year?"</span><span data-lang="et">"Kas saame täna kokkulepitud rollid kirja panna, et järgmiseks aastaks oleks ühine viitedokument?"</span></div>
+      </div>
+    </div>
+
+    <div id="students-both-sides" class="panel">
+      <p class="intro">
+        <span data-lang="en">Good mediation holds space for both parties. Here is how the staff side likely experienced the students' email.</span>
+        <span data-lang="et">Hea vahendamine hoiab ruumi mõlemale poolele. Siin on see, kuidas personal tõenäoliselt tudengite kirja koges.</span>
+      </p>
+      <div class="two-col">
+        <div>
+          <div class="side-label"><span data-lang="en">Students</span><span data-lang="et">Tudengid</span></div>
+          <div class="tip-block"><strong><span data-lang="en">Felt:</span><span data-lang="et">Tundsid:</span></strong> <span data-lang="en">burdened, dismissed, disrespected</span><span data-lang="et">koormatud, tõrjutud, lugupidamatult koheldud</span></div>
+          <div class="tip-block"><strong><span data-lang="en">Need:</span><span data-lang="et">Vajavad:</span></strong> <span data-lang="en">clarity, fairness, recognition</span><span data-lang="et">selgust, õiglust, tunnustust</span></div>
+          <div class="tip-block"><strong><span data-lang="en">Fear:</span><span data-lang="et">Kardavad:</span></strong> <span data-lang="en">this happens again next year</span><span data-lang="et">et see kordub järgmisel aastal</span></div>
+        </div>
+        <div>
+          <div class="side-label"><span data-lang="en">Staff / administration</span><span data-lang="et">Personal / administratsioon</span></div>
+          <div class="tip-block"><strong><span data-lang="en">Likely felt:</span><span data-lang="et">Tõenäoliselt tundsid:</span></strong> <span data-lang="en">attacked, accused of bad faith, embarrassed</span><span data-lang="et">rünnatud, halvas usus süüdistatud, piinlikkust</span></div>
+          <div class="tip-block"><strong><span data-lang="en">Likely need:</span><span data-lang="et">Tõenäoliselt vajavad:</span></strong> <span data-lang="en">respect, to be heard, collaborative tone</span><span data-lang="et">austust, ärakuulamist, koostöölist tooni</span></div>
+          <div class="tip-block"><strong><span data-lang="en">Likely fear:</span><span data-lang="et">Tõenäoliselt kardavad:</span></strong> <span data-lang="en">being blamed publicly, losing authority</span><span data-lang="et">avalikku süüdistamist, autoriteedi kaotamist</span></div>
+        </div>
+      </div>
+      <hr class="divider">
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Tension point</span><span data-lang="et">Pingekoht</span></span>
+        <div class="card-title"><span data-lang="en">The rhetorical questions and sharp tone</span><span data-lang="et">Retoorilised küsimused ja terav toon</span></div>
+        <div class="card-body"><span data-lang="en">Your opening move: name the impact without taking sides — <em>"I think this email was written from real frustration. I also hear it landed hard. Can we start from what everyone actually needs?"</em></span><span data-lang="et">Sinu avakäik: nimeta mõju ilma pooli võtmata — <em>"Ma arvan, et kiri kirjutati tõelisest frustratsioonist. Kuulen ka, et see mõjus raskelt. Kas saame alustada sellest, mida kõik tegelikult vajavad?"</em></span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Tension point</span><span data-lang="et">Pingekoht</span></span>
+        <div class="card-title"><span data-lang="en">The promise at the opening meeting</span><span data-lang="et">Avakoosolekul antud lubadus</span></div>
+        <div class="card-body"><span data-lang="en">If staff don't remember making it, there's a factual disagreement underneath the conflict. <em>"Can we establish together what was said and heard at the start? Not to assign blame, but to address the gap."</em></span><span data-lang="et">Kui personal ei mäleta seda lubadust, on konflikti all faktiline erimeelsus. <em>"Kas saame koos selgeks teha, mida alguses öeldi ja kuuldi? Mitte süü omistamiseks, vaid et saaksime lüngaga tegeleda."</em></span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Tension point</span><span data-lang="et">Pingekoht</span></span>
+        <div class="card-title"><span data-lang="en">Course learning outcomes — "organisational work"</span><span data-lang="et">Õpiväljundid — "korraldustöö"</span></div>
+        <div class="card-body"><span data-lang="en">Staff may say it is in the curriculum. Students say it means something different for producers. This is a legitimate curricular question worth unpacking.</span><span data-lang="et">Personal võib öelda, et see on õppekavas. Tudengid ütlevad, et see tähendab produtsentidele midagi muud. See on legitiimne küsimus, mida tasub lahti mõtestada.</span></div>
+      </div>
+    </div>
+
+    <div id="students-facilitation" class="panel">
+      <p class="intro">
+        <span data-lang="en">Suggested structure for the meeting. Adapt as needed — this is a guide, not a script.</span>
+        <span data-lang="et">Soovitatav koosoleku struktuur. Kohandage vastavalt vajadusele — see on juhend, mitte stsenaarium.</span>
+      </p>
+      <div class="card">
+        <div class="card-label"><span data-lang="en">Opening · 2–3 min</span><span data-lang="et">Avamine · 2–3 min</span></div>
+        <div class="card-title"><span data-lang="en">Set the container</span><span data-lang="et">Loo raamistik</span></div>
+        <div class="q-block"><span data-lang="en">"We're here to understand what happened, hear both sides, and agree on how we do this differently. I'll try to keep us focused on needs and solutions, not blame."</span><span data-lang="et">"Enne tagasivaatamist: esimesest kirjast saadik korraldasid tudengid PEAKi ise — ja kutsusid kõik selles ruumis olevad inimesed. Kontsert toimub. Täna ei ole kriisikoosolek — see on vestlus selle tagamiseks, et see ei korduks."</span></div>
+      </div>
+      <div class="card">
+        <div class="card-label"><span data-lang="en">Step 1 — Acknowledge the email</span><span data-lang="et">Samm 1 — Tunnusta kirja</span></div>
+        <div class="card-title"><span data-lang="en">Name impact without judging</span><span data-lang="et">Nimeta mõju ilma hinnanguta</span></div>
+        <div class="q-block"><span data-lang="en">"Would you be willing to share — in your own words — what happened for you and what you most need from today?"</span><span data-lang="et">"Kas oleksid valmis jagama — oma sõnadega — mis sinu jaoks juhtus ja mida sa täna kõige rohkem vajad?"</span></div>
+        <div class="card-body" style="margin-top:8px"><span data-lang="en">Reflect back: <em>"So you felt overwhelmed and unsupported, and what you most need is clarity about roles — is that right?"</em></span><span data-lang="et">Peegelda tagasi: <em>"Ehk siis, tundsid end ülekoormatuna ja toetuseta, ning vajad kõige rohkem rollide selgust — kas see on õige?"</em></span></div>
+      </div>
+      <div class="card">
+        <div class="card-label"><span data-lang="en">Step 2 — Hear the staff side</span><span data-lang="et">Samm 2 — Kuula personali poolt</span></div>
+        <div class="card-title"><span data-lang="en">Invite staff perspective with equal care</span><span data-lang="et">Kutsu personali perspektiiv võrdse tähelepanuga</span></div>
+        <div class="q-block"><span data-lang="en">"How did receiving that email land for you? What do you need to feel you can be part of this conversation?"</span><span data-lang="et">"Kuidas see kiri teie jaoks maandus? Mida vajate, et tunneksite, et saate sellest vestlusest osa võtta?"</span></div>
+        <div class="card-body" style="margin-top:8px"><span data-lang="en">If defensiveness arises: <em>"It sounds like you felt accused — that makes sense. And I think we can also hold that the students had a real experience of being unsupported. Both can be true."</em></span><span data-lang="et">Kui tekib kaitseseisund: <em>"Tundub, et tundsid end süüdistatuna — see on arusaadav. Ja samal ajal saame hoida ka seda, et tudengitel oli tõeline kogemus toetuse puudumisest. Mõlemad asjad võivad tõsi olla."</em></span></div>
+      </div>
+      <div class="card">
+        <div class="card-label"><span data-lang="en">Step 3 — Find shared ground</span><span data-lang="et">Samm 3 — Leia ühine alus</span></div>
+        <div class="card-title"><span data-lang="en">Surface what everyone agrees on</span><span data-lang="et">Too välja, milles kõik nõustuvad</span></div>
+        <div class="card-body"><span data-lang="en">Everyone wants the event to go well, everyone wants students to succeed, no one wants this ambiguity next year. <em>"It sounds like everyone here wants the same outcome. The question is how we get there."</em></span><span data-lang="et">Kõik tahavad, et üritus läheks hästi, kõik tahavad tudengite edu. <em>"Tundub, et kõik siin tahavad tegelikult sama tulemust. Küsimus on selles, kuidas me sinna jõuame."</em></span></div>
+      </div>
+      <div class="card">
+        <div class="card-label"><span data-lang="en">Step 4 — Concrete agreements</span><span data-lang="et">Samm 4 — Konkreetsed kokkulepped</span></div>
+        <div class="card-title"><span data-lang="en">Move toward doable requests</span><span data-lang="et">Liigu teostatavate palvete poole</span></div>
+        <div class="card-body">
+          <span data-lang="en">Leave with at least: <br><br><strong>1.</strong> A named person or role responsible for event logistics next year.<br><br><strong>2.</strong> A brief written summary of agreed student vs. staff responsibilities.<br><br><strong>3.</strong> An acknowledgement of what went well and what did not this year.</span>
+          <span data-lang="et">Lahku vähemalt kolme asjaga: <br><br><strong>1.</strong> Nimeline isik või roll, kes vastutab ürituse logistika eest järgmisel aastal.<br><br><strong>2.</strong> Lühike kirjalik kokkuvõte kokkulepitud tudengite ja personali kohustuste kohta.<br><br><strong>3.</strong> Tunnustus selle kohta, mis läks sel aastal hästi ja mis mitte.</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label"><span data-lang="en">Step 5 — Close</span><span data-lang="et">Samm 5 — Lõpetamine</span></div>
+        <div class="card-title"><span data-lang="en">End on connection, not just resolution</span><span data-lang="et">Lõpeta sidemega, mitte ainult lahendusega</span></div>
+        <div class="card-body"><span data-lang="en">The email ends with genuine care: <em>"We care about this programme."</em> Reflect that back: <em>"What I'm taking from this is that everyone in this room cares. That's a foundation."</em></span><span data-lang="et">Kiri lõpeb tõelise hoolega: <em>"Meie hoolime sellest erialast."</em> Peegelda seda lõpetamisel: <em>"See, mida ma siit kaasa võtan, on see, et kõik selles ruumis hoolivad. See on alus."</em></span></div>
+      </div>
+      <div class="note"><strong><span data-lang="en">If things escalate:</span><span data-lang="et">Kui olukord eskaleerub:</span></strong> <span data-lang="en">Slow down, not speed up. "I notice this is getting tense — can we pause and each say one thing we appreciate about the other side?" usually resets the room.</span><span data-lang="et">Aeglusta, ära kiirenda. "Märkan, et olukord muutub pingeliseks — kas saame peatuda ja kumbki öelda ühe asja, mida hindame teises pooles?" on tavaliselt piisav.</span></div>
+    </div>
+
+  </div><!-- /email-students -->
+
+
+  <!-- ===================== EMAIL 2: TEACHER ===================== -->
+  <div class="email-section" id="email-teacher">
+
+    <div id="teacher-observations" class="panel active">
+      <p class="intro">
+        <span data-lang="en">The coordinator's reply contains both acknowledgements and deflections. Reading it through NVC separates what was genuinely conceded from what was avoided.</span>
+        <span data-lang="et">Koordinaatori vastus sisaldab nii tunnustusi kui ka kõrvalepõikeid. NVC lugemine eristab, mida tegelikult tunnistati ja mida välditi.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Acknowledged</span><span data-lang="et">Tunnistatud</span></span>
+        <div class="card-title"><span data-lang="en">Communication between subject teachers was insufficient regarding the May 28 concert</span><span data-lang="et">Ansambliaine õppejõudude vaheline kommunikatsioon oli 28. mai kontserdi korraldamise osas puudulik</span></div>
+        <div class="card-body"><span data-lang="en">This is a genuine, specific acknowledgement of institutional failure. Important to name this explicitly in the meeting — it was said.</span><span data-lang="et">See on siiras, konkreetne institutsionaalse ebaõnnestumise tunnistamine. Oluline see koosolekul sõnaselgelt nimetada — see öeldi.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Acknowledged</span><span data-lang="et">Tunnistatud</span></span>
+        <div class="card-title"><span data-lang="en">The coordinator was away for a week due to Kevadtorm — this contributed to the situation</span><span data-lang="et">Õppejõud oli nädal aega töölt eemal Kevadtormi tõttu — see aitas kaasa olukorrale</span></div>
+        <div class="card-body"><span data-lang="en">Context, not excuse — but useful context. It partially explains the gap without justifying the lack of backup plan.</span><span data-lang="et">Kontekst, mitte vabandus — aga kasulik kontekst. See selgitab osaliselt lünka, õigustamata varuplaani puudumist.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Decision made</span><span data-lang="et">Tehtud otsus</span></span>
+        <div class="card-title"><span data-lang="en">The May 28 public concert was cancelled — decided jointly with the programme director</span><span data-lang="et">28. mai avalik kontsert jäeti ära — otsustati koos programmijuhiga</span></div>
+        <div class="card-body"><span data-lang="en">This is a significant unilateral decision made in response to the email. Students were not consulted. This may land as either relief or a dismissal of their concerns — worth naming in the meeting.</span><span data-lang="et">See on oluline ühepoolne otsus, mis tehti vastusena kirjale. Tudengeid ei kaasatud. See võib maanduda nii kergendusena kui ka nende murede eiramisena — tasub koosolekul nimetada.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Framing</span><span data-lang="et">Raamistamine</span></span>
+        <div class="card-title"><span data-lang="en">Taking the concert to a public space was described as a concession to students, not a university obligation</span><span data-lang="et">Kontserdi viimine avalikku ruumi kirjeldati vastutulemisena tudengitele, mitte ülikooli kohustusena</span></div>
+        <div class="card-body"><span data-lang="en">This reframes the workload as a gift rather than an imposed task. Students may experience this as their grievance being dismissed. This is a key point of interpretation to explore in the meeting.</span><span data-lang="et">See sõnastab töökoormuse kingitusena, mitte peale surutud ülesandena. Tudengid võivad kogeda seda kui oma kaebuse eiramisena. See on koosolekul uurimist vääriv tõlgenduskoht.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">A meeting of production-track students will be convened in coming weeks</span><span data-lang="et">Produtsendi suunal õppivate tudengite koosolek kutsutakse kokku lähiajal</span></div>
+        <div class="card-body"><span data-lang="en">A concrete future action — responsive to the students' request for dialogue. Positive sign, though the timeline is vague.</span><span data-lang="et">Konkreetne tulevane tegevus — vastab tudengite dialoogipäringule. Positiivne märk, kuigi ajakava on ebamäärane.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Unaddressed</span><span data-lang="et">Käsitlemata</span></span>
+        <div class="card-title"><span data-lang="en">The opening meeting promise was not acknowledged or denied</span><span data-lang="et">Avakoosoleku lubadust ei tunnistatud ega eitatud</span></div>
+        <div class="card-body"><span data-lang="en">Students raised a specific claim — "we were told we wouldn't need to worry about the organisational side." The reply does not address this directly. Silence on this point will likely intensify frustration.</span><span data-lang="et">Tudengid esitasid konkreetse väite — "meile öeldi, et me ei pea korraldusliku poole pärast muretsema." Vastus ei käsitle seda otseselt. Vaikus selles punktis tõenäoliselt süvendab frustratsiooni.</span></div>
+      </div>
+    </div>
+
+    <div id="teacher-feelings" class="panel">
+      <p class="intro">
+        <span data-lang="en">What feelings are likely underneath the coordinator's reply? The tone is formal and measured, but feelings are still present.</span>
+        <span data-lang="et">Millised tunded peituvad õppejõu vastuse taga? Toon on formaalne ja mõõdetud, kuid tunded on siiski olemas.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Stung and defensive</span><span data-lang="et">Haavatud ja kaitsepositsioonil</span></div>
+        <div class="card-body"><span data-lang="en">The opening sentence — "the undertone of this email is surprising to me" — signals hurt. He did not expect to be addressed this way.</span><span data-lang="et">Avalauset — "selle kirja alatoon on mulle üllatav" — märgib haiget saamist. Ta ei oodanud, et teda nii kõnetatakse.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Responsible but overwhelmed</span><span data-lang="et">Vastutustundlik, kuid ülekoormatud</span></div>
+        <div class="card-body"><span data-lang="en">The coordinator names the absence (Kevadtorm) as a contributing factor. There is likely genuine regret that things fell through, even if the response style does not show it openly.</span><span data-lang="et">Ta nimetab oma äraolekut (Kevadtorm) kaasaaitava tegurina. Tõenäoliselt on tõeline kahetsus selle üle, et asjad libisesid mööda, isegi kui vastuse stiil seda avalikult ei näita.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">A need to reassert authority</span><span data-lang="et">Vajadus autoriteeti taastada</span></div>
+        <div class="card-body"><span data-lang="en">Framing the concert as a "concession to students" and noting that "each teacher agrees the assessment format with their own students" reasserts positional control. This is a signal of unmet need for respect.</span><span data-lang="et">Kontserdi raamistamine "vastutulemisena tudengitele" ja märkus, et "iga õppejõud lepib ise hindamisvormi kokku" taastavad positsioonilise kontrolli. See on märk täitmata austuse vajadusest.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Genuine willingness to repair</span><span data-lang="et">Siiras soov olukorda parandada</span></div>
+        <div class="card-body"><span data-lang="en">Convening a meeting, cancelling the concert, and acknowledging the communication failure are all acts of repair from the coordinator. These deserve recognition in the mediation.</span><span data-lang="et">Koosoleku kokkukutsumine, kontserdi ärajätmine ja kommunikatsioonipuuduse tunnistamine on kõik parandavad tegevused. Need väärivad vahendamises tunnustamist.</span></div>
+      </div>
+    </div>
+
+    <div id="teacher-needs" class="panel">
+      <p class="intro">
+        <span data-lang="en">What universal needs are present in the coordinator's reply, even when not directly stated?</span>
+        <span data-lang="et">Millised universaalsed vajadused on õppejõu vastuses, isegi kui neid otseselt ei öelda?</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">Respect and fair treatment</span><span data-lang="et">Austus ja õiglane kohtlemine</span></div>
+        <div class="card-body"><span data-lang="en">The opening line signals the coordinator felt the tone was inappropriate. He needs to be addressed with the same respect he expects to give.</span><span data-lang="et">Avalauset märgib, et ta tundis tooni sobimatuna. Ta vajab, et teda kõnetataks sama austusega, mida ta ise anda soovib.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">To be understood in context</span><span data-lang="et">Mõistetud olema kontekstis</span></div>
+        <div class="card-body"><span data-lang="en">The coordinator mentions the absence as relevant context. He needs his circumstances — including factors outside his control — to be acknowledged, not dismissed.</span><span data-lang="et">Ta mainib oma äraolekut olulise kontekstina. Ta vajab, et tema asjaolusid — sh tema kontrolli väljaspool olevaid tegureid — tunnistataks, mitte eirataks.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">Clarity on the scope of his role</span><span data-lang="et">Selgus oma rolli ulatuse osas</span></div>
+        <div class="card-body"><span data-lang="en">By noting that each teacher agrees the assessment format independently, he is also signalling that the system's role boundaries are genuinely unclear to him too.</span><span data-lang="et">Märkides, et iga õppejõud lepib hindamisvormi ise kokku, annab ta märku, et süsteemi rollipiirid on ka tema jaoks tegelikult ebaselged.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">To repair the relationship</span><span data-lang="et">Suhet parandada</span></div>
+        <div class="card-body"><span data-lang="en">Convening a meeting and cancelling the concert are gestures toward repair. He likely wants the conflict resolved and the relationship with students to be functional again.</span><span data-lang="et">Koosoleku kokkukutsumine ja kontserdi ärajätmine on parandamisele suunatud žestid. Tõenäoliselt soovib ta konflikti lahendust ja funktsionaalset suhet tudengitega.</span></div>
+      </div>
+    </div>
+
+    <div id="teacher-requests" class="panel">
+      <p class="intro">
+        <span data-lang="en">What is the coordinator's reply actually asking for — and what implicit asks does the mediator need to surface?</span>
+        <span data-lang="et">Mida õppejõu vastus tegelikult palub — ja millised varjatud palved peab vahendaja esile tooma?</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">Implicit ask</span><span data-lang="et">Varjatud palve</span></span>
+        <div class="card-title"><span data-lang="en">Acknowledge that the tone of the original email was hurtful</span><span data-lang="et">Tunnustada, et algse kirja toon oli haiget tegev</span></div>
+        <div class="card-body"><span data-lang="en">He opens with this. He is not asking for a formal apology, but for the students to recognise the impact of how they wrote. This is a legitimate need the mediator can invite without taking sides.</span><span data-lang="et">Ta avab sellega. Ta ei palu formaalset vabandust, vaid seda, et tudengid tunnistaksid, kuidas nad kirjutasid, mõju. See on legitiimne vajadus, mida vahendaja saab kutsuda ilma pooli võtmata.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">Implicit ask</span><span data-lang="et">Varjatud palve</span></span>
+        <div class="card-title"><span data-lang="en">Recognition of the repair gestures already made</span><span data-lang="et">Juba tehtud parandusžestide tunnustamine</span></div>
+        <div class="card-body"><span data-lang="en">Cancelling the concert and calling a meeting are meaningful actions. The mediator can reflect these back: <em>"I notice a number of concrete steps were already taken in response — can we acknowledge those before we discuss what else is needed?"</em></span><span data-lang="et">Kontserdi ärajätmine ja koosoleku kokkukutsumine on sisukad tegevused. Vahendaja saab need tagasi peegeldada: <em>"Märkan, et vastusena on juba tehtud mitmeid konkreetseid samme — kas saame neid tunnustada enne, kui arutame, mida veel on vaja?"</em></span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">Unresolved — needs surfacing</span><span data-lang="et">Lahendamata — vajab esile toomist</span></span>
+        <div class="card-title"><span data-lang="en">The opening meeting promise was left completely unaddressed</span><span data-lang="et">Avakoosoleku lubadus jäeti täielikult käsitlemata</span></div>
+        <div class="card-body"><span data-lang="en">This is the most significant gap in the reply. The mediator should name it gently: <em>"One thing that came up in the first email that I'd like us to return to is what was communicated at the opening meeting. Can we explore that together?"</em></span><span data-lang="et">See on vastuse kõige olulisem lünk. Vahendaja peaks seda õrnalt nimetama: <em>"Üks asi, mis esimeses kirjas esile tuli ja millele tahaksin tagasi pöörduda, on see, mida avakoosolekul kommunikeeriti. Kas saame seda koos uurida?"</em></span></div>
+      </div>
+    </div>
+
+    <div id="teacher-both-sides" class="panel">
+      <p class="intro">
+        <span data-lang="en">How might students experience the coordinator's reply? This is the new tension layer entering the meeting.</span>
+        <span data-lang="et">Kuidas võivad tudengid õppejõu vastust kogeda? See on uus pingelkiht, mis koosolekule siseneb.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Likely relief</span><span data-lang="et">Tõenäoline kergendus</span></span>
+        <div class="card-title"><span data-lang="en">The concert was cancelled — the immediate pressure is gone</span><span data-lang="et">Kontsert jäeti ära — vahetu surve on kadunud</span></div>
+        <div class="card-body"><span data-lang="en">Students may feel their email had impact. This can open space for a more constructive conversation if the mediator names it.</span><span data-lang="et">Tudengid võivad tunda, et nende kirjal oli mõju. See võib avada ruumi konstruktiivsemaks vestluseks, kui vahendaja seda nimetab.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">New tension</span><span data-lang="et">Uus pinge</span></span>
+        <div class="card-title"><span data-lang="en">"Taking the concert public was a concession to you" may feel like the problem was reframed as their fault</span><span data-lang="et">"Kontserdi viimine avalikku ruumi oli vastutulek teile" võib tunduda, et probleem sõnastati ümber nende süüks</span></div>
+        <div class="card-body"><span data-lang="en">Students asked why they had to do the work — the reply suggests they didn't have to, and doing it was optional. This may intensify, not resolve, the sense of unfairness.</span><span data-lang="et">Tudengid küsisid, miks nad pidid tööd tegema — vastus vihjab, et nad ei pidanud, ja tegemine oli vabatahtlik. See võib süvendada, mitte lahendada, ebaõigluse tunnet.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">New tension</span><span data-lang="et">Uus pinge</span></span>
+        <div class="card-title"><span data-lang="en">The opening meeting promise remains unacknowledged</span><span data-lang="et">Avakoosoleku lubadus jääb tunnistamata</span></div>
+        <div class="card-body"><span data-lang="en">Students named this specifically. Its absence in the reply may feel like deliberate avoidance. The mediator should treat it as the most sensitive point in the room.</span><span data-lang="et">Tudengid nimetasid seda konkreetselt. Selle puudumine vastuses võib tunduda tahtliku vältimisena. Vahendaja peaks käsitlema seda ruumi kõige tundlikuma punktina.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Shared ground</span><span data-lang="et">Ühine alus</span></span>
+        <div class="card-title"><span data-lang="en">Both sides want clarity for the future — this is actually agreed</span><span data-lang="et">Mõlemad pooled soovivad tulevikuks selgust — see on tegelikult kokku lepitud</span></div>
+        <div class="card-body"><span data-lang="en">The planned meeting and the cancellation signal willingness to do things differently. The mediator can name this as a foundation: both sides have already moved toward the same outcome.</span><span data-lang="et">Kavandatav koosolek ja ärajätmine annavad märku valmisolekust teha asju teisiti. Vahendaja saab seda nimetada alusena: mõlemad pooled on juba liikunud sama tulemuse poole.</span></div>
+      </div>
+    </div>
+
+    <div id="teacher-facilitation" class="panel">
+      <p class="intro">
+        <span data-lang="en">With both emails read, the mediation has a richer starting point. Here is how the coordinator's reply changes the facilitation approach.</span>
+        <span data-lang="et">Mõlemat kirja lugedes on vahendamisel rikkam lähtepunkt. Siin on see, kuidas õppejõu vastus muudab vahendamise lähenemist.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Updated opening</span><span data-lang="et">Uuendatud avamine</span></span>
+        <div class="card-title"><span data-lang="en">Acknowledge the steps already taken</span><span data-lang="et">Tunnusta juba tehtud samme</span></div>
+        <div class="q-block"><span data-lang="en">"Before we go into what happened, I want to name something: between the first email and today, a meeting was called and a concert was cancelled. That tells me both sides care about getting this right. Let's start from there."</span><span data-lang="et">"Enne kui räägime sellest, mis juhtus, tahan midagi nimetada: esimese kirja ja tänase päeva vahel kutsuti kokku koosolek ja kontsert jäeti ära. See ütleb mulle, et mõlemad pooled hoolivad sellest, et asjad läheksid õigesti. Alustame sealt."</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Handle with care</span><span data-lang="et">Käsitleda ettevaatlikult</span></span>
+        <div class="card-title"><span data-lang="en">"Concession" framing vs. "imposed work" framing</span><span data-lang="et">"Vastutulek" versus "peale surutud töö" raamistamine</span></div>
+        <div class="card-body"><span data-lang="en">Don't let this become a debate about who is right. Instead: <em>"I notice both sides experienced this event differently — one side felt they were giving students an opportunity; the other felt they were carrying work that wasn't theirs. Can we understand both without deciding who was right?"</em></span><span data-lang="et">Ära lase sellest saada vaidlust selle üle, kes on õige. Selle asemel: <em>"Märkan, et mõlemad pooled kogesid seda üritust erinevalt — üks pool tundis, et annab tudengitele võimaluse; teine pool tundis, et kannab tööd, mis ei olnud nende oma. Kas saame mõlemat mõista, otsustamata, kes oli õige?"</em></span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Key unresolved point</span><span data-lang="et">Peamine lahendamata punkt</span></span>
+        <div class="card-title"><span data-lang="en">Return to the opening meeting promise — gently</span><span data-lang="et">Pöördu tagasi avakoosoleku lubaduse juurde — õrnalt</span></div>
+        <div class="q-block"><span data-lang="en">"One thing that came up in the students' email that I'd like us to spend a moment on: what was communicated at the opening meeting about who would handle organisational work. I'm not asking anyone to prove anything — I'd just like us to each share what we heard, so we understand where the gap is."</span><span data-lang="et">"Üks asi, mis tudengite kirjas esile tuli ja mille juures tahaksin hetke peatuda: mida avakoosolekul kommunikeeriti korraldustöö vastutuse kohta. Ma ei palu kelleltki midagi tõestada — tahaksin lihtsalt, et kõik jagaksid, mida nad kuulsid, et mõistaksime, kus lünk on."</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Closing anchor</span><span data-lang="et">Lõpetamise ankur</span></span>
+        <div class="card-title"><span data-lang="en">The upcoming student meeting — make it concrete</span><span data-lang="et">Tulev tudengite koosolek — muuda see konkreetseks</span></div>
+        <div class="card-body"><span data-lang="en">The reply promises a meeting "in the coming weeks" — use today's conversation to give it a date and an agenda. That transforms a vague gesture into a real commitment both sides can hold.</span><span data-lang="et">Vastus lubab koosolekut "lähiajal" — kasuta tänast vestlust, et anda sellele kuupäev ja päevakord. See muudab ebamäärase žesti reaalseks kohustuseks, mida mõlemad pooled saavad hoida.</span></div>
+      </div>
+    </div>
+
+  </div><!-- /email-teacher -->
+
+
+
+  <!-- ===================== EMAIL 3: DIRECTOR ===================== -->
+  <div class="email-section" id="email-director">
+
+    <div id="director-observations" class="panel active">
+      <p class="intro">
+        <span data-lang="en">The programme director's email adds a third voice. Reading it through NVC reveals what is said, what is implied, and what is conspicuously absent.</span>
+        <span data-lang="et">Programmijuhi kiri lisab kolmanda hääle. NVC lugemine paljastab, mida öeldakse, mida vihjatakse ja mida silmatorkavalt välditi.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">The programme director experienced the students' email as unpleasant and surprising</span><span data-lang="et">Programmijuht koges tudengite kirja ebameeldiva ja üllatavana</span></div>
+        <div class="card-body"><span data-lang="en">He names this directly. This is an observable reaction, not a judgment — it tells us where his emotional starting point is.</span><span data-lang="et">Ta nimetab seda otse. See on jälgitav reaktsioon, mitte hinnang — see ütleb meile, kus on tema emotsionaalne lähtepunkt.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">The concert was conceived on the assumption that students would contribute — primarily students</span><span data-lang="et">Kontsert loodi eeldusel, et tudengid aitavad kaasa — ennekõike tudengid</span></div>
+        <div class="card-body"><span data-lang="en">The word "primarily" (ennekõike) is significant. This directly contradicts the students' claim that they were told they would not need to worry about the organisational side. This is the factual core of the dispute.</span><span data-lang="et">Sõna "ennekõike" on märkimisväärne. See läheb otseselt vastuollu tudengite väitega, et neile öeldi, et nad ei pea korraldusliku poole pärast muretsema. See on vaidluse faktiline tuum.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">A third teacher was expected to provide his own explanation — suggesting more people are involved</span><span data-lang="et">Kolmas õppejõud pidi andma omapoolse selgituse — viidates, et rohkem inimesi on kaasatud</span></div>
+        <div class="card-body"><span data-lang="en">The situation involves at least three staff members. This means the communication failure the first teacher acknowledged may be more systemic than personal.</span><span data-lang="et">Olukord hõlmab vähemalt kolme töötajat. See tähendab, et kommunikatsioonipuudus, mida esimene õppejõud tunnistas, võib olla süsteemsem kui isiklik.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Unaddressed</span><span data-lang="et">Käsitlemata</span></span>
+        <div class="card-title"><span data-lang="en">The opening meeting promise is again not acknowledged or denied</span><span data-lang="et">Avakoosoleku lubadust ei tunnistata ega eitata taas</span></div>
+        <div class="card-body"><span data-lang="en">Two replies now, and the specific claim — "we were told we wouldn't need to worry about the organisational side" — has not been directly addressed by either staff member. This silence is itself meaningful.</span><span data-lang="et">Kaks vastust ja konkreetne väide — "meile öeldi, et me ei pea korraldusliku poole pärast muretsema" — pole kummagi töötaja poolt otseselt käsitletud. See vaikus on iseenesest tähenduslik.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Conditional</span><span data-lang="et">Tinglik</span></span>
+        <div class="card-title"><span data-lang="en">The concert's continuation is made contingent on students' attitude</span><span data-lang="et">Kontserdi jätkamine tehakse sõltuvaks tudengite suhtumisest</span></div>
+        <div class="card-body"><span data-lang="en">"Given the current attitude and discrepancies, it is difficult to do this in its current form." This frames the cancellation as a consequence of how students communicated, not of the organisational failure. Students may experience this as a punishment or as their concerns being used against them.</span><span data-lang="et">"Praeguse suhtumise ja ebakõlade kontekstis on keeruline seda sellisel kujul teha." See raamistab ärajätmise tagajärjena sellest, kuidas tudengid suhtlesid, mitte organisatsioonilisest ebaõnnestumisest. Tudengid võivad kogeda seda karistusena või oma murede kasutamisena nende vastu.</span></div>
+      </div>
+    </div>
+
+    <div id="director-feelings" class="panel">
+      <p class="intro">
+        <span data-lang="en">What feelings are likely present in the programme director's email?</span>
+        <span data-lang="et">Millised tunded on tõenäoliselt programmijuhi kirjas?</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Offended and protective of his staff</span><span data-lang="et">Solvunud ja oma personali kaitsev</span></div>
+        <div class="card-body"><span data-lang="en">He describes the students' email as "rude" and "inadequate." As programme director, he may feel a responsibility to defend the institution and his colleagues against what he reads as an attack.</span><span data-lang="et">Ta kirjeldab tudengite kirja kui "ebaviisakas" ja "ebaadekvaatne." Programmijuhina võib ta tunda vastutust kaitsta institutsiooni ja kolleege selle eest, mida ta loeb rünnakuna.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Frustrated that students don't see the effort made on their behalf</span><span data-lang="et">Pettunud, et tudengid ei näe nende nimel tehtud pingutust</span></div>
+        <div class="card-body"><span data-lang="en">The concert was framed as something created for students. His frustration may come from feeling that a gift was met with complaints rather than engagement.</span><span data-lang="et">Kontsert raamistati kui midagi, mis loodi tudengite jaoks. Tema frustratsioon võib tulla tundest, et kingitust tervitati kaebustega, mitte kaasalöömisega.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Uncertain about how to proceed</span><span data-lang="et">Ebakindel, kuidas edasi liikuda</span></div>
+        <div class="card-body"><span data-lang="en">He defers the decision — "The teacher will give his explanation and then we'll decide." This suggests the coordinator is not acting unilaterally and is gathering more information before committing. Underneath this may be genuine uncertainty.</span><span data-lang="et">Ta lükkab otsuse edasi — "Õppejõud annab selgituse ja siis otsustame." See viitab, et ta ei tegutse ühepoolselt ja kogub enne otsustamist rohkem teavet. Selle all võib olla tõeline ebakindlus.</span></div>
+      </div>
+    </div>
+
+    <div id="director-needs" class="panel">
+      <p class="intro">
+        <span data-lang="en">What universal needs are present in the director's email, even when expressed through criticism?</span>
+        <span data-lang="et">Millised universaalsed vajadused on direktori kirjas, isegi kui need väljenduvad kriitika kaudu?</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">Mutual respect in communication</span><span data-lang="et">Vastastikune austus suhtluses</span></div>
+        <div class="card-body"><span data-lang="en">He names the tone as the central problem. His underlying need is for a communication culture where concerns can be raised without the relationship being damaged.</span><span data-lang="et">Ta nimetab tooni keskseks probleemiks. Tema aluspõhine vajadus on suhtluskultuuri järele, kus muresid saab esitada ilma suhet kahjustamata.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">Students as collaborators, not complainants</span><span data-lang="et">Tudengid kaastöötajatena, mitte kaebajatena</span></div>
+        <div class="card-body"><span data-lang="en">The concert was designed with students as active contributors. His need is for shared ownership of the programme — students who are engaged, not just critical.</span><span data-lang="et">Kontsert kavandati tudengitega kui aktiivsete kaasautoritega. Tema vajadus on programmi ühise omanditunde järele — tudengid, kes on kaasatud, mitte ainult kriitilised.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">Integrity of the decision-making process</span><span data-lang="et">Otsustusprotsessi terviklikkus</span></div>
+        <div class="card-body"><span data-lang="en">He waits for the teacher before deciding. He needs all voices heard before acting — a fair process, not a rushed one.</span><span data-lang="et">Ta ootab teist õppejõudu enne otsustamist. Ta vajab, et kõik hääled oleksid kuuldud enne tegutsemist — õiglane protsess, mitte kiirustav.</span></div>
+      </div>
+    </div>
+
+    <div id="director-requests" class="panel">
+      <p class="intro">
+        <span data-lang="en">What is the director's email implicitly asking for? And what new complications does it introduce for the meeting?</span>
+        <span data-lang="et">Mida direktori kiri varjatult palub? Ja milliseid uusi komplikatsioone see koosolekuks toob?</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">Implicit ask</span><span data-lang="et">Varjatud palve</span></span>
+        <div class="card-title"><span data-lang="en">Acknowledgement that the tone of the students' email was inappropriate</span><span data-lang="et">Tunnustus, et tudengite kirja toon oli sobimatu</span></div>
+        <div class="card-body"><span data-lang="en">Both staff respondents open with this. The mediator can invite this without requiring an apology: <em>"Is there anything from either side about how the communication happened — not just what was said, but how — that you'd want to name?"</em></span><span data-lang="et">Mõlemad personali vastajad avavad sellega. Vahendaja saab seda kutsuda ilma vabandust nõudmata: <em>"Kas kumbki pool tahab nimetada midagi selle kohta, kuidas suhtlemine toimus — mitte ainult mida öeldi, vaid kuidas?"</em></span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">Implicit ask</span><span data-lang="et">Varjatud palve</span></span>
+        <div class="card-title"><span data-lang="en">Students to understand the concert was conceived for them — not imposed on them</span><span data-lang="et">Tudengid mõistaksid, et kontsert kavandati nende jaoks — mitte ei pandud neile peale</span></div>
+        <div class="card-body"><span data-lang="en">This is the deepest interpretive gap. The director sees the concert as a gift; students experienced it as unpaid work. The mediator's job is not to decide who is right, but to make both framings visible to each other.</span><span data-lang="et">See on sügavaim tõlgenduslik lõhe. Direktor näeb kontserti kingitusena; tudengid kogesid seda tasustamata tööna. Vahendaja ülesanne ei ole otsustada, kes on õige, vaid muuta mõlemad raamistused üksteisele nähtavaks.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Complication for the meeting</span><span data-lang="et">Komplikatsioon koosolekuks</span></span>
+        <div class="card-title"><span data-lang="en">The "primarily students" framing directly contradicts what students say they were told</span><span data-lang="et">"Ennekõike tudengid" raamistamine läheb otseselt vastuollu sellega, mida tudengid väidavad neile öeldud olevat</span></div>
+        <div class="card-body"><span data-lang="en">This is the factual disagreement at the heart of the conflict. The mediator cannot resolve it — but can name it clearly: <em>"I'm hearing two different understandings of what was agreed at the start. Both of you experienced the same situation differently. Can we explore that without deciding who is right?"</em></span><span data-lang="et">See on faktilne erimeelsus konflikti südames. Vahendaja ei saa seda lahendada — kuid saab seda selgelt nimetada: <em>"Kuulen kahte erinevat arusaama sellest, milles alguses kokku lepiti. Te mõlemad kogenute sama olukorda erinevalt. Kas saame seda uurida, otsustamata, kes on õige?"</em></span></div>
+      </div>
+    </div>
+
+    <div id="director-both-sides" class="panel">
+      <p class="intro">
+        <span data-lang="en">Now there are three parties. How might students receive the director's email, and what new dynamic does his involvement create?</span>
+        <span data-lang="et">Nüüd on kolm osapoolt. Kuidas võivad tudengid direktori kirja vastu võtta ja millise uue dünaamika loob tema kaasamine?</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">New dynamic</span><span data-lang="et">Uus dünaamika</span></span>
+        <div class="card-title"><span data-lang="en">The power imbalance just increased</span><span data-lang="et">Võimutasakaalutus on suurenenud</span></div>
+        <div class="card-body"><span data-lang="en">The programme director joining the thread raises the institutional stakes. Students may feel increasingly outnumbered and that the system is closing ranks against them. The mediator should be alert to this dynamic and explicitly equalise speaking time and weight.</span><span data-lang="et">Programmijuhi liitumine tõstab institutsionaalseid panuseid. Tudengid võivad tunda end üha rohkem ülekaalus olevate ning et süsteem koondub nende vastu. Vahendaja peaks olema selle dünaamika suhtes valvas ja sõnaselgelt võrdsustama kõneaega ja kaalu.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Risk</span><span data-lang="et">Risk</span></span>
+        <div class="card-title"><span data-lang="en">Concert cancellation framed as consequence of students' attitude</span><span data-lang="et">Kontserdi ärajätmine raamistatud tudengite suhtumise tagajärjena</span></div>
+        <div class="card-body"><span data-lang="en">Students raised a legitimate concern. If they perceive the cancellation as a punishment for how they raised it, the underlying trust damage deepens. The mediator can reframe: <em>"The concert is on pause. That creates space for us to have this conversation properly. It wasn't an end — it's an opening."</em></span><span data-lang="et">Tudengid tõstatasid legitiimse mure. Kui nad tajuvad ärajätmist karistusena selle eest, kuidas nad seda tõstatasid, süveneb aluspõhine usaldusvigastus. Vahendaja saab ümber sõnastada: <em>"Kontsert on pausil. See loob ruumi, et saaksime selle vestluse korralikult pidada. See polnud lõpp — see on avamine."</em></span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Opportunity</span><span data-lang="et">Võimalus</span></span>
+        <div class="card-title"><span data-lang="en">The director's presence signals this matters at programme level</span><span data-lang="et">Direktori kohalolek annab märku, et see on oluline programmitasandil</span></div>
+        <div class="card-body"><span data-lang="en">His involvement — however defensive in tone — means the issue has reached the right level of authority to actually be resolved. The mediator can name this positively: having the programme director in the room is what makes a lasting agreement possible.</span><span data-lang="et">Tema kaasamine — olenemata tooni kaitsvusest — tähendab, et probleem on jõudnud õige autoriteedi tasemele, et tegelikult lahenduda. Vahendaja saab seda positiivselt nimetada: programmijuhi kohalolu ruumis on see, mis teeb püsiva kokkuleppe võimalikuks.</span></div>
+      </div>
+    </div>
+
+    <div id="director-facilitation" class="panel">
+      <p class="intro">
+        <span data-lang="en">With the director's email now in the picture, the facilitation approach needs to account for three voices, a power dynamic, and the deepest factual disagreement in the exchange.</span>
+        <span data-lang="et">Direktori kirja arvesse võttes peab vahendamise lähenemine arvestama kolme häält, võimudünaamikat ja kirjavahetuse sügavaimat faktilist erimeelsust.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Opening move</span><span data-lang="et">Avakäik</span></span>
+        <div class="card-title"><span data-lang="en">Name the power dynamic before it shapes the room</span><span data-lang="et">Nimeta võimudünaamika enne, kui see ruumi kujundab</span></div>
+        <div class="q-block"><span data-lang="en">"We have students and two senior staff members in this room. I want to name that, because it matters. Everyone here will have equal speaking time and equal weight. My job is to make sure that happens."</span><span data-lang="et">"Meil on selles ruumis tudengid ja kaks kõrgemat töötajat. Tahan seda nimetada, sest see on oluline. Kõigil siin on võrdne kõneaeg ja võrdne kaal. Minu ülesanne on tagada, et see nii oleks."</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Handle early</span><span data-lang="et">Käsitle varakult</span></span>
+        <div class="card-title"><span data-lang="en">The "gift vs. burden" framing — make both visible before choosing neither</span><span data-lang="et">"Kingitus vs. koorem" raamistamine — muuda mõlemad nähtavaks, valimata kumbagi</span></div>
+        <div class="q-block"><span data-lang="en">"I'm hearing two very different experiences of the same event. One side experienced the concert as an opportunity created for students. The other side experienced it as unexpected work that fell on a few people at the wrong time. I'd like both sides to hear each other's version before we talk about what should change."</span><span data-lang="et">"Kuulen sama sündmuse kahte väga erinevat kogemust. Üks pool koges kontserti võimalusena, mis loodi tudengite jaoks. Teine pool koges seda ootamatu tööna, mis langes mõnele inimesele vale ajal. Tahaksin, et mõlemad pooled kuuleksid üksteise versiooni enne, kui räägime sellest, mis peaks muutuma."</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">The central unresolved question</span><span data-lang="et">Keskne lahendamata küsimus</span></span>
+        <div class="card-title"><span data-lang="en">What was actually said at the opening meeting?</span><span data-lang="et">Mida avakoosolekul tegelikult öeldi?</span></div>
+        <div class="card-body"><span data-lang="en">Three emails and no one has directly addressed this. The director's email implicitly asserts students were always expected to lead — students assert the opposite. This needs to be named in the room:<br><br><em>"Three emails have now been exchanged and there is one question none of them has fully answered: what was communicated to students at the opening meeting about who would be responsible for the organisational side. I'd like to spend time on just this."</em></span><span data-lang="et">Kolm kirja ja keegi ei ole seda otseselt käsitlenud. Direktori kiri vihjab kaudselt, et tudengitelt oodati alati juhtimist — tudengid väidavad vastupidist. See vajab nimetamist ruumis:<br><br><em>"Nüüd on vahetatud kolm kirja ja on üks küsimus, millele ükski neist pole täielikult vastanud: mida kommunikeeriti tudengitele avakoosolekul korraldusliku vastutuse kohta. Tahaksin sellele ainult sellele aega pühendada."</em></span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Reframe the cancellation</span><span data-lang="et">Sõnasta ärajätmine ümber</span></span>
+        <div class="card-title"><span data-lang="en">Turn a potential grievance into a shared decision</span><span data-lang="et">Muuda potentsiaalne kaebus ühiseks otsuseks</span></div>
+        <div class="q-block"><span data-lang="en">"The concert is currently on pause — not cancelled as a punishment, but paused to give us the space to have this conversation. What would need to be true for it to happen in a way that feels right to everyone?"</span><span data-lang="et">"Kontsert on praegu pausil — mitte tühistatud karistusena, vaid pausil, et anda meile ruum selle vestluse pidamiseks. Mida oleks vaja, et see toimuks viisil, mis tundub kõigile õige?"</span></div>
+      </div>
+    </div>
+
+  </div><!-- /email-director -->
+
+
+  <!-- ===================== EMAIL 4: STUDENTS REPLY ===================== -->
+  <div class="email-section" id="email-students2">
+
+    <div id="students2-observations" class="panel active">
+      <p class="intro">
+        <span data-lang="en">A short email — but one of the most consequential in the exchange. Read carefully: what the students do here changes the entire situation.</span>
+        <span data-lang="et">Lühike kiri — kuid üks olulisemaid kirjavahetuses. Lugege hoolikalt: see, mida tudengid siin teevad, muudab kogu olukorda.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">The students say they do not want PEAK cancelled — that was never the goal</span><span data-lang="et">Tudengid ütlevad, et nad ei soovi PEAKi ärajätmist — see polnud kunagi eesmärk</span></div>
+        <div class="card-body"><span data-lang="en">This directly corrects a misreading of their first email. The staff interpreted the complaint as resistance to doing the work; the students experienced it as asking for fair support. Two different things.</span><span data-lang="et">See parandab otseselt nende esimese kirja väärtõlgenduse. Personal tõlgendas kaebust vastuseisuna töötegemisele; tudengid kogesid seda õiglase toetuse palumisena. Kaks erinevat asja.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">The students organised the event themselves and created a public Facebook event</span><span data-lang="et">Tudengid korraldasid ürituse ise ja lõid avaliku Facebooki sündmuse</span></div>
+        <div class="card-body"><span data-lang="en">They did not wait for institutional support. They acted. This is a significant move — they took the outcome they wanted and made it happen without the institution's help.</span><span data-lang="et">Nad ei oodanud institutsioonilist tuge. Nad tegutsesid. See on oluline samm — nad võtsid soovitud tulemuse ja panid selle toimuma ilma institutsiooni abita.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Subtext</span><span data-lang="et">Alltekst</span></span>
+        <div class="card-title"><span data-lang="en">"Selge" (Clear / Noted) — a single word that carries weight</span><span data-lang="et">"Selge" — üks sõna, mis kannab kaalu</span></div>
+        <div class="card-body"><span data-lang="en">Opening with "Selge" acknowledges the previous emails without engaging with their content. It signals: we have heard you, we are not going to debate this further, we are moving on. This is de-escalation and disengagement at the same time.</span><span data-lang="et">"Selge" avamisega tunnistatakse eelnevaid kirju nende sisuga tegelemata. See annab märku: oleme teid kuulnud, ei kavatse seda edasi arutada, liigume edasi. See on üheaegselt de-eskaleerimine ja lahtiühendamine.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">What this changes</span><span data-lang="et">Mida see muudab</span></span>
+        <div class="card-title"><span data-lang="en">The upcoming meeting is no longer about the concert — it is about the relationship</span><span data-lang="et">Tulev koosolek ei puuduta enam kontserti — see puudutab suhet</span></div>
+        <div class="card-body"><span data-lang="en">The practical problem has been solved — by the students, alone. What remains is the underlying question: can students raise concerns and be heard fairly? The meeting now needs to address that, not logistics.</span><span data-lang="et">Praktiline probleem on lahendatud — tudengite poolt, üksi. Alles jääb aluspõhine küsimus: kas tudengid saavad tõstatada muresid ja neid õiglaselt kuuldakse? Koosolek peab nüüd seda käsitlema, mitte logistikat.</span></div>
+      </div>
+    </div>
+
+    <div id="students2-feelings" class="panel">
+      <p class="intro">
+        <span data-lang="en">A short email often carries more feeling than a long one. What is underneath "Selge. Me ei soovi PEAKi ära jätta."?</span>
+        <span data-lang="et">Lühike kiri kannab sageli rohkem tunnet kui pikk. Mis on "Selge. Me ei soovi PEAKi ära jätta." taga?</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Resignation — dialogue did not feel productive</span><span data-lang="et">Resignatsioon — dialoog ei tundunud produktiivne</span></div>
+        <div class="card-body"><span data-lang="en">After three staff emails focused primarily on tone and framing rather than addressing the substance of their concerns, the students stopped trying to argue. "Selge" is not agreement — it is a quiet withdrawal from a conversation that wasn't going anywhere.</span><span data-lang="et">Pärast kolme töötaja kirja, mis keskendusid peamiselt toonile ja raamistamisele, mitte nende murede sisule, lõpetasid tudengid vaidlemise. "Selge" ei ole nõustumine — see on vaikne tagasitõmbumine vestlusest, mis ei liikunud kuhugi.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Agency and pride — we can do this ourselves</span><span data-lang="et">Toimetulek ja uhkus — saame ise hakkama</span></div>
+        <div class="card-body"><span data-lang="en">Creating the event independently is not just pragmatic — it is a statement. "We care about this enough to do it without you." There is genuine energy and ownership in that act.</span><span data-lang="et">Ürituse iseseisev loomine pole ainult pragmaatiline — see on avaldus. "Me hoolime sellest piisavalt, et teha seda ilma teita." Selles teos on tõeline energia ja omanditunne.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Some lingering hurt — the underlying concern was never acknowledged</span><span data-lang="et">Mõningane alles jääv valu — aluspõhist muret ei tunnistatud kunagi</span></div>
+        <div class="card-body"><span data-lang="en">The opening meeting promise, the feeling of being unsupported, the question of fairness — none of these were addressed in the staff replies. The students have moved on practically, but the relational wound is still open.</span><span data-lang="et">Avakoosoleku lubadus, toetuse puudumise tunne, õigluse küsimus — ühtegi neist ei käsitletud töötajate vastustes. Tudengid on praktiliselt edasi liikunud, kuid suhteline haav on endiselt lahtine.</span></div>
+      </div>
+    </div>
+
+    <div id="students2-needs" class="panel">
+      <p class="intro">
+        <span data-lang="en">What does this email tell us about what the students most need — now that the immediate situation has resolved?</span>
+        <span data-lang="et">Mida see kiri räägib sellest, mida tudengid kõige rohkem vajavad — nüüd, kui vahetu olukord on lahenenud?</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">To be understood — not just heard</span><span data-lang="et">Mõistetud olema — mitte ainult kuuldud</span></div>
+        <div class="card-body"><span data-lang="en">The first email was a clear statement of concerns. The staff replies addressed the tone, not the substance. The students' deepest need — to have their experience of unfairness recognised — was never met. The meeting is the last chance to do that.</span><span data-lang="et">Esimene kiri oli selge murede avaldus. Töötajate vastused käsitlesid tooni, mitte sisu. Tudengite sügavaim vajadus — et nende ebaõigluse kogemust tunnustataks — ei ole kunagi rahuldatud. Koosolek on viimane võimalus seda teha.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">Autonomy and self-determination</span><span data-lang="et">Autonoomia ja enesemääramine</span></div>
+        <div class="card-body"><span data-lang="en">They solved the problem themselves. This reflects a need to have agency over their work and their programme — not to be passive recipients of institutional decisions.</span><span data-lang="et">Nad lahendasid probleemi ise. See peegeldab vajadust omada kontrolli oma töö ja eriala üle — mitte olla passiivsed institutsionaalsete otsuste vastuvõtjad.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">A functional relationship with the institution going forward</span><span data-lang="et">Toimiv suhe institutsiooniga edaspidi</span></div>
+        <div class="card-body"><span data-lang="en">The invitation "olete oodatud" (you are welcome) at the end is an open hand. Despite everything, they are still inviting the staff. This is a gesture of continued goodwill that should be named and received in the meeting.</span><span data-lang="et">"Olete oodatud" lõpus on avatud käsi. Hoolimata kõigest, kutsuvad nad personali ikka veel. See on jätkuva hea tahte žest, mida tuleks koosolekul nimetada ja vastu võtta.</span></div>
+      </div>
+    </div>
+
+    <div id="students2-requests" class="panel">
+      <p class="intro">
+        <span data-lang="en">This email makes no explicit requests — which is itself meaningful. What does the mediator need to surface from it?</span>
+        <span data-lang="et">See kiri ei esita ühtegi selget palvet — mis on iseenesest tähenduslik. Mida peab vahendaja sellest esile tooma?</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">What the mediator needs to name</span><span data-lang="et">Mida vahendaja peab nimetama</span></span>
+        <div class="card-title"><span data-lang="en">Correct the misreading — the first email was not a refusal to work</span><span data-lang="et">Parandada väärtõlgendus — esimene kiri ei olnud keeldumine töötamisest</span></div>
+        <div class="card-body"><span data-lang="en">Both staff replies treated the first email as if the students were refusing to participate. This email proves that wrong. The mediator can name it: <em>"I want to make sure we all start from the same understanding: the students organised PEAK themselves. The first email was not a refusal — it was a request for support. Can we acknowledge that?"</em></span><span data-lang="et">Mõlemad töötajate vastused kohtlesid esimest kirja, nagu oleksid tudengid keeldunud osalemast. See kiri tõestab vastupidist. Vahendaja saab seda nimetada: <em>"Tahan veenduda, et alustame kõik samast arusaamast: tudengid korraldasid PEAKi ise. Esimene kiri ei olnud keeldumine — see oli toetuse palve. Kas saame seda tunnustada?"</em></span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">What the mediator needs to surface</span><span data-lang="et">Mida vahendaja peab esile tooma</span></span>
+        <div class="card-title"><span data-lang="en">The invitation "olete oodatud" — receive it</span><span data-lang="et">"Olete oodatud" — võtke see vastu</span></div>
+        <div class="card-body"><span data-lang="en">After a difficult exchange, the students still invited the staff to their event. This is a significant gesture of goodwill that can anchor the meeting's close: <em>"The students organised this themselves and still invited everyone here. That tells me something about who they are. I'd like the staff side to acknowledge that gesture."</em></span><span data-lang="et">Pärast rasket kirjavahetust kutsusid tudengid personali ikka veel oma üritusele. See on oluline hea tahte žest, mis võib ankurdada koosoleku lõpu: <em>"Tudengid korraldasid selle ise ja kutsusid ikka veel kõiki siia. See räägib mulle midagi selle kohta, kes nad on. Tahaksin, et töötajate pool tunnustaks seda žesti."</em></span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">The real agenda for the meeting</span><span data-lang="et">Koosoleku tegelik päevakord</span></span>
+        <div class="card-title"><span data-lang="en">The practical problem is solved. What remains is the relational one.</span><span data-lang="et">Praktiline probleem on lahendatud. Alles on suhteline.</span></div>
+        <div class="card-body"><span data-lang="en">The meeting is no longer a crisis intervention about a concert. It is a relationship repair conversation: can this institution and these students trust each other? Can concerns be raised without the tone becoming the story? That is what tomorrow is really about.</span><span data-lang="et">Koosolek ei ole enam kriisisekkumine seoses kontserdiga. See on suhte parandamise vestlus: kas see institutsioon ja need tudengid saavad üksteist usaldada? Kas muresid saab tõstatada ilma toonist saama loo? See on see, millest homme tegelikult räägib.</span></div>
+      </div>
+    </div>
+
+    <div id="students2-both-sides" class="panel">
+      <p class="intro">
+        <span data-lang="en">How might the staff receive this email — and what new dynamic does it create going into the meeting?</span>
+        <span data-lang="et">Kuidas võib personal seda kirja vastu võtta — ja millise uue dünaamika see loob koosolekule minnes?</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Positive signal for staff</span><span data-lang="et">Positiivne märk personali jaoks</span></div>
+        <div class="card-title"><span data-lang="en">The students proved they can and will do the work</span><span data-lang="et">Tudengid tõestasid, et suudavad ja tahavad tööd teha</span></div>
+        <div class="card-body"><span data-lang="en">Any staff member who doubted students' commitment has now seen the opposite. They organised without being asked. This should make it easier for staff to move from a defensive posture to a collaborative one.</span><span data-lang="et">Iga töötaja, kes kahtles tudengite pühendumuses, on nüüd näinud vastupidist. Nad korraldasid ilma palumata. See peaks lihtsustama personali liikumist kaitsvalt positsioonilt koostöölisele.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Risk for staff</span><span data-lang="et">Risk personali jaoks</span></div>
+        <div class="card-title"><span data-lang="en">If the meeting is now seen as unnecessary, the underlying issues stay unresolved</span><span data-lang="et">Kui koosolekut peetakse nüüd tarbetuks, jäävad aluspõhised probleemid lahendamata</span></div>
+        <div class="card-body"><span data-lang="en">The temptation for staff may be: the crisis is over, the concert is happening, we can move on. But the structural question — who is responsible for what, and was a promise broken — is still unanswered. Without addressing it, the same situation recurs next year.</span><span data-lang="et">Personali jaoks võib tekkida kiusatus: kriis on möödas, kontsert toimub, saame edasi liikuda. Kuid struktuuriline küsimus — kes mille eest vastutab ja kas lubadus rikuti — on endiselt vastamata. Seda käsitlemata kordub sama olukord järgmisel aastal.</span></div>
+      </div>
+      
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">The invitation changes the emotional register</span><span data-lang="et">Kutse muudab emotsionaalset registrit</span></div>
+        <div class="card-title"><span data-lang="en">"Olete oodatud" is a de-escalation — meet it with one</span><span data-lang="et">"Olete oodatud" on de-eskaleerimine — vastake sellele samaga</span></div>
+        <div class="card-body"><span data-lang="en">The students ended four emails of tension with an open door. If staff acknowledge this in the meeting, it resets the emotional baseline. If they don't, the students will notice.</span><span data-lang="et">Tudengid lõpetasid nelja kirja pinge avatud uksega. Kui personal tunnustab seda koosolekul, lähtestab see emotsionaalse algtaseme. Kui ei tunne, märkavad tudengid seda.</span></div>
+      </div>
+    </div>
+
+    <div id="students2-facilitation" class="panel">
+      <p class="intro">
+        <span data-lang="en">This email reframes the entire meeting. Here is what changes in the facilitation approach.</span>
+        <span data-lang="et">See kiri sõnastab kogu koosoleku ümber. Siin on see, mis vahendamise lähenemises muutub.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">New opening</span><span data-lang="et">Uus avamine</span></span>
+        <div class="card-title"><span data-lang="en">Start with what has already happened — not the conflict</span><span data-lang="et">Alusta sellega, mis on juba juhtunud — mitte konfliktiga</span></div>
+        <div class="q-block"><span data-lang="en">"Before we look back, I want to name what's happened since the first email: the students organised PEAK themselves, and they invited everyone in this room to come. That's where we are. The concert is happening. So today isn't about a crisis — it's about making sure we understand each other well enough that this doesn't need to happen again."</span><span data-lang="et">"Enne tagasivaatamist tahan nimetada, mis on esimesest kirjast saadik juhtunud: tudengid korraldasid PEAKi ise ja kutsusid kõik selles ruumis olevad inimesed tulema. Seal me oleme. Kontsert toimub. Seega pole täna tegemist kriisiga — vaid sellega, et mõistame üksteist piisavalt hästi, et seda ei peaks uuesti juhtuma."</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Early anchor</span><span data-lang="et">Varajane ankur</span></span>
+        <div class="card-title"><span data-lang="en">Correct the misreading in the room</span><span data-lang="et">Paranda väärtõlgendus ruumis</span></div>
+        <div class="q-block"><span data-lang="en">"One thing I want us all to share the same understanding on: the first email was not a refusal to do the work. The students went ahead and did it. It was a request — for support, for clarity, for fairness. Is that a fair reading of it?"</span><span data-lang="et">"Üks asi, milles tahan, et meil kõigil oleks sama arusaam: esimene kiri ei olnud keeldumine töötegemisest. Tudengid läksid edasi ja tegid seda. See oli palve — toetuse, selguse, õigluse järele. Kas see on õiglane lugemine?"</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Still essential</span><span data-lang="et">Endiselt oluline</span></span>
+        <div class="card-title"><span data-lang="en">The opening meeting promise — still unaddressed after four emails</span><span data-lang="et">Avakoosoleku lubadus — endiselt käsitlemata pärast nelja kirja</span></div>
+        <div class="card-body"><span data-lang="en">The concert happening doesn't resolve this. If it goes unaddressed again, the same structural ambiguity will produce the same conflict next year. The mediator must bring it into the room even if both sides are tempted to skip it now that the immediate tension has passed.</span><span data-lang="et">Kontserdi toimumine ei lahenda seda. Kui see jääb taas käsitlemata, tekitab sama struktuurne ebaselgus järgmisel aastal sama konflikti. Vahendaja peab selle ruumi tooma, isegi kui mõlemad pooled on kiusatuses seda vahele jätta, nüüd kui vahetu pinge on möödunud.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Closing gift</span><span data-lang="et">Lõpetamise kingitus</span></span>
+        <div class="card-title"><span data-lang="en">End by receiving the invitation</span><span data-lang="et">Lõpeta kutse vastuvõtmisega</span></div>
+        <div class="q-block"><span data-lang="en">"The last line of the last email was: you are welcome. After everything. I think that says something important. Before we leave, I'd like each side to say one thing they're taking from this conversation — and then I hope some of you will go to PEAK."</span><span data-lang="et">"Viimase kirja viimane rida oli: olete oodatud. Pärast kõike seda. Ma arvan, et see ütleb midagi olulist. Enne lahkumist tahaksin, et kumbki pool ütleks ühe asja, mida nad sellest vestlusest kaasa võtavad — ja siis loodan, et mõned teist lähevad PEAKile."</span></div>
+      </div>
+    </div>
+
+  </div><!-- /email-students2 -->
+
+
+  <!-- ===================== EMAIL 5: SECOND TEACHER (STEN-OLLE) ===================== -->
+  <div class="email-section" id="email-teacher2">
+
+    <div id="teacher2-observations" class="panel active">
+      <p class="intro">
+        <span data-lang="en">This is the most detailed and emotionally complex email in the exchange. It contains genuine clarity, a personal philosophy, a veiled ultimatum — and one sentence that will need careful handling in the room.</span>
+        <span data-lang="et">See on kirjavahetuse kõige detailsem ja emotsionaalselt keerukam kiri. See sisaldab tõelist selgust, isiklikku filosoofiat, varjatud ultimaatumit — ja ühte lauset, mis vajab ruumis hoolikat käsitlemist.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">PEAK was created by this teacher for his own course — others joined because it seemed like a good idea</span><span data-lang="et">PEAKi lõi see õppejõud oma kursuse jaoks — teised liitusid, kuna tundus hea mõte</span></div>
+        <div class="card-body"><span data-lang="en">This is important context that was never shared before. The event was never conceived as a formal institutional production — it was a low-key initiative that grew. Students may not have known this.</span><span data-lang="et">See on oluline kontekst, mida varem ei jagatud. Üritust ei kavandatud kunagi formaalse institutsioonilise produktsioonina — see oli vaikne algatus, mis kasvas. Tudengid ei pruukinud seda teada.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">The purpose of PEAK is different from MADE — producers experiencing music-making, not a showcase</span><span data-lang="et">PEAKi eesmärk erineb MADEst — produtsendid kogevad muusikategemist, mitte esitlust</span></div>
+        <div class="card-body"><span data-lang="en">He grades on progress in class, not on the performance. This is a significant pedagogical clarification that students may not have fully understood. It also undermines the comparison students made to MADE.</span><span data-lang="et">Ta hindab tunnis tehtud progressi, mitte esinemist. See on oluline pedagoogiline selgitus, mida tudengid ei pruukinud täielikult mõista. See õõnestab ka tudengite poolt MADEga tehtud võrdlust.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-obs"><span data-lang="en">Fact</span><span data-lang="et">Fakt</span></span>
+        <div class="card-title"><span data-lang="en">The only two things actually needed: someone at the mixing desk, and a room booking</span><span data-lang="et">Ainsad kaks vajalikku asja: keegi puldil ja ruumibroneerimig</span></div>
+        <div class="card-body"><span data-lang="en">This is concrete and clarifying. The teacher frames the organisational requirements as minimal — a single student at the desk, a booking. This directly addresses the students' complaint about burden, though it may feel dismissive of the work they actually did.</span><span data-lang="et">See on konkreetne ja selgitav. Õppejõud raamistab korralduslikud nõuded minimaalsena — üks tudeng puldil, broneerimine. See käsitleb otseselt tudengite kaebust koormuse kohta, kuigi see võib tunduda nende tegeliku töö eiramisena.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Diagnosis</span><span data-lang="et">Diagnoos</span></span>
+        <div class="card-title"><span data-lang="en">"Someone took our simple concept, confused it with MADE, and then got irritated"</span><span data-lang="et">"Keegi võttis meie lihtsa kontseptsiooni, ajas selle segamini MADEga ja siis ärritus"</span></div>
+        <div class="card-body"><span data-lang="en">This is his reading of the entire conflict. It may be partially correct — but it is also a dismissal of the students' experience. It attributes the conflict to a misunderstanding rather than to a real failure of communication. In the mediation, both things can be true at once.</span><span data-lang="et">See on tema lugemine kogu konfliktist. See võib olla osaliselt õige — kuid see on ka tudengite kogemuse eiramine. See omistab konflikti arusaamatusele, mitte tegelikule kommunikatsioonipuudusele. Vahendamises võivad mõlemad asjad korraga tõsi olla.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">The sentence that needs careful handling</span><span data-lang="et">Lause, mis vajab hoolikat käsitlemist</span></div>
+        <div class="card-title"><span data-lang="en">"If a music maker can't run such a simple concert without an external organiser, it's not possible to survive as a musician"</span><span data-lang="et">"Kui muusikategija ise nii lihtsat kontserti läbi ei suuda viia ilma kõrvalise korraldajata, siis ei ole võimalik muusikuna ka ellu jääda"</span></div>
+        <div class="card-body"><span data-lang="en">This will likely have landed as a direct personal criticism of the students' professional competence. Even framed as general advice from a freelance musician, students will hear: "you are not capable enough." This is the most inflammatory sentence in the entire exchange and the one most likely to resurface in the meeting room.</span><span data-lang="et">See maandus tõenäoliselt tudengite professionaalse pädevuse otsese isikliku kriitikana. Isegi kui see on raamistatud üldise nõuandena vabakutseliselt muusikult, kuulevad tudengid: "te pole piisavalt võimekad." See on kogu kirjavahetuse kõige põletavam lause ja tõenäoliselt koosolekuruumis uuesti esile kerkiv.</span></div>
+      </div>
+    </div>
+
+    <div id="teacher2-feelings" class="panel">
+      <p class="intro">
+        <span data-lang="en">The tone is more open than the other staff emails — but the feelings underneath are no less complex.</span>
+        <span data-lang="et">Toon on avatavam kui teiste töötajate kirjades — kuid alltunded ei ole vähem keerulised.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Hurt and unrecognised</span><span data-lang="et">Haavatud ja tunnustamata</span></div>
+        <div class="card-body"><span data-lang="en">"No one deserved this." He created something for students out of goodwill. Having that met with a public complaint about overwork feels like ingratitude — even if that wasn't the students' intent.</span><span data-lang="et">"Keegi meist ei ole seda välja teeninud." Ta lõi midagi tudengite heaks heast tahtest. Selle kohtamine avaliku kaebusega ületöötamise kohta tundub tänamatusena — isegi kui see polnud tudengite kavatsus.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Reluctant — willing but conditional</span><span data-lang="et">Vastumeelne — valmis, kuid tingimuslikult</span></div>
+        <div class="card-body"><span data-lang="en">"If the other staff members feel we should turn the other cheek, I am currently willing to be present." The word "currently" (hetkel) is significant — his willingness is fragile and time-limited. He is making an effort, but the effort has conditions.</span><span data-lang="et">"Kui teised töötajad tunnevad, et siiski keerame teise põse, siis mina olen hetkel valmis veel olema olemas." Sõna "hetkel" on märkimisväärne — tema valmisolek on habras ja ajaliselt piiratud. Ta teeb pingutust, kuid pingutustel on tingimused.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Genuinely trying to bridge — "we are not your enemies"</span><span data-lang="et">Siiralt püüab silda ehitada — "me ei ole teie vaenlased"</span></div>
+        <div class="card-body"><span data-lang="en">Despite the criticism, he ends with an invitation for human conversation and explicitly names goodwill. This is real — and it mirrors the students' "olete oodatud." Both sides are holding the door open.</span><span data-lang="et">Vaatamata kriitikale lõpetab ta kutsega inimlikule vestlusele ja nimetab sõnaselgelt head tahet. See on tõeline — ja peegeldab tudengite "olete oodatud." Mõlemad pooled hoiavad ust lahti.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-feel"><span data-lang="en">Likely feeling</span><span data-lang="et">Tõenäoline tunne</span></span>
+        <div class="card-title"><span data-lang="en">Pride in his professional philosophy — and frustration that it isn't shared</span><span data-lang="et">Uhkus oma professionaalse filosoofia üle — ja frustratsioon, et seda ei jagata</span></div>
+        <div class="card-body"><span data-lang="en">The "survive as a musician" statement comes from a place of genuine professional conviction. He believes self-sufficiency is a core skill. But conviction delivered as criticism lands as judgment.</span><span data-lang="et">"Muusikuna ellu jääda" väide tuleb tõelise professionaalse veendumuse kohast. Ta usub, et iseseisvus on põhioskus. Kuid kriitikana edastatud veendumus maandub hinnanguna.</span></div>
+      </div>
+    </div>
+
+    <div id="teacher2-needs" class="panel">
+      <p class="intro">
+        <span data-lang="en">What universal needs are driving this email — behind both the criticism and the goodwill?</span>
+        <span data-lang="et">Millised universaalsed vajadused juhivad seda kirja — nii kriitika kui hea tahte taga?</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">Recognition that he created something valuable for students</span><span data-lang="et">Tunnustus, et ta lõi tudengitele midagi väärtusliku</span></div>
+        <div class="card-body"><span data-lang="en">PEAK was his initiative, designed around student needs. He needs that goodwill to be seen — not obscured by a complaint about workload.</span><span data-lang="et">PEAK oli tema algatus, kavandatud tudengite vajaduste ümber. Ta vajab, et seda head tahet nähtaks — mitte varjataks töökoormuse kaebuse taha.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">The concept to be understood on its own terms — not compared to MADE</span><span data-lang="et">Kontseptsiooni mõistmine omaette — mitte MADEga võrdlemisel</span></div>
+        <div class="card-body"><span data-lang="en">The MADE comparison is the source of much of the conflict. PEAK was never meant to be that kind of event. He needs this distinction to be heard and accepted.</span><span data-lang="et">MADE võrdlus on suur osa konfliktist. PEAK ei olnud kunagi mõeldud sellist tüüpi ürituseks. Ta vajab, et seda eristust kuuldaks ja aktsepteeritaks.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">Students who engage as emerging professionals, not as consumers of services</span><span data-lang="et">Tudengid, kes kaasatuvad kui arengevad professionaalid, mitte teenuste tarbijatena</span></div>
+        <div class="card-body"><span data-lang="en">The "survive as a musician" statement is a distorted expression of this need. He wants students to develop the self-sufficiency that professional life will require. The need is legitimate — the way it was expressed is not.</span><span data-lang="et">"Muusikuna ellu jääda" väide on selle vajaduse moonutatud väljendus. Ta soovib, et tudengid arendaksid iseseisvust, mida professionaalne elu nõuab. Vajadus on legitiimne — viis, kuidas seda väljendati, ei ole.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-need"><span data-lang="en">Need</span><span data-lang="et">Vajadus</span></span>
+        <div class="card-title"><span data-lang="en">A human conversation — not an institutional complaint process</span><span data-lang="et">Inimlik vestlus — mitte institutsionaalne kaebuste protsess</span></div>
+        <div class="card-body"><span data-lang="en">"Such talk can certainly be had in a much more human way." He is asking for directness and warmth, not formal procedures. This is actually aligned with what the students originally wanted — to be taken seriously as people, not processed as a complaint.</span><span data-lang="et">"Sellist juttu saab aga kindlasti märksa inimlikumalt vestelda." Ta palub otsekohesust ja soojust, mitte formaalseid protseduure. See on tegelikult kooskõlas sellega, mida tudengid algselt tahtsid — et neid võetaks tõsiselt inimestena, mitte töödeldaks kaebusena.</span></div>
+      </div>
+    </div>
+
+    <div id="teacher2-requests" class="panel">
+      <p class="intro">
+        <span data-lang="en">What is this email implicitly asking for — and what does the mediator need to handle before the meeting starts?</span>
+        <span data-lang="et">Mida see kiri varjatult palub — ja mida peab vahendaja enne koosoleku algust käsitlema?</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">Implicit ask</span><span data-lang="et">Varjatud palve</span></span>
+        <div class="card-title"><span data-lang="en">Acknowledgement that PEAK was created for students — out of goodwill</span><span data-lang="et">Tunnustus, et PEAK loodi tudengite jaoks — heast tahtest</span></div>
+        <div class="card-body"><span data-lang="en">The mediator can invite this early: <em>"Before we go into what happened, I'd like to ask: did anyone know before today why PEAK was created and by whom? Can we spend a moment on that?"</em></span><span data-lang="et">Vahendaja saab seda varakult kutsuda: <em>"Enne kui räägime sellest, mis juhtus, tahaksin küsida: kas keegi teadis enne tänast, miks PEAK loodi ja kelle poolt? Kas saame sellele hetke pühendada?"</em></span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-req"><span data-lang="en">Implicit ask</span><span data-lang="et">Varjatud palve</span></span>
+        <div class="card-title"><span data-lang="en">The MADE comparison to be withdrawn or clarified</span><span data-lang="et">MADE võrdlus tagasi võetaks või selgitataks</span></div>
+        <div class="card-body"><span data-lang="en">Students asked "why do MADE performers not have to organise their own exam?" — drawing a direct parallel. This email explains why the parallel doesn't hold. The mediator can help both sides understand the distinction without asking the students to concede they were wrong.</span><span data-lang="et">Tudengid küsisid "miks MADE esinejad ei pea oma eksamit ise korraldama?" — tehes otsese paralleeli. See kiri selgitab, miks paralleel ei kehti. Vahendaja saab aidata mõlemal poolel eristust mõista, ilma et paluda tudengitel tunnistada eksimust.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Must be addressed</span><span data-lang="et">Tuleb käsitleda</span></span>
+        <div class="card-title"><span data-lang="en">The "survive as a musician" sentence — address it before it poisons the room</span><span data-lang="et">"Muusikuna ellu jääda" lause — käsitle seda enne, kui see ruumi mürgitab</span></div>
+        <div class="card-body"><span data-lang="en">This will be present in the room whether named or not. Better to name it: <em>"There was one line in the last email I want to acknowledge before we start — the comment about surviving as a musician. I imagine that landed differently for different people. Can we agree that today we're here as colleagues and students, not to assess anyone's professional future?"</em></span><span data-lang="et">See on ruumis kohal, kas nimetatuna või mitte. Parem on see nimetada: <em>"Viimases kirjas oli üks rida, mida tahan enne algust tunnustada — kommentaar muusikuna ellujäämise kohta. Arvan, et see maandus erinevate inimeste jaoks erinevalt. Kas saame kokku leppida, et täna oleme siin kolleegide ja tudengitena, mitte hindamas kellegi professionaalset tulevikku?"</em></span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Gift for the mediator</span><span data-lang="et">Kingitus vahendajale</span></span>
+        <div class="card-title"><span data-lang="en">"We are not your enemies" — use this</span><span data-lang="et">"Me ei ole teie vaenlased" — kasuta seda</span></div>
+        <div class="card-body"><span data-lang="en">This line, alongside "olete oodatud" from the students, gives the mediator two open hands to work with. Open the meeting by placing both in the room: both sides have signalled they want a human conversation. Hold them to that.</span><span data-lang="et">See rida koos tudengite "olete oodatud" annab vahendajale kaks avatud kätt, millega töötada. Ava koosolek, asetades mõlemad ruumi: mõlemad pooled on andnud märku, et soovivad inimlikku vestlust. Hoia neid sellest kinni.</span></div>
+      </div>
+    </div>
+
+    <div id="teacher2-both-sides" class="panel">
+      <p class="intro">
+        <span data-lang="en">How will students receive this email — and how does it change the picture of staff as a united front?</span>
+        <span data-lang="et">Kuidas võtavad tudengid selle kirja vastu — ja kuidas muudab see pilti personalist ühtsena?</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Clarifying</span><span data-lang="et">Selgitav</span></span>
+        <div class="card-title"><span data-lang="en">Students finally get an explanation of what PEAK actually is</span><span data-lang="et">Tudengid saavad lõpuks selgituse, mis PEAK tegelikult on</span></div>
+        <div class="card-body"><span data-lang="en">If students genuinely didn't know the event was informally conceived, low-stakes, and graded on participation not performance, this email may land as illuminating. Some of their frustration may dissolve — but only if they feel the information was withheld, not weaponised.</span><span data-lang="et">Kui tudengid tõepoolest ei teadnud, et üritus oli mitteametlikult kavandatud, madala panusega ja hinnatud osalemise, mitte esituse eest, võib see kiri maanduda valgustava. Osa nende frustratsioonist võib hajuda — kuid ainult siis, kui nad tunnevad, et teavet peeti kinni, mitte ei kasutata relvana.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">What will sting</span><span data-lang="et">Mis läheb haiget</span></span>
+        <div class="card-title"><span data-lang="en">Being told they confused a simple concept and then complained</span><span data-lang="et">Neile öeldakse, et nad ajasid lihtsa kontseptsiooni segamini ja siis kaebdasid</span></div>
+        <div class="card-body"><span data-lang="en">The diagnosis — "someone confused our concept with MADE" — attributes the conflict entirely to the students. It does not acknowledge that the concept was never clearly communicated to them. Students will likely hear this as blame.</span><span data-lang="et">Diagnoos — "keegi ajas meie kontseptsiooni MADEga segamini" — omistab konflikti täielikult tudengitele. See ei tunnista, et kontseptsiooni ei kommunikeeritud neile kunagi selgelt. Tudengid kuulevad seda tõenäoliselt süüna.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">The professional competence comment</span><span data-lang="et">Professionaalse pädevuse kommentaar</span></span>
+        <div class="card-title"><span data-lang="en">Students asked for fair support — they were told they need it to survive professionally</span><span data-lang="et">Tudengid palusid õiglast tuge — neile öeldi, et nad vajavad seda professionaalselt ellujäämiseks</span></div>
+        <div class="card-body"><span data-lang="en">This is the line most likely to cause a rupture in the meeting. It conflates asking for institutional support with lacking professional capability — two entirely different things. The mediator must separate them cleanly.</span><span data-lang="et">See on rida, mis tõenäoliselt põhjustab koosolekul lõhe. See samastab institutsionaalse toe taotlemist professionaalse võimekuse puudumisega — kaks täiesti erinevat asja. Vahendaja peab need selgelt eraldama.</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Staff is not a monolith</span><span data-lang="et">Personal ei ole monoliit</span></span>
+        <div class="card-title"><span data-lang="en">Three staff members, three different tones — this is actually useful</span><span data-lang="et">Kolm töötajat, kolm erinevat tooni — see on tegelikult kasulik</span></div>
+        <div class="card-body"><span data-lang="en">The first teacher acknowledged institutional failure. The director defended the institution. This teacher explains the concept and extends a human hand. The mediator can work with the differences — they prevent the room from becoming students vs. staff.</span><span data-lang="et">Esimene õppejõud tunnistas institutsionaalset ebaõnnestumist. Direktor kaitses institutsiooni. See õppejõud selgitab kontseptsiooni ja ulatab inimlikku kätt. Vahendaja saab erinevustega töötada — need hoiavad ära ruumi muutumise tudengid vs. personal.</span></div>
+      </div>
+    </div>
+
+    <div id="teacher2-facilitation" class="panel">
+      <p class="intro">
+        <span data-lang="en">This email adds both the most useful clarity and the most dangerous sentence in the exchange. Here is how to use the first and defuse the second.</span>
+        <span data-lang="et">See kiri lisab nii kõige kasulikuma selguse kui ka kirjavahetuse kõige ohtlikuma lause. Siin on, kuidas esimest kasutada ja teist leevendada.</span>
+      </p>
+      <div class="card">
+        <span class="badge badge-tension"><span data-lang="en">Do first</span><span data-lang="et">Tee kõigepealt</span></span>
+        <div class="card-title"><span data-lang="en">Defuse the "survive as a musician" sentence before the meeting starts</span><span data-lang="et">Leevendage "muusikuna ellu jääda" lauset enne koosoleku algust</span></div>
+        <div class="q-block"><span data-lang="en">"Before we begin, I want to acknowledge one sentence from the last email — the comment about surviving as a musician. I'm sure it came from a place of genuine professional belief. And I also think it may have landed as a comment on the students' competence. Can we agree, before anything else, that today we're here as colleagues — not to evaluate anyone's professional future? That's not what this conversation is for."</span><span data-lang="et">"Enne kui alustame, tahan tunnustada ühte lauset viimasest kirjast — kommentaari muusikuna ellujäämise kohta. Olen kindel, et see tuli tõelise professionaalse veendumuse kohast. Ja arvan ka, et see võis maanduda kommentaarina tudengite pädevusele. Kas saame enne kõike muud kokku leppida, et täna oleme siin kolleegidena — mitte hindamas kellegi professionaalset tulevikku? See pole see, mille jaoks see vestlus on."</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Use early</span><span data-lang="et">Kasuta varakult</span></span>
+        <div class="card-title"><span data-lang="en">Open with the origin of PEAK — most people in the room may not know it</span><span data-lang="et">Ava PEAKi päritoluga — enamik ruumis olevatest inimestest ei pruugi seda teada</span></div>
+        <div class="q-block"><span data-lang="en">"I'd like to start with something practical: can someone explain what PEAK actually is — who created it, why, and what it's for? I want to make sure we're all working from the same understanding before we talk about what went wrong."</span><span data-lang="et">"Tahaksin alustada millegi praktilisega: kas keegi saab selgitada, mis PEAK tegelikult on — kes selle lõi, miks ja milleks? Tahan veenduda, et me kõik töötame samast arusaamast enne, kui räägime sellest, mis läks valesti."</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">The reframe that unlocks the conflict</span><span data-lang="et">Ümbersõnastus, mis avab konflikti</span></span>
+        <div class="card-title"><span data-lang="en">Separate "asking for support" from "lacking professional capability"</span><span data-lang="et">Eralda "toetuse taotlemine" "professionaalse võimekuse puudumisest"</span></div>
+        <div class="q-block"><span data-lang="en">"I want to name a distinction that I think matters here. Asking for institutional support — for clarity about who is responsible for what — is not the same as being unable to manage an event. The students went ahead and ran PEAK themselves. The question was never 'can they do it' — it was 'whose job is it.' Can we hold that distinction?"</span><span data-lang="et">"Tahan nimetada eristust, mis on siin oluline. Institutsionaalse toe taotlemine — selguse saamine selle kohta, kes mille eest vastutab — ei ole sama, mis võimetus üritust korraldada. Tudengid läksid edasi ja korraldasid PEAKi ise. Küsimus ei olnud kunagi 'kas nad suudavad' — vaid 'kelle töö see on.' Kas saame seda eristust hoida?"</span></div>
+      </div>
+      <div class="card">
+        <span class="badge badge-ok"><span data-lang="en">Use to close</span><span data-lang="et">Kasuta lõpetamiseks</span></span>
+        <div class="card-title"><span data-lang="en">Place both open hands in the room — "we are not your enemies" and "olete oodatud"</span><span data-lang="et">Aseta mõlemad avatud käed ruumi — "me ei ole teie vaenlased" ja "olete oodatud"</span></div>
+        <div class="q-block"><span data-lang="en">"I want to end with two things that were said in this exchange. The students said: you are welcome. The teacher said: we are not your enemies. Both sides held the door open — through all of it. That's the foundation. Let's not waste it."</span><span data-lang="et">"Tahan lõpetada kahe asjaga, mis selles kirjavahetuses öeldi. Tudengid ütlesid: olete oodatud. Õppejõud ütles: me ei ole teie vaenlased. Mõlemad pooled hoidsid ust lahti — läbi kõige selle. See on alus. Ärme raisake seda."</span></div>
+      </div>
+    </div>
+
+  </div><!-- /email-teacher2 -->
+
+
+  <!-- ===================== MY ROLE SECTION ===================== -->
+  <div class="email-section" id="email-myrole">
+    <div style="background:var(--accent-light);border-left:3px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:.75rem 1rem;margin-bottom:1.5rem;font-size:.875rem;color:var(--accent-text);line-height:1.65;font-family:'Lora',serif;font-style:italic;">
+      <span data-lang="en">You are a participant in this meeting, not a neutral mediator. NVC for participants is different — it means managing your own reactions in real time, speaking from your own experience, and staying connected to what you actually need. These are practical tools for tomorrow.</span>
+      <span data-lang="et">Sa oled selle koosoleku osaleja, mitte neutraalne vahendaja. NVC osalejatele on erinev — see tähendab oma reaktsioonide haldamist reaalajas, oma kogemusest rääkimist ja ühenduse hoidmist sellega, mida sa tegelikult vajad. Need on praktilised tööriistad homseks.</span>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span data-lang="en">Before you walk in</span><span data-lang="et">Enne sisenemist</span></div>
+      <div class="card-title"><span data-lang="en">Know your own needs first</span><span data-lang="et">Tea kõigepealt oma vajadusi</span></div>
+      <div class="card-body">
+        <span data-lang="en">NVC starts with yourself. Before the meeting, take two minutes to answer honestly:<br><br>
+        <strong>What do I feel going in?</strong> (Anxious? Protective of the students? Tired of the tension?)<br><br>
+        <strong>What do I need from this meeting?</strong> (Resolution? To be heard? A better relationship going forward?)<br><br>
+        <strong>What am I afraid might happen?</strong><br><br>
+        Knowing your own starting point makes it much harder to be swept along by the room's emotion.</span>
+        <span data-lang="et">NVC algab sinust endast. Enne koosolekut võta kaks minutit ja vasta ausalt:<br><br>
+        <strong>Mida ma tunnen minnes?</strong> (Ärevust? Tudengite kaitsmise soovi? Väsimust pingest?)<br><br>
+        <strong>Mida ma sellelt koosolekult vajan?</strong> (Lahendust? Kuuldud olemist? Paremat suhet edaspidi?)<br><br>
+        <strong>Millest ma kardan, et see juhtuda võib?</strong><br><br>
+        Oma lähtepunkti teadmine muudab ruumi emotsioonist kaasa viimise palju raskemaks.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span data-lang="en">When you speak</span><span data-lang="et">Kui sa räägid</span></div>
+      <div class="card-title"><span data-lang="en">Use the NVC formula — even a partial version works</span><span data-lang="et">Kasuta NVC valemit — isegi osaline versioon toimib</span></div>
+      <div class="card-body">
+        <span data-lang="en">The full formula: <strong>When I observe X → I feel Y → because I need Z → would you be willing to W?</strong><br><br>
+        In practice, even just leading with "I feel..." instead of "You did..." shifts the dynamic.<br><br>
+        <strong>Instead of:</strong> "The students weren't given proper support."<br>
+        <strong>Try:</strong> "When I read the emails, I felt concerned — because clarity about roles matters for everyone's wellbeing. What would it look like to make that clearer next year?"<br><br>
+        <strong>Instead of:</strong> "That comment about professional survival was unfair."<br>
+        <strong>Try:</strong> "I imagine that line landed differently for different people in the room. Can we just acknowledge that and move on?"</span>
+        <span data-lang="et">Täielik valem: <strong>Kui ma täheldaen X → tunnen Y → kuna vajan Z → kas oleksid valmis W?</strong><br><br>
+        Praktikas isegi ainult "Ma tunnen..." asemel "Sa tegid..." muudab dünaamikat.<br><br>
+        <strong>Selle asemel et:</strong> "Tudengitele ei antud piisavat tuge."<br>
+        <strong>Proovi:</strong> "Kui ma kirju lugesin, tundsin muret — kuna rollide selgus on oluline kõigi heaolule. Kuidas saaks seda järgmisel aastal selgemaks teha?"<br><br>
+        <strong>Selle asemel et:</strong> "See kommentaar professionaalse ellujäämise kohta oli ebaõiglane."<br>
+        <strong>Proovi:</strong> "Arvan, et see rida maandus ruumis erinevate inimeste jaoks erinevalt. Kas saame seda lihtsalt tunnistada ja edasi liikuda?"</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span data-lang="en">When things heat up</span><span data-lang="et">Kui asjad lähevad kuumaks</span></div>
+      <div class="card-title"><span data-lang="en">Your body will tell you before your mind does — listen to it</span><span data-lang="et">Sinu keha ütleb sulle enne mõistust — kuula seda</span></div>
+      <div class="card-body">
+        <span data-lang="en">Notice the physical signs that you're being triggered: chest tightening, urge to jump in, voice rising. When you notice them:<br><br>
+        <strong>1. Pause before speaking.</strong> Even two seconds changes what comes out.<br><br>
+        <strong>2. Name what you observe, not what you feel about it.</strong> "I notice the conversation is getting tense" lands softer than "everyone is getting defensive."<br><br>
+        <strong>3. Ask a question instead of making a statement.</strong> Questions keep the conversation open. Statements can close it down.<br><br>
+        <strong>4. It is okay to say "I need a moment."</strong> That models exactly the kind of self-awareness NVC asks everyone in the room to practice.</span>
+        <span data-lang="et">Märka füüsilisi märke, et sind on puudutatud: rindkere pingestub, soov sekkuda, hääl tõuseb. Kui märkad neid:<br><br>
+        <strong>1. Peatu enne rääkimist.</strong> Isegi kaks sekundit muudab seda, mis välja tuleb.<br><br>
+        <strong>2. Nimeta, mida täheldad, mitte mida tunned selle kohta.</strong> "Märkan, et vestlus läheb pingeliseks" maandub pehmemalt kui "kõik muutuvad kaitsvaks."<br><br>
+        <strong>3. Esita küsimus avalduse asemel.</strong> Küsimused hoiavad vestluse avatuna. Avaldused võivad selle sulgeda.<br><br>
+        <strong>4. On okei öelda "Vajan hetke."</strong> See modelleerib täpselt seda eneseteadlikkust, mida NVC palub kõigil ruumis harjutada.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span data-lang="en">The hardest moment</span><span data-lang="et">Kõige raskem hetk</span></div>
+      <div class="card-title"><span data-lang="en">When something is said that feels unjust — and you want to react</span><span data-lang="et">Kui öeldakse midagi, mis tundub ebaõiglane — ja sa tahad reageerida</span></div>
+      <div class="card-body">
+        <span data-lang="en">This will likely happen. Someone will say something that triggers you — perhaps the "professional survival" framing, or a dismissal of the students' concerns.<br><br>
+        NVC doesn't ask you to swallow it. It asks you to translate it before responding.<br><br>
+        Ask yourself silently: <em>What need is this person trying to meet with what they just said?</em> Even if the delivery is poor, there is almost always a legitimate need underneath. Finding it gives you something to respond to — rather than just reacting to the surface.<br><br>
+        Then you can say: <em>"I hear that you feel strongly about students developing independence — and I also think there's a question about what institutional support should look like. Can we hold both?"</em></span>
+        <span data-lang="et">See juhtub tõenäoliselt. Keegi ütleb midagi, mis puudutab sind — võib-olla "professionaalse ellujäämise" raamistamine või tudengite murede tõrjumine.<br><br>
+        NVC ei palu sul seda alla neelata. See palub sul seda enne vastamist tõlkida.<br><br>
+        Küsi endalt vaikselt: <em>Millist vajadust see inimene püüab rahuldada sellega, mida ta just ütles?</em> Isegi kui edastamine on kehv, on peaaegu alati alltaga legitiimne vajadus. Selle leidmine annab sulle millele vastata — mitte ainult pinnale reageerida.<br><br>
+        Siis saad öelda: <em>"Kuulen, et tunned tugevalt, et tudengid peaksid arendama iseseisvust — ja arvan ka, et on küsimus selle kohta, milline peaks olema institutsionaalne tugi. Kas saame mõlemat hoida?"</em></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span data-lang="en">Empathy for the other side</span><span data-lang="et">Empaatia teise poole suhtes</span></div>
+      <div class="card-title"><span data-lang="en">You don't have to agree — but try to understand</span><span data-lang="et">Sa ei pea nõustuma — aga proovi mõista</span></div>
+      <div class="card-body">
+        <span data-lang="en">NVC distinguishes empathy from agreement. You can say "I understand why you experienced it that way" without saying "and therefore you were right."<br><br>
+        For the staff side: they created something they believed was for students. Having it met with a sharp public email genuinely hurt. That is real, even if the students' frustration is also real.<br><br>
+        For the student side: they asked for something reasonable — clarity and fairness — and the response focused on their tone, not their substance. That is also real.<br><br>
+        Holding both without collapsing them into one is the core skill of the day.</span>
+        <span data-lang="et">NVC eristab empaatiat nõustumisest. Sa saad öelda "Mõistan, miks sa seda nii kogesid" ilma ütlemata "ja seega olid sa õige."<br><br>
+        Personali poole jaoks: nad lõid midagi, mida uskusid tudengite jaoks olevat. Selle kohtamine terava avaliku kirjaga tegi tõesti haiget. See on tõeline, isegi kui tudengite frustratsioon on ka tõeline.<br><br>
+        Tudengite poole jaoks: nad palusid midagi mõistlikku — selgust ja õiglust — ja vastus keskendus nende toonile, mitte sisule. See on ka tõeline.<br><br>
+        Mõlema hoidmine neid ühte kokku vajutamata on päeva põhioskus.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span data-lang="en">Three phrases to keep in your pocket</span><span data-lang="et">Kolm fraasi taskusse</span></div>
+      <div class="card-title"><span data-lang="en">Ready-to-use de-escalation language</span><span data-lang="et">Kasutusvalmis de-eskaleerimise keel</span></div>
+      <div class="card-body">
+        <span data-lang="en">
+        <strong>"I'm hearing two different things — can we slow down?"</strong><br>
+        Use when people are talking past each other.<br><br>
+        <strong>"I want to make sure I understand — are you saying...?"</strong><br>
+        Use to check your reading before reacting. Buys time and shows good faith.<br><br>
+        <strong>"What would need to be true for both of you to feel okay about this?"</strong><br>
+        Use when stuck. Moves the focus from positions to needs.</span>
+        <span data-lang="et">
+        <strong>"Kuulen kahte erinevat asja — kas saame aeglustada?"</strong><br>
+        Kasuta, kui inimesed räägivad mööda üksteisest.<br><br>
+        <strong>"Tahan veenduda, et mõistan — kas sa ütled...?"</strong><br>
+        Kasuta oma lugemise kontrollimiseks enne reageerimist. Ostab aega ja näitab head usku.<br><br>
+        <strong>"Mida oleks vaja, et teie mõlemad tunneksite end selle osas okei?"</strong><br>
+        Kasuta, kui oled takerdunud. Liigutab fookuse positsioonidelt vajadustele.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span data-lang="en">After the meeting</span><span data-lang="et">Pärast koosolekut</span></div>
+      <div class="card-title"><span data-lang="en">Give yourself some grace</span><span data-lang="et">Ole enda vastu lahke</span></div>
+      <div class="card-body">
+        <span data-lang="en">You will not do this perfectly. Nobody does NVC perfectly in a live conflict — least of all when you have your own stake in the outcome. That is not the goal.<br><br>
+        The goal is to stay a little more curious and a little less reactive than you might otherwise be. Even one moment of genuine listening — one question instead of a statement, one pause before reacting — changes the temperature of a room.<br><br>
+        If the meeting goes well, it's because everyone tried. If it gets difficult, it's not your failure — it means the underlying wounds are real and need time. That is useful information too.</span>
+        <span data-lang="et">Sa ei tee seda täiuslikult. Keegi ei tee NVCd täiuslikult elava konflikti keskel — eriti mitte siis, kui sul on oma panus tulemuses. See ei ole eesmärk.<br><br>
+        Eesmärk on jääda natuke uudishimulikumaks ja natuke vähem reaktiivseks, kui muidu oleksid. Isegi üks tõelise kuulamise hetk — üks küsimus avalduse asemel, üks paus enne reageerimist — muudab ruumi temperatuuri.<br><br>
+        Kui koosolek läheb hästi, on see sellepärast, et kõik proovisid. Kui läheb raskeks, ei ole see sinu ebaõnnestumine — see tähendab, et aluspõhised haavad on tõelised ja vajavad aega. See on ka kasulik teave.</span>
+      </div>
+    </div>
+
+  </div><!-- /email-myrole -->
+
+  <!-- ===================== SECTION 3: FULL PICTURE ===================== -->
+  <div class="email-section" id="email-together">
+    <div class="section-context">
+      <span data-lang="en">This section brings all five emails together — what the full exchange reveals about the conflict, and a consolidated guide for the meeting.</span>
+      <span data-lang="et">See jaotis koondab kõik viis kirja — mida täielik kirjavahetus konflikti kohta paljastab ja konsolideeritud juhend koosolekuks.</span>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span data-lang="en">What the exchange reveals</span><span data-lang="et">Mida kirjavahetus paljastab</span></div>
+      <div class="card-title"><span data-lang="en">The surface conflict is about a concert. The deeper conflict is about trust, role clarity, and a factual disagreement about what was promised at the start.</span><span data-lang="et">Pinnakonflikt on kontserdi pärast. Sügavam konflikt on usalduse, rolliselguse ja faktilise erimeelsuse pärast selle kohta, mida alguses lubati.</span></div>
+      <div class="card-body"><span data-lang="en">The students feel a promise was broken and their effort was invisible. The coordinator feels attacked and misunderstood. Both sides actually want the same thing — a clear, fair system for next year. The mediation's job is to get both parties past the injury and into the shared goal.</span><span data-lang="et">Tudengid tunnevad, et lubadus rikuti ja nende pingutus oli nähtamatu. Õppejõud tunneb end rünnatu ja valesti mõistetuna. Mõlemad pooled tahavad tegelikult sama asja — selget, õiglast süsteemi järgmiseks aastaks. Vahendamise ülesanne on saada mõlemad pooled üle haavast ja ühise eesmärgi juurde.</span></div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="card">
+      <div class="card-label"><span data-lang="en">What is already agreed</span><span data-lang="et">Milles on juba kokku lepitud</span></div>
+      <div class="card-title"><span data-lang="en">More common ground than it may feel like</span><span data-lang="et">Rohkem ühist alust, kui see võib tunduda</span></div>
+      <div class="card-body">
+        <span data-lang="en">
+          ✓ &nbsp;The communication failure is acknowledged (teacher's email)<br>
+          ✓ &nbsp;The concert situation should not repeat (both emails)<br>
+          ✓ &nbsp;A student meeting will be convened to address concerns (teacher's email)<br>
+          ✓ &nbsp;Both sides care about the programme (all emails)<br>
+          ✓ &nbsp;The concert is happening — students organised it themselves (email 4)<br>
+          ✓ &nbsp;Students invited staff: the door is still open (email 4)<br>
+          ✓ &nbsp;Teacher: "we are not your enemies" — goodwill from staff side too (email 5)<br>
+          ✓ &nbsp;PEAK's minimal requirements are now clear: one person at the desk, a room booking (email 5)
+        </span>
+        <span data-lang="et">
+          ✓ &nbsp;Kommunikatsioonipuudus on tunnistatud (õppejõu kiri)<br>
+          ✓ &nbsp;Kontserdi olukord ei tohiks korduda (mõlemad kirjad)<br>
+          ✓ &nbsp;Murede käsitlemiseks kutsutakse kokku tudengite koosolek (õppejõu kiri)<br>
+          ✓ &nbsp;Mõlemad pooled hoolivad erialast (kõik kirjad)<br>
+          ✓ &nbsp;Kontsert toimub — tudengid korraldasid selle ise (kiri 4)<br>
+          ✓ &nbsp;Tudengid kutsusid personali: uks on endiselt avatud (kiri 4)<br>
+          ✓ &nbsp;Õppejõud: "me ei ole teie vaenlased" — hea tahe ka personali poolt (kiri 5)<br>
+          ✓ &nbsp;PEAKi minimaalsed nõuded on nüüd selged: üks inimene puldil, ruumibroneerimig (kiri 5)
+        </span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span data-lang="en">What still needs resolution</span><span data-lang="et">Mida on veel vaja lahendada</span></div>
+      <div class="card-title"><span data-lang="en">Five open questions to bring into the room</span><span data-lang="et">Viis lahtist küsimust koosolekule tuua</span></div>
+      <div class="card-body">
+        <span data-lang="en">
+          <strong>1.</strong> What was actually promised at the opening meeting — and does the gap reflect a misunderstanding or a broken commitment?<br><br>
+          <strong>2.</strong> Was the concert's public format a gift to students (teacher's framing) or an obligation imposed on them (students' experience)?<br><br>
+          <strong>3.</strong> What does "organisational work" in the course outcomes actually mean for production students specifically — and who decides?
+        </span>
+        <span data-lang="et">
+          <strong>1.</strong> Mida avakoosolekul tegelikult lubati — ja kas lünk peegeldab arusaamatust või rikutud kohustust?<br><br>
+          <strong>2.</strong> Kas kontserdi avalik formaat oli kingitus tudengitele (õppejõu raamistamine) või neile peale surutud kohustus (tudengite kogemus)?<br><br>
+          <strong>3.</strong> Mida tähendab "korraldustöö" aine õpiväljundites konkreetselt produtsendi suuna tudengitele — ja kes otsustab?
+        </span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="card">
+      <div class="card-label"><span data-lang="en">Consolidated meeting guide</span><span data-lang="et">Konsolideeritud koosolekujuhend</span></div>
+      <div class="card-title"><span data-lang="en">Opening — set the tone (2 min)</span><span data-lang="et">Avamine — sea toon (2 min)</span></div>
+      <div class="q-block"><span data-lang="en">"Between the first email and today, things already moved — a meeting was called, a concert was cancelled. I take that as a sign that everyone here wants to get this right. My role today is to help us understand each other and leave with something concrete. I'll ask us to speak from our own experience, not about each other."</span><span data-lang="et">"Esimese kirja ja tänase päeva vahel on asjad juba liikunud — koosolek kutsuti kokku, kontsert jäeti ära. Võtan seda märgina, et kõik siin tahavad, et asjad läheksid õigesti. Minu roll täna on aidata meil üksteist mõista ja lahkuda millegi konkreetsega. Palun rääkida oma kogemusest, mitte üksteisest."</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span data-lang="en">Acknowledge both impacts (5–8 min)</span><span data-lang="et">Tunnusta mõlemat mõju (5–8 min)</span></div>
+      <div class="card-body">
+        <span data-lang="en">To students: <em>"In your own words — what happened for you, and what do you most need from today?"</em><br><br>To teacher: <em>"How did receiving that email land for you, and what do you need to feel this conversation is fair?"</em><br><br>Reflect both back using NVC language before moving to solutions.</span>
+        <span data-lang="et">Tudengitele: <em>"Oma sõnadega — mis teie jaoks juhtus ja mida vajate täna kõige rohkem?"</em><br><br>Õppejõule: <em>"Kuidas see kiri teie jaoks maandus ja mida vajate, et see vestlus tunduks õiglane?"</em><br><br>Peegelda mõlemad tagasi NVC keeles enne lahenduste juurde liikumist.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span data-lang="en">Surface the opening meeting promise (5 min)</span><span data-lang="et">Too esile avakoosoleku lubadus (5 min)</span></div>
+      <div class="q-block"><span data-lang="en">"I'd like us to spend a moment on what was communicated at the opening meeting. I'm not asking anyone to prove anything — I'd like each side to share what they understood, so we can see where the gap is."</span><span data-lang="et">"Tahaksin, et peatuksime hetke avakoosolekul kommunikeeritu juures. Ma ei palu kelleltki midagi tõestada — tahaksin, et kumbki pool jagaks, mida ta mõistis, et näeksime, kus lünk on."</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span data-lang="en">Concrete outcomes (10 min)</span><span data-lang="et">Konkreetsed tulemused (10 min)</span></div>
+      <div class="card-body">
+        <span data-lang="en">
+          <strong>1.</strong> Name a person or role responsible for event logistics next year — decided today.<br><br>
+          <strong>2.</strong> Set a date and agenda for the upcoming student meeting (not "coming weeks" — a real date).<br><br>
+          <strong>3.</strong> Agree on a written one-pager of student vs. staff responsibilities for this course.<br><br>
+          <strong>4.</strong> Optional: brief acknowledgements from both sides of what the other side did well.
+        </span>
+        <span data-lang="et">
+          <strong>1.</strong> Nimeta isik või roll, kes vastutab ürituse logistika eest järgmisel aastal — otsustatakse täna.<br><br>
+          <strong>2.</strong> Määra tuleva tudengite koosoleku kuupäev ja päevakord (mitte "lähiajal" — päris kuupäev).<br><br>
+          <strong>3.</strong> Leppida kokku kirjalik üheleheküljeline kokkuvõte tudengite ja personali kohustuste kohta selle aine jaoks.<br><br>
+          <strong>4.</strong> Vabatahtlik: lühikesed tunnustused mõlemalt poolelt selle kohta, mida teine pool hästi tegi.
+        </span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span data-lang="en">Close — end on connection</span><span data-lang="et">Lõpetamine — lõpeta sidemega</span></div>
+      <div class="q-block"><span data-lang="en">"Both emails — underneath everything — show people who care about this programme. That's the foundation. Let's make sure next year doesn't have to start with another email like this."</span><span data-lang="et">"Mõlemad kirjad — kõige all — näitavad inimesi, kes hoolivad sellest erialast. See on alus. Veendume, et järgmine aasta ei pea algama veel ühe sellise kirjaga."</span></div>
+    </div>
+
+    <div class="note"><strong><span data-lang="en">Mediator's key insight:</span><span data-lang="et">Vahendaja põhiline tähelepanu:</span></strong> <span data-lang="en"> The coordinator's reply actually gave a lot — acknowledgement, action, and an offer of dialogue. The risk is that students receive it as dismissive because the promise was sidestepped. Your job is to hold both: "real repair gestures were made AND there is still one thing that needs to be addressed together."</span><span data-lang="et"> Koordinaatori vastus andis tegelikult palju — tunnustuse, tegevuse ja dialoogipakkumise. Risk on see, et tudengid võtavad seda kui eiramist, kuna lubadust vältiti. Sinu ülesanne on hoida mõlemat: "tegelikud parandusžestid tehti JA on veel üks asi, mida tuleb koos käsitleda."</span></div>
+  </div><!-- /email-together -->
+
+</div>
+<script>
+  var currentLang = 'en';
+  var currentEmail = 'students';
+
+  function setLang(lang, btn) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.remove('active'); });
+    if (btn) btn.classList.add('active');
+    document.querySelectorAll('[data-lang]').forEach(function(el) {
+      el.style.display = el.getAttribute('data-lang') === lang ? '' : 'none';
+    });
+    document.documentElement.lang = lang;
+  }
+
+  function setEmail(section, btn) {
+    currentEmail = section;
+    document.querySelectorAll('.email-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.email-section').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById('email-' + section).classList.add('active');
+    var tabBar = document.getElementById('tab-bar');
+    var noTabs = section === 'together' || section === 'myrole';
+    tabBar.style.display = noTabs ? 'none' : 'flex';
+    if (!noTabs) {
+      document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.tab')[0].classList.add('active');
+      showPanels(section, 'observations');
+    }
+  }
+
+  function show(panelName, btn) {
+    document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+    btn.classList.add('active');
+    showPanels(currentEmail, panelName);
+  }
+
+  function showPanels(section, panelName) {
+    var sec = document.getElementById('email-' + section);
+    if (!sec) return;
+    sec.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+    var target = document.getElementById(section + '-' + panelName);
+    if (target) target.classList.add('active');
+  }
+
+  window.addEventListener('load', function() {
+    setLang('en', document.querySelector('.lang-btn'));
+  });
+</script>
+</body>
+</html>
