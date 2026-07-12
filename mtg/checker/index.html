@@ -160,10 +160,14 @@
   #swipe{justify-content:flex-start;}
   .topbar{
     width:100%;display:flex;align-items:center;justify-content:flex-end;
-    margin:6px 0 18px;font-family:var(--font-mono);font-size:12px;
+    margin:6px 0 4px;font-family:var(--font-mono);font-size:12px;
     color:var(--parchment-dim);letter-spacing:.05em;
   }
   .topbar .count{color:var(--gold);}
+  .load-progress{
+    width:100%;text-align:right;font-family:var(--font-mono);font-size:11px;
+    color:#8A8067;margin-bottom:10px;min-height:14px;
+  }
   .liked-toggle{
     font-family:var(--font-mono);font-size:12px;color:var(--gold);
     background:transparent;border:1px solid #3A3122;border-radius:20px;
@@ -339,6 +343,7 @@
     <div class="topbar">
       <span class="count" id="counter">0 / 0</span>
     </div>
+    <div class="load-progress" id="loadProgress"></div>
     <div class="toolbar-row">
       <button class="liked-toggle" id="likedToggle" type="button">✓ 0 liked</button>
       <button class="liked-toggle" id="filtersToggle" type="button">Filters</button>
@@ -421,6 +426,8 @@
   let fullDeck = [];     // complete loaded deck, unfiltered
   let decidedNames = new Set(); // lowercase names already swiped this "round"
   let cursor = 0;
+  let loadingInBackground = false; // true while more batches are still being fetched
+  let waitingForMore = false;      // true if the person caught up to the loading edge
   let picks = [];        // {name, verdict, image, price}
   let dragging = false, startX = 0, startY = 0, dx = 0;
   let lastTapTime = 0;
@@ -514,32 +521,59 @@
   }
 
   // ---------- Scryfall ----------
-  async function fetchCardData(entries){
-    const found = new Map();
-    const notFound = [];
+  async function fetchCardDataProgressive(shuffledEntries, callbacks){
+    const { onFirstBatch, onBatch, onProgress, onDone } = callbacks;
     const chunks = [];
-    for(let i=0;i<entries.length;i+=75) chunks.push(entries.slice(i,i+75));
+    for(let i=0;i<shuffledEntries.length;i+=75) chunks.push(shuffledEntries.slice(i,i+75));
+    const CONCURRENCY = Math.max(1, Math.min(6, chunks.length));
+    let nextIndex = 0;
+    let completed = 0;
+    const total = shuffledEntries.length;
+    let firstDelivered = false;
 
-    let processed = 0;
-    for(const chunk of chunks){
-      const body = { identifiers: chunk.map(e => ({name: e.name})) };
+    async function fetchChunk(chunk){
       try{
         const res = await fetch('https://api.scryfall.com/cards/collection', {
           method:'POST',
           headers:{'Content-Type':'application/json'},
-          body: JSON.stringify(body)
+          body: JSON.stringify({ identifiers: chunk.map(e => ({name: e.name})) })
         });
         const json = await res.json();
+        const found = new Map();
         (json.data||[]).forEach(card => found.set(card.name.toLowerCase(), card));
-        (json.not_found||[]).forEach(nf => notFound.push(nf.name));
+        return chunk.map(e => {
+          const card = found.get(e.name.toLowerCase());
+          if(card){
+            return {
+              name: card.name, image: cardImage(card), price: cardPrice(card), qty: e.qty, missing:false,
+              colors: cardColors(card), cmc: (typeof card.cmc === 'number' ? card.cmc : 0), typeLine: cardTypeLine(card)
+            };
+          }
+          return {name: e.name, image:null, price:null, qty: e.qty, missing:true, colors:[], cmc:0, typeLine:''};
+        });
       }catch(e){
-        chunk.forEach(c => notFound.push(c.name));
+        return chunk.map(c => ({name:c.name, image:null, price:null, qty:c.qty, missing:true, colors:[], cmc:0, typeLine:''}));
       }
-      processed += chunk.length;
-      document.getElementById('loadingText').textContent = `Looking up cards… ${processed} / ${entries.length}`;
-      if(chunks.length>1) await new Promise(r=>setTimeout(r,120));
     }
-    return {found, notFound};
+
+    async function worker(){
+      while(nextIndex < chunks.length){
+        const myIndex = nextIndex++;
+        const builtChunk = await fetchChunk(chunks[myIndex]);
+        completed += chunks[myIndex].length;
+        onBatch(builtChunk);
+        onProgress(completed, total);
+        if(!firstDelivered){
+          firstDelivered = true;
+          onFirstBatch();
+        }
+      }
+    }
+
+    const workers = [];
+    for(let i=0;i<CONCURRENCY;i++) workers.push(worker());
+    await Promise.all(workers);
+    onDone();
   }
 
   function cardImage(card){
@@ -575,32 +609,78 @@
     return '';
   }
 
-  async function loadFromEntries(entries, persist){
-    show('loading');
-    document.getElementById('loadingText').textContent = 'Looking up cards…';
-    const {found, notFound} = await fetchCardData(entries);
+  function updateCounterText(){
+    const counterEl = document.getElementById('counter');
+    if(!counterEl) return;
+    if(reviewMode){ counterEl.textContent = 'Reviewing'; return; }
+    counterEl.textContent = `${Math.min(cursor+1, deck.length)} / ${deck.length}`;
+  }
 
-    deck = entries.map(e => {
-      const card = found.get(e.name.toLowerCase());
-      if(card){
-        return {
-          name: card.name, image: cardImage(card), price: cardPrice(card), qty: e.qty, missing:false,
-          colors: cardColors(card), cmc: (typeof card.cmc === 'number' ? card.cmc : 0), typeLine: cardTypeLine(card)
-        };
-      }
-      return {name: e.name, image:null, price:null, qty: e.qty, missing:true, colors:[], cmc:0, typeLine:''};
-    });
-    shuffle(deck);
+  function updateLoadProgressUI(completed, total){
+    const el = document.getElementById('loadProgress');
+    if(!el) return;
+    el.textContent = completed >= total ? '' : `Loading more cards… ${completed} / ${total}`;
+  }
+
+  function handleIncomingBatch(builtChunk){
+    fullDeck.push(...builtChunk);
+    const eligible = builtChunk.filter(c => !decidedNames.has(c.name.toLowerCase()) && cardMatchesFilters(c));
+    if(eligible.length) deck.push(...eligible);
+    if(waitingForMore && deck.length > cursor){
+      waitingForMore = false;
+      if(document.getElementById('swipe').classList.contains('active') && !reviewMode) renderStage();
+    } else {
+      updateCounterText();
+    }
+  }
+
+  function handleLoadDone(){
+    loadingInBackground = false;
+    const el = document.getElementById('loadProgress');
+    if(el) el.textContent = '';
+    if(waitingForMore){
+      waitingForMore = false;
+      if(document.getElementById('swipe').classList.contains('active') && !reviewMode) renderStage();
+    }
+  }
+
+  async function loadFromEntries(entries, persist){
+    // Reset session state immediately — all local, no need to wait on anything.
     cursor = 0;
     picks = [];
-    fullDeck = deck.slice();
     decidedNames = new Set();
+    deck = [];
+    fullDeck = [];
     resetFiltersState();
+    waitingForMore = false;
+    loadingInBackground = true;
 
+    // Persist the raw list right away — it doesn't depend on Scryfall data at all,
+    // so friends can pick it up even if this tab closes before card lookups finish.
     if(persist){
       await storageSet(STORAGE_KEY, JSON.stringify(entries), true);
     }
-    startSwipe();
+
+    // Shuffle the identifier list itself before any fetching happens, so the
+    // very first cards to arrive are already a random sample of the whole list —
+    // not just whatever happened to be first in the CSV.
+    const shuffledEntries = shuffle(entries.slice());
+
+    show('loading');
+    document.getElementById('loadingText').textContent = 'Finding your first cards…';
+
+    await new Promise((resolve) => {
+      let resolved = false;
+      fetchCardDataProgressive(shuffledEntries, {
+        onFirstBatch: () => {
+          startSwipe();
+          if(!resolved){ resolved = true; resolve(); }
+        },
+        onBatch: handleIncomingBatch,
+        onProgress: updateLoadProgressUI,
+        onDone: handleLoadDone
+      }).catch(() => { if(!resolved){ resolved = true; resolve(); } });
+    });
   }
 
   async function tryFetchLocalList(){
@@ -660,6 +740,15 @@
     } else {
       document.getElementById('counter').textContent = `${Math.min(cursor+1,deck.length)} / ${deck.length}`;
       if(cursor >= deck.length){
+        if(loadingInBackground){
+          waitingForMore = true;
+          stage.innerHTML = `<div class="card top"><div class="no-image-face">
+            <div class="nm">Catching up…</div>
+            <div class="note">More cards are still loading — this'll continue in a moment</div>
+          </div></div>`;
+          document.getElementById('metaRow').innerHTML = '<span></span><span></span>';
+          return;
+        }
         finishSwipe();
         return;
       }
