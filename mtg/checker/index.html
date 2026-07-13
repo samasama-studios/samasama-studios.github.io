@@ -234,10 +234,7 @@
   }
   .stage{
     position:relative;
-    height:100%;
-    width:auto;
-    max-width:100%;
-    aspect-ratio: 63/88;
+    flex-shrink:0;
     touch-action:none;
   }
   .card{
@@ -407,7 +404,7 @@
       </div>
       <div class="filter-count" id="filterCount"></div>
     </div>
-    <div class="stage-wrap"><div class="stage" id="stage"></div></div>
+    <div class="stage-wrap" id="stageWrap"><div class="stage" id="stage"></div></div>
     <div class="meta-row" id="metaRow"><span></span><span></span></div>
     <div class="controls">
       <button class="card-btn pass" id="passBtn" aria-label="Pass">✕</button>
@@ -751,6 +748,24 @@
   }
 
   // ---------- swipe screen rendering ----------
+  function sizeStage(){
+    const wrap = document.getElementById('stageWrap');
+    const stage = document.getElementById('stage');
+    if(!wrap || !stage) return;
+    const wrapW = wrap.clientWidth;
+    const wrapH = wrap.clientHeight;
+    if(wrapW <= 0 || wrapH <= 0) return;
+    let w = wrapW;
+    let h = w * 88 / 63;
+    if(h > wrapH){
+      h = wrapH;
+      w = h * 63 / 88;
+    }
+    stage.style.width = w + 'px';
+    stage.style.height = h + 'px';
+  }
+  window.addEventListener('resize', sizeStage);
+
   function startSwipe(){
     reviewMode = false;
     reviewCard = null;
@@ -758,10 +773,12 @@
     document.getElementById('likedPanel').classList.remove('open');
     document.getElementById('filterPanel').classList.remove('open');
     updateLikedUI();
+    sizeStage();
     renderStage();
   }
 
   function renderStage(){
+    sizeStage();
     const stage = document.getElementById('stage');
     stage.innerHTML = '';
     lastTapTime = 0;
