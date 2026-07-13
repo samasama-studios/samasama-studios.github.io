@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Spectral:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/mana-font@latest/css/mana.min.css" rel="stylesheet" type="text/css">
 <style>
   :root{
     --ink:#15120D;
@@ -35,7 +36,7 @@
   html,body{height:100%;}
   body{
     margin:0;
-    min-height:100dvh;
+    height:100dvh;
     background:
       radial-gradient(ellipse at 50% -10%, #2A2419 0%, var(--ink) 55%),
       var(--ink);
@@ -44,10 +45,10 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    padding: max(20px, env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom));
-    overflow-x:hidden;
+    padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+    overflow:hidden;
   }
-  .wrap{width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;flex:1;}
+  .wrap{width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;flex:1;min-height:0;overflow-y:auto;}
   .brand{
     font-family:var(--font-display);
     font-weight:700;
@@ -58,8 +59,12 @@
     margin-bottom:4px;
   }
   body[data-screen="swipe"] .brand{display:none;}
-  .screen{width:100%;display:none;flex-direction:column;align-items:center;flex:1;}
+  .screen{width:100%;display:none;flex-direction:column;align-items:center;flex:1;min-height:0;}
   .screen.active{display:flex;}
+  /* Everything on the swipe screen keeps its natural size — only the card
+     itself shrinks or grows to absorb whatever space is left. This guarantees
+     the controls and Finish link are never pushed off-screen. */
+  #swipe.screen > *:not(.stage){flex-shrink:0;}
 
   /* ---------- SETUP ---------- */
   #setup h1{
@@ -196,37 +201,35 @@
     font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
     color:var(--gold);margin-bottom:8px;
   }
-  .chip-row{display:flex;flex-wrap:wrap;gap:6px;}
-  .chip{
-    font-family:var(--font-mono);font-size:12.5px;font-weight:600;
-    padding:6px 12px;border-radius:20px;border:1.5px solid;background:transparent;
-    cursor:pointer;opacity:.4;transition:opacity .15s ease;
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .mana-chip{
+    width:38px;height:38px;padding:0;border-radius:50%;
+    border:2px solid transparent;background:transparent;
+    display:flex;align-items:center;justify-content:center;
+    font-size:23px;line-height:1;cursor:pointer;position:relative;
+    opacity:.4;transition:opacity .15s ease, transform .15s ease, border-color .15s ease;
   }
-  .chip.active{opacity:1;}
-  .chip[data-color="W"]{border-color:var(--mana-w);color:var(--mana-w);}
-  .chip[data-color="W"].active{background:var(--mana-w);color:var(--ink);}
-  .chip[data-color="U"]{border-color:var(--mana-u);color:var(--mana-u);}
-  .chip[data-color="U"].active{background:var(--mana-u);color:var(--parchment);}
-  .chip[data-color="B"]{border-color:var(--mana-b);color:var(--mana-b);}
-  .chip[data-color="B"].active{background:var(--mana-b);color:var(--parchment);}
-  .chip[data-color="R"]{border-color:var(--ember);color:var(--ember);}
-  .chip[data-color="R"].active{background:var(--ember);color:var(--parchment);}
-  .chip[data-color="G"]{border-color:var(--moss);color:var(--moss);}
-  .chip[data-color="G"].active{background:var(--moss);color:var(--parchment);}
-  .chip[data-color="C"]{border-color:var(--mana-c);color:var(--mana-c);}
-  .chip[data-color="C"].active{background:var(--mana-c);color:var(--ink);}
-  .chip[data-cmc]{border-color:var(--gold);color:var(--gold);}
-  .chip[data-cmc].active{background:var(--gold);color:var(--ink);}
-  .segmented{display:flex;gap:6px;}
+  .mana-chip:active{transform:scale(0.92);}
+  .mana-chip.active{opacity:1;border-color:var(--gold);transform:scale(1.06);}
+  .cmc-plus .chip-plus{
+    position:absolute;bottom:-3px;right:-3px;font-family:var(--font-mono);font-weight:700;
+    font-size:10px;color:var(--ink);background:var(--gold);border-radius:50%;
+    width:14px;height:14px;display:flex;align-items:center;justify-content:center;line-height:1;
+  }
+  .segmented{display:flex;flex-wrap:wrap;gap:6px;}
   .seg{
-    flex:1;font-family:var(--font-mono);font-size:12px;padding:8px 6px;border-radius:8px;
+    flex:1;min-width:64px;font-family:var(--font-mono);font-size:12px;padding:8px 6px;border-radius:8px;
     border:1.5px solid #3A3122;background:transparent;color:var(--parchment-dim);cursor:pointer;
   }
   .seg.active{border-color:var(--ember);background:var(--ember);color:var(--parchment);}
   .filter-count{font-family:var(--font-mono);font-size:12px;color:var(--parchment-dim);text-align:center;margin-top:8px;min-height:16px;}
   .stage{
-    position:relative;width:100%;
-    max-width:calc(64dvh * 63 / 88);
+    position:relative;
+    flex:1 1 auto;
+    min-height:0;
+    width:auto;
+    max-width:100%;
+    max-height:100%;
     aspect-ratio: 63/88;
     margin:0 auto;
     touch-action:none;
@@ -354,24 +357,24 @@
       <div class="filter-group">
         <div class="filter-label">Colors</div>
         <div class="chip-row" id="colorChips">
-          <button type="button" class="chip" data-color="W">W</button>
-          <button type="button" class="chip" data-color="U">U</button>
-          <button type="button" class="chip" data-color="B">B</button>
-          <button type="button" class="chip" data-color="R">R</button>
-          <button type="button" class="chip" data-color="G">G</button>
-          <button type="button" class="chip" data-color="C">C</button>
+          <button type="button" class="chip mana-chip" data-color="W"><i class="ms ms-w ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-color="U"><i class="ms ms-u ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-color="B"><i class="ms ms-b ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-color="R"><i class="ms ms-r ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-color="G"><i class="ms ms-g ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-color="C"><i class="ms ms-c ms-cost"></i></button>
         </div>
       </div>
       <div class="filter-group">
         <div class="filter-label">Mana value</div>
         <div class="chip-row" id="cmcChips">
-          <button type="button" class="chip" data-cmc="0">0</button>
-          <button type="button" class="chip" data-cmc="1">1</button>
-          <button type="button" class="chip" data-cmc="2">2</button>
-          <button type="button" class="chip" data-cmc="3">3</button>
-          <button type="button" class="chip" data-cmc="4">4</button>
-          <button type="button" class="chip" data-cmc="5">5</button>
-          <button type="button" class="chip" data-cmc="6">6+</button>
+          <button type="button" class="chip mana-chip" data-cmc="0"><i class="ms ms-0 ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-cmc="1"><i class="ms ms-1 ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-cmc="2"><i class="ms ms-2 ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-cmc="3"><i class="ms ms-3 ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-cmc="4"><i class="ms ms-4 ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-cmc="5"><i class="ms ms-5 ms-cost"></i></button>
+          <button type="button" class="chip mana-chip cmc-plus" data-cmc="6"><i class="ms ms-6 ms-cost"></i><span class="chip-plus">+</span></button>
         </div>
       </div>
       <div class="filter-group">
@@ -380,6 +383,16 @@
           <button type="button" class="seg active" data-type="all">All</button>
           <button type="button" class="seg" data-type="creature">Creatures</button>
           <button type="button" class="seg" data-type="noncreature">No creatures</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label">Order</div>
+        <div class="segmented" id="sortSegment">
+          <button type="button" class="seg active" data-sort="random">Shuffle</button>
+          <button type="button" class="seg" data-sort="name">Name</button>
+          <button type="button" class="seg" data-sort="price">Price</button>
+          <button type="button" class="seg" data-sort="cmc">Cost</button>
+          <button type="button" class="seg" data-sort="rarity">Rarity</button>
         </div>
       </div>
       <button class="btn btn-primary" id="applyFiltersBtn" type="button">Apply filters</button>
@@ -429,13 +442,14 @@
   let loadingInBackground = false; // true while more batches are still being fetched
   let waitingForMore = false;      // true if the person caught up to the loading edge
   let picks = [];        // {name, verdict, image, price}
-  let dragging = false, startX = 0, startY = 0, dx = 0;
+  let dragging = false, startX = 0, startY = 0, dx = 0, dragStartTime = 0;
   let lastTapTime = 0;
   let reviewMode = false;
   let reviewCard = null;
   let reviewReturnScreen = 'swipe';
 
   let filters = { colors: new Set(), cmc: new Set(), type: 'all' };
+  let sortMode = 'random'; // 'random' | 'name' | 'price' | 'cmc' | 'rarity'
 
   // ---------- storage helpers ----------
   async function storageGet(key, shared){
@@ -546,13 +560,14 @@
           if(card){
             return {
               name: card.name, image: cardImage(card), price: cardPrice(card), qty: e.qty, missing:false,
-              colors: cardColors(card), cmc: (typeof card.cmc === 'number' ? card.cmc : 0), typeLine: cardTypeLine(card)
+              colors: cardColors(card), cmc: (typeof card.cmc === 'number' ? card.cmc : 0), typeLine: cardTypeLine(card),
+              rarity: card.rarity || ''
             };
           }
-          return {name: e.name, image:null, price:null, qty: e.qty, missing:true, colors:[], cmc:0, typeLine:''};
+          return {name: e.name, image:null, price:null, qty: e.qty, missing:true, colors:[], cmc:0, typeLine:'', rarity:''};
         });
       }catch(e){
-        return chunk.map(c => ({name:c.name, image:null, price:null, qty:c.qty, missing:true, colors:[], cmc:0, typeLine:''}));
+        return chunk.map(c => ({name:c.name, image:null, price:null, qty:c.qty, missing:true, colors:[], cmc:0, typeLine:'', rarity:''}));
       }
     }
 
@@ -625,7 +640,17 @@
   function handleIncomingBatch(builtChunk){
     fullDeck.push(...builtChunk);
     const eligible = builtChunk.filter(c => !decidedNames.has(c.name.toLowerCase()) && cardMatchesFilters(c));
-    if(eligible.length) deck.push(...eligible);
+    if(eligible.length){
+      const comparator = getSortComparator();
+      if(!comparator){
+        deck.push(...eligible);
+      } else {
+        // Leave everything already shown (before cursor) exactly where it is —
+        // only the not-yet-seen remainder gets re-sorted with the new arrivals mixed in.
+        const remainder = deck.slice(cursor).concat(eligible).sort(comparator);
+        deck = deck.slice(0, cursor).concat(remainder);
+      }
+    }
     if(waitingForMore && deck.length > cursor){
       waitingForMore = false;
       if(document.getElementById('swipe').classList.contains('active') && !reviewMode) renderStage();
@@ -810,14 +835,43 @@
     return true;
   }
 
+  const RARITY_RANK = {common:0, uncommon:1, special:2, bonus:2, rare:3, mythic:4};
+  function getSortComparator(){
+    switch(sortMode){
+      case 'name': return (a,b) => a.name.localeCompare(b.name);
+      case 'price': return (a,b) => {
+        const pa = a.price ? parseFloat(a.price.amount) : Infinity;
+        const pb = b.price ? parseFloat(b.price.amount) : Infinity;
+        return pa - pb;
+      };
+      case 'cmc': return (a,b) => (a.cmc||0) - (b.cmc||0);
+      case 'rarity': return (a,b) => (RARITY_RANK[a.rarity] ?? 1.5) - (RARITY_RANK[b.rarity] ?? 1.5);
+      default: return null; // 'random' — caller shuffles instead
+    }
+  }
+  function buildOrderedDeck(arr){
+    const comparator = getSortComparator();
+    return comparator ? arr.slice().sort(comparator) : shuffle(arr.slice());
+  }
+
   function resetFiltersState(){
     filters = { colors: new Set(), cmc: new Set(), type: 'all' };
+    sortMode = 'random';
     document.querySelectorAll('#colorChips .chip').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('#cmcChips .chip').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('#typeSegment .seg').forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
+    document.querySelectorAll('#sortSegment .seg').forEach(b => b.classList.toggle('active', b.dataset.sort === 'random'));
     document.getElementById('filterCount').textContent = '';
   }
   document.getElementById('resetFiltersBtn').addEventListener('click', resetFiltersState);
+
+  document.querySelectorAll('#sortSegment .seg').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#sortSegment .seg').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      sortMode = btn.dataset.sort;
+    });
+  });
 
 
   document.querySelectorAll('#colorChips .chip').forEach(btn => {
@@ -854,7 +908,7 @@
       countEl.textContent = 'No cards match those filters — try widening them.';
       return;
     }
-    deck = shuffle(filtered);
+    deck = buildOrderedDeck(filtered);
     cursor = 0;
     countEl.textContent = `${filtered.length} card${filtered.length===1?'':'s'} match — swiping now.`;
     document.getElementById('filterPanel').classList.remove('open');
@@ -867,6 +921,7 @@
   function onDown(e){
     dragging = true;
     startX = e.clientX; startY = e.clientY; dx = 0;
+    dragStartTime = Date.now();
     const el = e.currentTarget;
     el.setPointerCapture(e.pointerId);
     el.classList.remove('flying','snap-back');
@@ -895,9 +950,14 @@
     el.removeEventListener('pointermove', onMove);
     el.removeEventListener('pointerup', onUp);
     el.removeEventListener('pointercancel', onUp);
-    const threshold = 100;
-    if(dx > threshold) commitSwipe('want');
-    else if(dx < -threshold) commitSwipe('pass');
+    const distanceThreshold = 90;
+    const flickMinDistance = 32;   // enough to show clear intent, not just a jitter
+    const flickMaxDuration = 260;  // ms — a real flick is quick
+    const duration = Date.now() - dragStartTime;
+    const isFlick = Math.abs(dx) >= flickMinDistance && duration <= flickMaxDuration;
+
+    if(dx > distanceThreshold || (isFlick && dx > 0)) commitSwipe('want');
+    else if(dx < -distanceThreshold || (isFlick && dx < 0)) commitSwipe('pass');
     else {
       // Minimal movement means this was a tap, not a failed drag — check for a double-tap.
       if(Math.abs(dx) < 10){
@@ -1060,7 +1120,7 @@
       return;
     }
     msgEl.textContent = '';
-    deck = shuffle(pool);
+    deck = buildOrderedDeck(pool);
     decidedNames = new Set(wantedNames);
     cursor = 0;
     startSwipe();
@@ -1069,7 +1129,7 @@
     if(!confirm('Clear everything you\'ve liked so far and start this list over?')) return;
     decidedNames = new Set();
     picks = [];
-    deck = shuffle(fullDeck.filter(cardMatchesFilters));
+    deck = buildOrderedDeck(fullDeck.filter(cardMatchesFilters));
     cursor = 0;
     startSwipe();
   });

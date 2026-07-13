@@ -1,6 +1,6 @@
-const CACHE_NAME = 'tap-or-pass-v1';
+const CACHE_NAME = 'tap-or-pass-v2';
 const APP_SHELL = [
-  './tap-or-pass.html',
+  './index.html',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'
@@ -8,9 +8,12 @@ const APP_SHELL = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(APP_SHELL))
-      .catch(() => {})
+    caches.open(CACHE_NAME).then((cache) =>
+      // cache.addAll() fails entirely if even one URL 404s — cache each file
+      // independently instead so a single missing/renamed file can't sink
+      // the whole install (and therefore the app's installability).
+      Promise.all(APP_SHELL.map((url) => cache.add(url).catch(() => {})))
+    )
   );
   self.skipWaiting();
 });
