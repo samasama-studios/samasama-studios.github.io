@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Binder</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#15120D">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Binder">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Spectral:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/mana-font@latest/css/mana.min.css" rel="stylesheet" type="text/css">
+<style>
+  :root{
+    --ink:#15120D;
+    --parchment:#F1E7D2;
+    --parchment-dim:#E3D6B8;
+    --ember:#A8402F;
+    --moss:#46583F;
+    --gold:#B8923F;
+    --charcoal:#221C15;
+    --mana-w:#D8CBA0;
+    --mana-u:#3E6FA0;
+    --mana-b:#6B5E78;
+    --mana-c:#7A7160;
+    --font-display:'Cinzel', serif;
+    --font-body:'Spectral', serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    height:100dvh;
+    background:
+      radial-gradient(ellipse at 50% -10%, #2A2419 0%, var(--ink) 55%),
+      var(--ink);
+    color:var(--parchment);
+    font-family:var(--font-body);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+    overflow:hidden;
+  }
+  .wrap{width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;flex:1;min-height:0;overflow-y:auto;}
+  .brand{
+    font-family:var(--font-display);
+    font-weight:700;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    font-size:15px;
+    color:var(--gold);
+    margin-bottom:4px;
+  }
+  body[data-screen="swipe"] .brand{display:none;}
+  .screen{width:100%;display:none;flex-direction:column;align-items:center;flex:1;min-height:0;}
+  .screen.active{display:flex;}
+  /* Everything on the swipe screen keeps its natural size — only the card
+     itself shrinks or grows to absorb whatever space is left. This guarantees
+     the controls and Finish link are never pushed off-screen. */
+  #swipe.screen > *:not(.stage-wrap){flex-shrink:0;}
+
+  /* ---------- SETUP ---------- */
+  #setup h1{
+    font-family:var(--font-display);
+    font-size:34px;
+    line-height:1.05;
+    margin:6px 0 8px;
+    text-align:center;
+  }
+  #setup p.sub{
+    color:var(--parchment-dim);
+    text-align:center;
+    max-width:360px;
+    margin:0 0 26px;
+    font-size:15.5px;
+  }
+  .panel{
+    background:var(--charcoal);
+    border:1px solid #3A3122;
+    border-radius:14px;
+    padding:18px;
+    width:100%;
+  }
+  .panel label{
+    display:block;
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:8px;
+  }
+  textarea{
+    width:100%;
+    min-height:160px;
+    resize:vertical;
+    background:var(--ink);
+    border:1px solid #3A3122;
+    border-radius:8px;
+    color:var(--parchment);
+    font-family:var(--font-mono);
+    font-size:13px;
+    line-height:1.5;
+    padding:12px;
+  }
+  textarea::placeholder{color:#5A5140;}
+  textarea.drag-over{border-color:var(--gold);background:#1B160F;}
+  textarea:focus, button:focus-visible, .card-btn:focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:2px;
+  }
+  .file-row{
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;
+    margin-top:8px;font-family:var(--font-mono);font-size:11.5px;color:#8A8067;
+  }
+  .link-btn{
+    background:none;border:none;color:var(--gold);
+    font-family:var(--font-mono);font-size:11.5px;text-decoration:underline;
+    cursor:pointer;padding:0;
+  }
+  .btn{
+    font-family:var(--font-display);
+    font-weight:600;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    font-size:14px;
+    border:none;
+    border-radius:9px;
+    padding:14px 18px;
+    cursor:pointer;
+    width:100%;
+    transition:transform .15s ease, filter .15s ease;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn:disabled{opacity:.35;cursor:not-allowed;}
+  .btn:disabled:active{transform:none;}
+  .btn-primary{background:var(--ember);color:var(--parchment);margin-top:14px;}
+  .btn-primary:hover{filter:brightness(1.08);}
+  .btn-ghost{
+    background:transparent;color:var(--parchment-dim);
+    border:1px solid #3A3122;margin-top:10px;
+  }
+  .btn-ghost:hover{color:var(--parchment);border-color:var(--gold);}
+  .hint{font-size:12.5px;color:#8A8067;margin-top:10px;line-height:1.5;}
+  .err{color:#D98A7A;font-size:13px;margin-top:10px;}
+
+  /* ---------- LOADING ---------- */
+  #loading{justify-content:center;align-items:center;text-align:center;}
+  .stamp-spin{
+    width:64px;height:64px;border-radius:50%;
+    border:3px solid #3A3122;border-top-color:var(--ember);
+    animation:spin 0.9s linear infinite;margin-bottom:20px;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  #loading p{color:var(--parchment-dim);font-family:var(--font-mono);font-size:13px;}
+
+  /* ---------- SWIPE ---------- */
+  #swipe{justify-content:flex-start;}
+  .topbar{
+    width:100%;display:flex;align-items:center;justify-content:flex-end;
+    margin:6px 0 4px;font-family:var(--font-mono);font-size:12px;
+    color:var(--parchment-dim);letter-spacing:.05em;
+  }
+  .topbar .count{color:var(--gold);}
+  .load-progress{
+    width:100%;text-align:right;font-family:var(--font-mono);font-size:11px;
+    color:#8A8067;margin-bottom:10px;min-height:14px;
+  }
+  .liked-toggle{
+    font-family:var(--font-mono);font-size:12px;color:var(--gold);
+    background:transparent;border:1px solid #3A3122;border-radius:20px;
+    padding:4px 10px;cursor:pointer;white-space:nowrap;
+  }
+  .liked-toggle:hover{border-color:var(--gold);}
+  .liked-panel{
+    display:none;width:100%;background:var(--charcoal);border:1px solid #3A3122;
+    border-radius:12px;padding:4px;margin-bottom:14px;max-height:26dvh;overflow-y:auto;
+  }
+  .liked-panel.open{display:block;}
+  .liked-panel .empty{padding:12px;text-align:center;color:#8A8067;font-size:13px;}
+
+  .toolbar-row{display:flex;gap:8px;width:100%;margin-bottom:10px;}
+  .toolbar-row .liked-toggle{flex:1;}
+
+  .filter-panel{
+    display:none;width:100%;background:var(--charcoal);border:1px solid #3A3122;
+    border-radius:12px;padding:14px;margin-bottom:14px;
+  }
+  .filter-panel.open{display:block;}
+  .filter-hint{font-size:12.5px;color:#8A8067;margin-bottom:14px;line-height:1.5;}
+  .filter-group{margin-bottom:14px;}
+  .filter-group:last-of-type{margin-bottom:10px;}
+  .filter-label{
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:8px;
+  }
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .mana-chip{
+    width:38px;height:38px;padding:0;border-radius:50%;
+    border:2px solid transparent;background:transparent;
+    display:flex;align-items:center;justify-content:center;
+    font-size:23px;line-height:1;cursor:pointer;position:relative;
+    opacity:.4;transition:opacity .15s ease, transform .15s ease, border-color .15s ease;
+  }
+  .mana-chip:active{transform:scale(0.92);}
+  .mana-chip.active{opacity:1;border-color:var(--gold);transform:scale(1.06);}
+  .cmc-plus .chip-plus{
+    position:absolute;bottom:-3px;right:-3px;font-family:var(--font-mono);font-weight:700;
+    font-size:10px;color:var(--ink);background:var(--gold);border-radius:50%;
+    width:14px;height:14px;display:flex;align-items:center;justify-content:center;line-height:1;
+  }
+  .segmented{display:flex;flex-wrap:wrap;gap:6px;}
+  .seg{
+    flex:1;min-width:64px;font-family:var(--font-mono);font-size:12px;padding:8px 6px;border-radius:8px;
+    border:1.5px solid #3A3122;background:transparent;color:var(--parchment-dim);cursor:pointer;
+  }
+  .seg.active{border-color:var(--ember);background:var(--ember);color:var(--parchment);}
+  .filter-count{font-family:var(--font-mono);font-size:12px;color:var(--parchment-dim);text-align:center;margin-top:8px;min-height:16px;}
+  .stage-wrap{
+    flex:1 1 auto;
+    min-height:0;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .stage{
+    position:relative;
+    flex-shrink:0;
+    touch-action:none;
+  }
+  .card{
+    position:absolute;inset:0;
+    border-radius:4.5%/3.2%;
+    overflow:hidden;
+    box-shadow:0 14px 34px rgba(0,0,0,.55);
+    background:var(--parchment);
+    display:flex;flex-direction:column;
+    user-select:none;
+    -webkit-user-select:none;
+    touch-action:none;
+  }
+  .card img{width:100%;height:100%;object-fit:contain;display:block;}
+  .card.behind-1{transform:translateY(10px) scale(.96) rotate(-2deg); z-index:1; box-shadow:0 8px 20px rgba(0,0,0,.4);}
+  .card.behind-2{transform:translateY(18px) scale(.92) rotate(2deg); z-index:0; box-shadow:0 6px 14px rgba(0,0,0,.3);}
+  .card.top{z-index:2;cursor:grab;}
+  .card.top:active{cursor:grabbing;}
+  .card.flying{transition:transform .4s cubic-bezier(.2,.7,.3,1), opacity .4s ease;}
+  .card.snap-back{transition:transform .28s cubic-bezier(.2,.8,.3,1);}
+
+  .no-image-face{
+    width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:24px;text-align:center;background:
+      repeating-linear-gradient(135deg, var(--parchment) 0 12px, var(--parchment-dim) 12px 24px);
+  }
+  .no-image-face .nm{font-family:var(--font-display);font-size:20px;color:var(--charcoal);margin-bottom:8px;}
+  .no-image-face .note{font-family:var(--font-mono);font-size:11.5px;color:#7A6E52;}
+
+  .stamp{
+    position:absolute;top:50%;left:50%;
+    width:110px;height:110px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-display);font-weight:700;font-size:58px;line-height:1;
+    border:5px solid;opacity:0;pointer-events:none;
+    background:rgba(20,17,12,.55);
+    box-shadow:0 6px 18px rgba(0,0,0,.4);
+  }
+  .stamp.want{color:var(--moss);border-color:var(--moss);transform:translate(-50%,-50%) rotate(-8deg);}
+  .stamp.pass{color:var(--ember);border-color:var(--ember);transform:translate(-50%,-50%) rotate(8deg);}
+
+  .meta-row{
+    width:100%;display:flex;align-items:center;justify-content:space-between;
+    margin-top:14px;font-family:var(--font-mono);font-size:12.5px;color:var(--parchment-dim);
+    min-height:18px;
+  }
+  .meta-row .price{color:var(--gold);}
+
+  .controls{display:flex;align-items:center;gap:16px;margin-top:20px;}
+  .nav-btn{
+    width:42px;height:42px;border-radius:50%;border:2px solid #3A3122;
+    background:var(--charcoal);color:var(--parchment-dim);
+    display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1;
+    cursor:pointer;transition:transform .15s ease, border-color .15s ease, color .15s ease;
+  }
+  .nav-btn:hover{border-color:var(--gold);color:var(--gold);}
+  .nav-btn:active{transform:scale(0.9);}
+  .nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+  .nav-btn:disabled:hover{border-color:#3A3122;color:var(--parchment-dim);}
+  .card-btn{
+    width:60px;height:60px;border-radius:50%;border:2px solid;
+    background:var(--charcoal);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:24px;
+    transition:transform .15s ease;
+  }
+  .card-btn:active{transform:scale(0.9);}
+  .card-btn.pass{border-color:var(--ember);color:var(--ember);}
+  .card-btn.want{border-color:var(--moss);color:var(--moss);}
+  .empty-note{color:var(--parchment-dim);text-align:center;margin-top:40px;font-size:14px;}
+
+  /* ---------- SUMMARY ---------- */
+  #summary h1{font-family:var(--font-display);font-size:28px;margin:10px 0 6px;text-align:center;}
+  #summary .total{font-family:var(--font-mono);color:var(--gold);text-align:center;margin-bottom:18px;font-size:13px;}
+  .picks-list{width:100%;background:var(--charcoal);border:1px solid #3A3122;border-radius:14px;padding:6px 4px;max-height:44dvh;overflow-y:auto;}
+  .pick-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid #2C2618;cursor:pointer;}
+  .pick-row:hover{background:#2C2618;}
+  .pick-row:last-child{border-bottom:none;}
+  .pick-row img{width:34px;height:47px;object-fit:cover;border-radius:3px;flex-shrink:0;background:#2C2618;}
+  .pick-row .nm{flex:1;font-size:14.5px;}
+  .pick-row .pr{font-family:var(--font-mono);font-size:12px;color:var(--gold);}
+  .pick-row .row-arrow{color:#6E6650;font-size:16px;}
+  .copied-msg{color:var(--moss);font-size:12.5px;text-align:center;margin-top:8px;min-height:16px;}
+  .again-msg{color:var(--gold);font-size:12.5px;text-align:center;margin-top:8px;line-height:1.5;min-height:0;}
+  .footer-link{
+    margin-top:22px;background:none;border:none;color:#6E6650;
+    font-family:var(--font-mono);font-size:11px;text-decoration:underline;cursor:pointer;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Binder</div>
+
+  <!-- SETUP SCREEN -->
+  <section id="setup" class="screen">
+    <h1>Load the binder</h1>
+    <p class="sub">Paste a card list exported from Delver (or anywhere) below. Once it's saved, this link goes straight to swiping — for you and for whoever you send it to.</p>
+    <div class="panel">
+      <label for="listInput">Card list</label>
+      <textarea id="listInput" placeholder="4 Lightning Bolt&#10;1 Sol Ring&#10;2 Counterspell&#10;&#10;...or paste a CSV export, that works too"></textarea>
+      <div class="file-row">
+        <span>Drag a .csv or .txt file here</span>
+        <button type="button" class="link-btn" id="chooseFileBtn">or choose a file</button>
+      </div>
+      <input type="file" id="fileInput" accept=".csv,.txt,text/csv,text/plain" style="display:none">
+      <button class="btn btn-primary" id="saveListBtn">Save &amp; start swiping</button>
+      <button class="btn btn-ghost" id="previewListBtn">Preview without saving</button>
+      <button class="btn btn-ghost" id="demoBtn">Try a demo stack instead</button>
+      <div id="setupErr" class="err" style="display:none;"></div>
+      <div class="hint">Works best as a focused list — a trade binder or want-list — rather than a whole collection. This list will be visible to anyone who opens this link. Checking a friend's returned picks? Paste them and use <strong>Preview without saving</strong> instead — it won't touch the shared list. Self-hosting this file? Skip this screen entirely by placing a <strong>cards.csv</strong> or <strong>data.csv</strong> file next to it on your server — it'll load automatically for every visitor.</div>
+    </div>
+  </section>
+
+  <!-- LOADING SCREEN -->
+  <section id="loading" class="screen">
+    <div class="stamp-spin"></div>
+    <p id="loadingText">Looking up cards…</p>
+  </section>
+
+  <!-- SWIPE SCREEN -->
+  <section id="swipe" class="screen">
+    <div class="topbar">
+      <span class="count" id="counter">0 / 0</span>
+    </div>
+    <div class="load-progress" id="loadProgress"></div>
+    <div class="toolbar-row">
+      <button class="liked-toggle" id="likedToggle" type="button">✓ 0 liked</button>
+      <button class="liked-toggle" id="filtersToggle" type="button">Filters</button>
+    </div>
+    <div class="liked-panel" id="likedPanel"></div>
+    <div class="filter-panel" id="filterPanel">
+      <div class="filter-hint">Nothing selected shows everything. Tap a few chips to narrow down.</div>
+      <div class="filter-group">
+        <div class="filter-label">Colors</div>
+        <div class="chip-row" id="colorChips">
+          <button type="button" class="chip mana-chip" data-color="W"><i class="ms ms-w ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-color="U"><i class="ms ms-u ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-color="B"><i class="ms ms-b ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-color="R"><i class="ms ms-r ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-color="G"><i class="ms ms-g ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-color="C"><i class="ms ms-c ms-cost"></i></button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label">Mana value</div>
+        <div class="chip-row" id="cmcChips">
+          <button type="button" class="chip mana-chip" data-cmc="0"><i class="ms ms-0 ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-cmc="1"><i class="ms ms-1 ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-cmc="2"><i class="ms ms-2 ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-cmc="3"><i class="ms ms-3 ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-cmc="4"><i class="ms ms-4 ms-cost"></i></button>
+          <button type="button" class="chip mana-chip" data-cmc="5"><i class="ms ms-5 ms-cost"></i></button>
+          <button type="button" class="chip mana-chip cmc-plus" data-cmc="6"><i class="ms ms-6 ms-cost"></i><span class="chip-plus">+</span></button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label">Card type</div>
+        <div class="segmented" id="typeSegment">
+          <button type="button" class="seg active" data-type="all">All</button>
+          <button type="button" class="seg" data-type="creature">Creatures</button>
+          <button type="button" class="seg" data-type="noncreature">No creatures</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label">Order</div>
+        <div class="segmented" id="sortSegment">
+          <button type="button" class="seg active" data-sort="random">Shuffle</button>
+          <button type="button" class="seg" data-sort="name">Name</button>
+          <button type="button" class="seg" data-sort="price">Price</button>
+          <button type="button" class="seg" data-sort="cmc">Cost</button>
+          <button type="button" class="seg" data-sort="rarity">Rarity</button>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="applyFiltersBtn" type="button">Apply filters</button>
+      <div style="text-align:center;margin-top:8px;">
+        <button class="link-btn" id="resetFiltersBtn" type="button">Reset filters</button>
+      </div>
+      <div class="filter-count" id="filterCount"></div>
+    </div>
+    <div class="stage-wrap" id="stageWrap"><div class="stage" id="stage"></div></div>
+    <div class="meta-row" id="metaRow"><span></span><span></span></div>
+    <div class="controls">
+      <button class="nav-btn" id="backBtn" type="button" aria-label="Go back">‹</button>
+      <button class="card-btn pass" id="passBtn" aria-label="Pass">✕</button>
+      <button class="card-btn want" id="wantBtn" aria-label="Want">✓</button>
+      <button class="nav-btn" id="skipBtn" type="button" aria-label="Skip without deciding">›</button>
+    </div>
+    <button class="footer-link" id="finishBtn" type="button">Finish for now — show my picks</button>
+  </section>
+
+  <!-- SUMMARY SCREEN -->
+  <section id="summary" class="screen">
+    <h1>Your picks</h1>
+    <div class="total" id="summaryTotal"></div>
+    <div class="picks-list" id="picksList"></div>
+    <button class="btn btn-primary" id="copyBtn">Copy my list</button>
+    <div class="copied-msg" id="copiedMsg"></div>
+    <button class="btn btn-ghost" id="againBtn">Keep swiping</button>
+    <div class="again-msg" id="againMsg"></div>
+    <button class="btn btn-ghost" id="clearPicksBtn">Clear picks &amp; start over</button>
+    <button class="footer-link" id="editListLink">Load a different list</button>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const screens = ['setup','loading','swipe','summary'];
+  function show(id){
+    screens.forEach(s => document.getElementById(s).classList.toggle('active', s===id));
+    document.body.dataset.screen = id;
+  }
+
+  const STORAGE_KEY = 'binder:card-list';
+  let deck = [];        // active swipeable queue (filtered + shuffled)
+  let fullDeck = [];     // complete loaded deck, unfiltered
+  let decidedNames = new Set(); // lowercase names already swiped this "round"
+  let cursor = 0;
+  let loadingInBackground = false; // true while more batches are still being fetched
+  let waitingForMore = false;      // true if the person caught up to the loading edge
+  let picks = [];        // {name, verdict, image, price}
+  let dragging = false, startX = 0, startY = 0, dx = 0, dragStartTime = 0;
+  let lastTapTime = 0;
+  let reviewMode = false;
+  let reviewCard = null;
+  let reviewReturnScreen = 'swipe';
+
+  let filters = { colors: new Set(), cmc: new Set(), type: 'all' };
+  let sortMode = 'random'; // 'random' | 'name' | 'price' | 'cmc' | 'rarity'
+
+  // ---------- storage helpers ----------
+  async function storageGet(key, shared){
+    try{
+      if(!window.storage) return null;
+      const res = await window.storage.get(key, shared);
+      return res ? res.value : null;
+    }catch(e){ return null; }
+  }
+  async function storageSet(key, value, shared){
+    try{
+      if(!window.storage) return false;
+      const res = await window.storage.set(key, value, shared);
+      return !!res;
+    }catch(e){ return false; }
+  }
+
+  // ---------- list parsing ----------
+  function splitCsvLine(line, delim){
+    const result = [];
+    let cur = '';
+    let inQuotes = false;
+    for(let i=0;i<line.length;i++){
+      const ch = line[i];
+      if(inQuotes){
+        if(ch === '"'){
+          if(line[i+1] === '"'){ cur += '"'; i++; }
+          else { inQuotes = false; }
+        } else { cur += ch; }
+      } else {
+        if(ch === '"'){ inQuotes = true; }
+        else if(ch === delim){ result.push(cur); cur=''; }
+        else { cur += ch; }
+      }
+    }
+    result.push(cur);
+    return result;
+  }
+
+  function parseList(raw){
+    const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    if(lines.length === 0) return [];
+
+    const delim = lines[0].includes(',') ? ',' : (lines[0].includes('\t') ? '\t' : null);
+    const looksLikeHeader = delim && /name/i.test(lines[0]);
+
+    const out = [];
+    if(looksLikeHeader){
+      const headers = splitCsvLine(lines[0], delim).map(h => h.trim().toLowerCase());
+      const nameIdx = headers.findIndex(h => h.includes('name'));
+      const qtyIdx = headers.findIndex(h => /^(count|qty|quantity)/.test(h));
+      for(let i=1;i<lines.length;i++){
+        const cols = splitCsvLine(lines[i], delim);
+        const nm = (cols[nameIdx]||'').trim().replace(/^"|"$/g,'');
+        if(!nm) continue;
+        const q = qtyIdx>=0 ? (parseInt(cols[qtyIdx],10)||1) : 1;
+        out.push({name:nm, qty:q});
+      }
+    } else {
+      for(const line of lines){
+        let l = line;
+        let qty = 1;
+        const m = l.match(/^(\d+)\s*x?\s+(.*)$/i);
+        if(m){ qty = parseInt(m[1],10)||1; l = m[2]; }
+        else {
+          const m2 = l.match(/^x(\d+)\s+(.*)$/i);
+          if(m2){ qty = parseInt(m2[1],10)||1; l = m2[2]; }
+        }
+        l = l.split('(')[0].trim();
+        l = l.replace(/\s*\*F\*\s*$/i,'').trim();
+        if(l) out.push({name:l, qty});
+      }
+    }
+
+    // dedupe by lowercase name
+    const map = new Map();
+    for(const c of out){
+      const k = c.name.toLowerCase();
+      if(map.has(k)) map.get(k).qty += c.qty;
+      else map.set(k, {name:c.name, qty:c.qty});
+    }
+    return Array.from(map.values());
+  }
+
+  // ---------- Scryfall ----------
+  async function fetchCardDataProgressive(shuffledEntries, callbacks){
+    const { onFirstBatch, onBatch, onProgress, onDone } = callbacks;
+    const chunks = [];
+    for(let i=0;i<shuffledEntries.length;i+=75) chunks.push(shuffledEntries.slice(i,i+75));
+    const CONCURRENCY = Math.max(1, Math.min(6, chunks.length));
+    let nextIndex = 0;
+    let completed = 0;
+    const total = shuffledEntries.length;
+    let firstDelivered = false;
+
+    async function fetchChunk(chunk){
+      try{
+        const res = await fetch('https://api.scryfall.com/cards/collection', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ identifiers: chunk.map(e => ({name: e.name})) })
+        });
+        const json = await res.json();
+        const found = new Map();
+        (json.data||[]).forEach(card => found.set(card.name.toLowerCase(), card));
+        return chunk.map(e => {
+          const card = found.get(e.name.toLowerCase());
+          if(card){
+            return {
+              name: card.name, image: cardImage(card), price: cardPrice(card), qty: e.qty, missing:false,
+              colors: cardColors(card), cmc: (typeof card.cmc === 'number' ? card.cmc : 0), typeLine: cardTypeLine(card),
+              rarity: card.rarity || ''
+            };
+          }
+          return {name: e.name, image:null, price:null, qty: e.qty, missing:true, colors:[], cmc:0, typeLine:'', rarity:''};
+        });
+      }catch(e){
+        return chunk.map(c => ({name:c.name, image:null, price:null, qty:c.qty, missing:true, colors:[], cmc:0, typeLine:'', rarity:''}));
+      }
+    }
+
+    async function worker(){
+      while(nextIndex < chunks.length){
+        const myIndex = nextIndex++;
+        const builtChunk = await fetchChunk(chunks[myIndex]);
+        completed += chunks[myIndex].length;
+        onBatch(builtChunk);
+        onProgress(completed, total);
+        if(!firstDelivered){
+          firstDelivered = true;
+          onFirstBatch();
+        }
+      }
+    }
+
+    const workers = [];
+    for(let i=0;i<CONCURRENCY;i++) workers.push(worker());
+    await Promise.all(workers);
+    onDone();
+  }
+
+  function cardImage(card){
+    if(card.image_uris) return card.image_uris.normal || card.image_uris.large;
+    if(card.card_faces && card.card_faces[0].image_uris) return card.card_faces[0].image_uris.normal;
+    return null;
+  }
+  function cardPrice(card){
+    if(card.prices){
+      if(card.prices.eur) return {amount:card.prices.eur, currency:'€'};
+      if(card.prices.usd) return {amount:card.prices.usd, currency:'$'};
+    }
+    return null;
+  }
+
+  function shuffle(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]]=[arr[j],arr[i]];
+    }
+    return arr;
+  }
+
+  // ---------- build deck & load list flow ----------
+  function cardColors(card){
+    if(card.colors) return card.colors;
+    if(card.card_faces) return Array.from(new Set(card.card_faces.flatMap(f => f.colors||[])));
+    return [];
+  }
+  function cardTypeLine(card){
+    if(card.type_line) return card.type_line;
+    if(card.card_faces) return card.card_faces.map(f => f.type_line||'').join(' // ');
+    return '';
+  }
+
+  function updateCounterText(){
+    const counterEl = document.getElementById('counter');
+    if(!counterEl) return;
+    if(reviewMode){ counterEl.textContent = 'Reviewing'; return; }
+    counterEl.textContent = `${Math.min(cursor+1, deck.length)} / ${deck.length}`;
+  }
+
+  function updateLoadProgressUI(completed, total){
+    const el = document.getElementById('loadProgress');
+    if(!el) return;
+    el.textContent = completed >= total ? '' : `Loading more cards… ${completed} / ${total}`;
+  }
+
+  function handleIncomingBatch(builtChunk){
+    fullDeck.push(...builtChunk);
+    const eligible = builtChunk.filter(c => !decidedNames.has(c.name.toLowerCase()) && cardMatchesFilters(c));
+    if(eligible.length){
+      const comparator = getSortComparator();
+      if(!comparator){
+        deck.push(...eligible);
+      } else {
+        // Leave everything already shown (before cursor) exactly where it is —
+        // only the not-yet-seen remainder gets re-sorted with the new arrivals mixed in.
+        const remainder = deck.slice(cursor).concat(eligible).sort(comparator);
+        deck = deck.slice(0, cursor).concat(remainder);
+      }
+    }
+    if(waitingForMore && deck.length > cursor){
+      waitingForMore = false;
+      if(document.getElementById('swipe').classList.contains('active') && !reviewMode) renderStage();
+    } else {
+      updateCounterText();
+    }
+  }
+
+  function handleLoadDone(){
+    loadingInBackground = false;
+    const el = document.getElementById('loadProgress');
+    if(el) el.textContent = '';
+    if(waitingForMore){
+      waitingForMore = false;
+      if(document.getElementById('swipe').classList.contains('active') && !reviewMode) renderStage();
+    }
+  }
+
+  async function loadFromEntries(entries, persist){
+    // Reset session state immediately — all local, no need to wait on anything.
+    cursor = 0;
+    picks = [];
+    decidedNames = new Set();
+    deck = [];
+    fullDeck = [];
+    resetFiltersState();
+    waitingForMore = false;
+    loadingInBackground = true;
+
+    // Persist the raw list right away — it doesn't depend on Scryfall data at all,
+    // so friends can pick it up even if this tab closes before card lookups finish.
+    if(persist){
+      await storageSet(STORAGE_KEY, JSON.stringify(entries), true);
+    }
+
+    // Shuffle the identifier list itself before any fetching happens, so the
+    // very first cards to arrive are already a random sample of the whole list —
+    // not just whatever happened to be first in the CSV.
+    const shuffledEntries = shuffle(entries.slice());
+
+    show('loading');
+    document.getElementById('loadingText').textContent = 'Finding your first cards…';
+
+    await new Promise((resolve) => {
+      let resolved = false;
+      fetchCardDataProgressive(shuffledEntries, {
+        onFirstBatch: () => {
+          startSwipe();
+          if(!resolved){ resolved = true; resolve(); }
+        },
+        onBatch: handleIncomingBatch,
+        onProgress: updateLoadProgressUI,
+        onDone: handleLoadDone
+      }).catch(() => { if(!resolved){ resolved = true; resolve(); } });
+    });
+  }
+
+  async function tryFetchLocalList(){
+    // For self-hosted deployments (no Claude storage available): look for a
+    // data file sitting next to this HTML file, using conventional names.
+    const candidates = ['cards.csv','cards.txt','list.csv','list.txt','data.csv','data.txt'];
+    for(const name of candidates){
+      try{
+        const res = await fetch(name, {cache:'no-store'});
+        if(res.ok){
+          const text = await res.text();
+          const entries = parseList(text);
+          if(entries.length) return entries;
+        }
+      }catch(e){ /* file not present or not servable — try the next name */ }
+    }
+    return null;
+  }
+
+  async function tryLoadSharedList(){
+    const raw = await storageGet(STORAGE_KEY, true);
+    if(raw){
+      try{
+        const entries = JSON.parse(raw);
+        if(Array.isArray(entries) && entries.length){
+          await loadFromEntries(entries, false);
+          return true;
+        }
+      }catch(e){/* fall through */}
+    }
+    const localEntries = await tryFetchLocalList();
+    if(localEntries && localEntries.length){
+      await loadFromEntries(localEntries, false);
+      return true;
+    }
+    return false;
+  }
+
+  // ---------- swipe screen rendering ----------
+  function sizeStage(){
+    const wrap = document.getElementById('stageWrap');
+    const stage = document.getElementById('stage');
+    if(!wrap || !stage) return;
+    const wrapW = wrap.clientWidth;
+    const wrapH = wrap.clientHeight;
+    if(wrapW <= 0 || wrapH <= 0) return;
+    let w = wrapW;
+    let h = w * 88 / 63;
+    if(h > wrapH){
+      h = wrapH;
+      w = h * 63 / 88;
+    }
+    stage.style.width = w + 'px';
+    stage.style.height = h + 'px';
+  }
+  window.addEventListener('resize', sizeStage);
+
+  function startSwipe(){
+    reviewMode = false;
+    reviewCard = null;
+    show('swipe');
+    document.getElementById('likedPanel').classList.remove('open');
+    document.getElementById('filterPanel').classList.remove('open');
+    updateLikedUI();
+    sizeStage();
+    renderStage();
+  }
+
+  function updateNavButtons(){
+    const backBtn = document.getElementById('backBtn');
+    const skipBtn = document.getElementById('skipBtn');
+    if(!backBtn || !skipBtn) return;
+    backBtn.disabled = reviewMode || cursor <= 0;
+    skipBtn.disabled = reviewMode || cursor >= deck.length;
+  }
+
+  function renderStage(){
+    sizeStage();
+    updateNavButtons();
+    const stage = document.getElementById('stage');
+    stage.innerHTML = '';
+    lastTapTime = 0;
+
+    if(reviewMode){
+      document.getElementById('counter').textContent = 'Reviewing';
+    } else {
+      document.getElementById('counter').textContent = `${Math.min(cursor+1,deck.length)} / ${deck.length}`;
+      if(cursor >= deck.length){
+        if(loadingInBackground){
+          waitingForMore = true;
+          stage.innerHTML = `<div class="card top"><div class="no-image-face">
+            <div class="nm">Catching up…</div>
+            <div class="note">More cards are still loading — this'll continue in a moment</div>
+          </div></div>`;
+          document.getElementById('metaRow').innerHTML = '<span></span><span></span>';
+          return;
+        }
+        finishSwipe();
+        return;
+      }
+    }
+
+    // Build the 3-card stack. In review mode the reviewed card takes the top
+    // slot and the real upcoming deck cards still peek out behind it — it's
+    // a genuine member of the stack, just inserted ahead of the queue.
+    const stackCards = reviewMode
+      ? [deck[cursor+1], deck[cursor], reviewCard]
+      : [deck[cursor+2], deck[cursor+1], deck[cursor]];
+    const stackClasses = ['behind-2','behind-1','top'];
+
+    stackCards.forEach((c, idx) => {
+      if(!c) return;
+      const el = document.createElement('div');
+      const isTop = idx === 2;
+      el.className = 'card ' + stackClasses[idx];
+      el.innerHTML = c.image
+        ? `<img src="${c.image}" alt="${escapeHtml(c.name)}" draggable="false">`
+        : `<div class="no-image-face"><div class="nm">${escapeHtml(c.name)}</div><div class="note">no image found — swipe to decide anyway</div></div>`;
+      if(isTop){
+        const wantStamp = document.createElement('div');
+        wantStamp.className = 'stamp want'; wantStamp.textContent = '✓'; wantStamp.id='stampWant';
+        const passStamp = document.createElement('div');
+        passStamp.className = 'stamp pass'; passStamp.textContent = '✕'; passStamp.id='stampPass';
+        el.appendChild(wantStamp); el.appendChild(passStamp);
+        el.id = 'topCard';
+        attachDrag(el);
+      }
+      stage.appendChild(el);
+    });
+
+    const top = reviewMode ? reviewCard : deck[cursor];
+    const meta = document.getElementById('metaRow');
+    meta.innerHTML = `<span>${escapeHtml(top.name)}${top.qty>1?' ×'+top.qty:''}</span><span class="price">${top.price? top.price.currency+top.price.amount : ''}</span>`;
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  function cardMatchesFilters(c){
+    if(filters.colors.size > 0){
+      const colors = c.colors || [];
+      if(colors.length === 0){
+        if(!filters.colors.has('C')) return false;
+      } else {
+        for(const col of colors){ if(!filters.colors.has(col)) return false; }
+      }
+    }
+    if(filters.cmc.size > 0){
+      const bucket = c.cmc >= 6 ? 6 : Math.max(0, Math.floor(c.cmc || 0));
+      if(!filters.cmc.has(bucket)) return false;
+    }
+    const isCreature = /creature/i.test(c.typeLine || '');
+    if(filters.type === 'creature' && !isCreature) return false;
+    if(filters.type === 'noncreature' && isCreature) return false;
+    return true;
+  }
+
+  const RARITY_RANK = {common:0, uncommon:1, special:2, bonus:2, rare:3, mythic:4};
+  function getSortComparator(){
+    switch(sortMode){
+      case 'name': return (a,b) => a.name.localeCompare(b.name);
+      case 'price': return (a,b) => {
+        const pa = a.price ? parseFloat(a.price.amount) : Infinity;
+        const pb = b.price ? parseFloat(b.price.amount) : Infinity;
+        return pa - pb;
+      };
+      case 'cmc': return (a,b) => (a.cmc||0) - (b.cmc||0);
+      case 'rarity': return (a,b) => (RARITY_RANK[a.rarity] ?? 1.5) - (RARITY_RANK[b.rarity] ?? 1.5);
+      default: return null; // 'random' — caller shuffles instead
+    }
+  }
+  function buildOrderedDeck(arr){
+    const comparator = getSortComparator();
+    return comparator ? arr.slice().sort(comparator) : shuffle(arr.slice());
+  }
+
+  function resetFiltersState(){
+    filters = { colors: new Set(), cmc: new Set(), type: 'all' };
+    sortMode = 'random';
+    document.querySelectorAll('#colorChips .chip').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#cmcChips .chip').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#typeSegment .seg').forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
+    document.querySelectorAll('#sortSegment .seg').forEach(b => b.classList.toggle('active', b.dataset.sort === 'random'));
+    document.getElementById('filterCount').textContent = '';
+  }
+  document.getElementById('resetFiltersBtn').addEventListener('click', resetFiltersState);
+
+  document.querySelectorAll('#sortSegment .seg').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#sortSegment .seg').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      sortMode = btn.dataset.sort;
+    });
+  });
+
+
+  document.querySelectorAll('#colorChips .chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+      const c = btn.dataset.color;
+      if(btn.classList.contains('active')) filters.colors.add(c); else filters.colors.delete(c);
+    });
+  });
+  document.querySelectorAll('#cmcChips .chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+      const v = parseInt(btn.dataset.cmc, 10);
+      if(btn.classList.contains('active')) filters.cmc.add(v); else filters.cmc.delete(v);
+    });
+  });
+  document.querySelectorAll('#typeSegment .seg').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#typeSegment .seg').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filters.type = btn.dataset.type;
+    });
+  });
+
+  document.getElementById('filtersToggle').addEventListener('click', () => {
+    document.getElementById('likedPanel').classList.remove('open');
+    document.getElementById('filterPanel').classList.toggle('open');
+  });
+
+  document.getElementById('applyFiltersBtn').addEventListener('click', () => {
+    const filtered = fullDeck.filter(c => !decidedNames.has(c.name.toLowerCase()) && cardMatchesFilters(c));
+    const countEl = document.getElementById('filterCount');
+    if(filtered.length === 0){
+      countEl.textContent = 'No cards match those filters — try widening them.';
+      return;
+    }
+    deck = buildOrderedDeck(filtered);
+    cursor = 0;
+    countEl.textContent = `${filtered.length} card${filtered.length===1?'':'s'} match — swiping now.`;
+    document.getElementById('filterPanel').classList.remove('open');
+    renderStage();
+  });
+
+  function attachDrag(el){
+    el.addEventListener('pointerdown', onDown);
+  }
+  function onDown(e){
+    dragging = true;
+    startX = e.clientX; startY = e.clientY; dx = 0;
+    dragStartTime = Date.now();
+    const el = e.currentTarget;
+    el.setPointerCapture(e.pointerId);
+    el.classList.remove('flying','snap-back');
+    el.style.transition = 'none';
+    el.addEventListener('pointermove', onMove);
+    el.addEventListener('pointerup', onUp);
+    el.addEventListener('pointercancel', onUp);
+  }
+  function onMove(e){
+    if(!dragging) return;
+    dx = e.clientX - startX;
+    const dyVis = (e.clientY - startY) * 0.4;
+    const el = document.getElementById('topCard');
+    if(!el) return;
+    const rot = dx/18;
+    el.style.transform = `translate(${dx}px, ${dyVis}px) rotate(${rot}deg)`;
+    const wantOp = Math.max(0, Math.min(1, dx/110));
+    const passOp = Math.max(0, Math.min(1, -dx/110));
+    const ws = document.getElementById('stampWant'); if(ws) ws.style.opacity = wantOp;
+    const ps = document.getElementById('stampPass'); if(ps) ps.style.opacity = passOp;
+  }
+  function onUp(e){
+    if(!dragging) return;
+    dragging = false;
+    const el = document.getElementById('topCard');
+    el.removeEventListener('pointermove', onMove);
+    el.removeEventListener('pointerup', onUp);
+    el.removeEventListener('pointercancel', onUp);
+    const distanceThreshold = 90;
+    const flickMinDistance = 32;   // enough to show clear intent, not just a jitter
+    const flickMaxDuration = 260;  // ms — a real flick is quick
+    const duration = Date.now() - dragStartTime;
+    const isFlick = Math.abs(dx) >= flickMinDistance && duration <= flickMaxDuration;
+
+    if(dx > distanceThreshold || (isFlick && dx > 0)) commitSwipe('want');
+    else if(dx < -distanceThreshold || (isFlick && dx < 0)) commitSwipe('pass');
+    else {
+      // Minimal movement means this was a tap, not a failed drag — check for a double-tap.
+      if(Math.abs(dx) < 10){
+        const now = Date.now();
+        if(now - lastTapTime < 350){
+          lastTapTime = 0;
+          commitSwipe('want');
+          return;
+        }
+        lastTapTime = now;
+      }
+      el.classList.add('snap-back');
+      el.style.transition = '';
+      el.style.transform = 'translate(0,0) rotate(0)';
+      const ws = document.getElementById('stampWant'); if(ws) ws.style.opacity = 0;
+      const ps = document.getElementById('stampPass'); if(ps) ps.style.opacity = 0;
+    }
+  }
+
+  function openCardReview(card, returnScreen){
+    reviewMode = true;
+    reviewCard = card;
+    reviewReturnScreen = returnScreen;
+    document.getElementById('likedPanel').classList.remove('open');
+    document.getElementById('filterPanel').classList.remove('open');
+    show('swipe');
+    renderStage();
+  }
+
+  function wireRowClicks(containerId, returnScreen){
+    document.getElementById(containerId).addEventListener('click', (e) => {
+      const row = e.target.closest('.pick-row');
+      if(!row || !row.dataset.name) return;
+      const card = picks.find(p => p.name === row.dataset.name);
+      if(card) openCardReview(card, returnScreen);
+    });
+  }
+  wireRowClicks('likedPanel', 'swipe');
+  wireRowClicks('picksList', 'summary');
+
+  function updateLikedUI(){
+    const toggle = document.getElementById('likedToggle');
+    const panel = document.getElementById('likedPanel');
+    if(!toggle || !panel) return;
+    toggle.textContent = `✓ ${picks.length} liked`;
+    if(picks.length === 0){
+      panel.innerHTML = '<div class="empty">Nothing liked yet.</div>';
+    } else {
+      panel.innerHTML = picks.map(p => `<div class="pick-row" data-name="${escapeHtml(p.name)}">
+        ${p.image ? `<img src="${p.image}" alt="">` : ''}
+        <span class="nm">${escapeHtml(p.name)}${p.qty>1?' ×'+p.qty:''}</span>
+        <span class="pr">${p.price? p.price.currency+p.price.amount : ''}</span>
+        <span class="row-arrow">›</span>
+      </div>`).join('');
+    }
+  }
+  document.getElementById('likedToggle').addEventListener('click', () => {
+    document.getElementById('filterPanel').classList.remove('open');
+    document.getElementById('likedPanel').classList.toggle('open');
+  });
+
+  function commitSwipe(verdict){
+    const el = document.getElementById('topCard');
+    const card = reviewMode ? reviewCard : deck[cursor];
+    if(el){
+      el.classList.add('flying');
+      el.style.transition = '';
+      const flyX = verdict==='want' ? window.innerWidth : -window.innerWidth;
+      el.style.transform = `translate(${flyX}px, -40px) rotate(${verdict==='want'?25:-25}deg)`;
+      el.style.opacity = '0';
+    }
+
+    if(reviewMode){
+      // Reviewing an already-liked card: passing un-likes it, wanting is a no-op
+      // (it's already in picks) — either way we just return to where we came from.
+      if(verdict === 'pass'){
+        const nm = card.name.toLowerCase();
+        picks = picks.filter(p => p.name.toLowerCase() !== nm);
+        decidedNames.delete(nm);
+      }
+      updateLikedUI();
+      const returnTo = reviewReturnScreen;
+      reviewMode = false;
+      reviewCard = null;
+      setTimeout(() => { returnTo === 'summary' ? finishSwipe() : renderStage(); }, 380);
+      return;
+    }
+
+    if(verdict === 'want'){
+      picks.push(card);
+    }
+    decidedNames.add(card.name.toLowerCase());
+    updateLikedUI();
+    cursor++;
+    setTimeout(renderStage, 380);
+  }
+
+  function goBack(){
+    if(reviewMode || cursor <= 0) return;
+    cursor--;
+    const card = deck[cursor];
+    const nm = card.name.toLowerCase();
+    decidedNames.delete(nm);
+    picks = picks.filter(p => p.name.toLowerCase() !== nm);
+    updateLikedUI();
+    renderStage();
+  }
+  function skipForward(){
+    if(reviewMode || cursor >= deck.length) return;
+    cursor++;
+    renderStage();
+  }
+
+  document.getElementById('passBtn').addEventListener('click', () => { if(reviewMode || cursor<deck.length) commitSwipe('pass'); });
+  document.getElementById('wantBtn').addEventListener('click', () => { if(reviewMode || cursor<deck.length) commitSwipe('want'); });
+  document.getElementById('backBtn').addEventListener('click', goBack);
+  document.getElementById('skipBtn').addEventListener('click', skipForward);
+  document.getElementById('finishBtn').addEventListener('click', () => { finishSwipe(); });
+  document.addEventListener('keydown', (e) => {
+    if(!document.getElementById('swipe').classList.contains('active')) return;
+    if(e.key==='ArrowRight' && (reviewMode || cursor<deck.length)) commitSwipe('want');
+    if(e.key==='ArrowLeft' && (reviewMode || cursor<deck.length)) commitSwipe('pass');
+    if(e.key==='ArrowUp') skipForward();
+    if(e.key==='ArrowDown') goBack();
+  });
+
+  // ---------- summary ----------
+  function finishSwipe(){
+    reviewMode = false;
+    reviewCard = null;
+    show('summary');
+    const list = document.getElementById('picksList');
+    const totalEl = document.getElementById('summaryTotal');
+    const copyBtn = document.getElementById('copyBtn');
+    document.getElementById('copiedMsg').textContent = '';
+    document.getElementById('againMsg').textContent = '';
+    if(picks.length === 0){
+      list.innerHTML = '<div class="pick-row" style="cursor:default;"><span class="nm">Nothing picked this round.</span></div>';
+      totalEl.textContent = '';
+      copyBtn.disabled = true;
+      copyBtn.textContent = 'Nothing to copy yet';
+    } else {
+      let sum = 0; let hasPrice = false;
+      list.innerHTML = picks.map(p => {
+        if(p.price && p.price.currency==='€'){ sum += parseFloat(p.price.amount)*p.qty; hasPrice = true; }
+        return `<div class="pick-row" data-name="${escapeHtml(p.name)}">
+          ${p.image ? `<img src="${p.image}" alt="">` : ''}
+          <span class="nm">${escapeHtml(p.name)}${p.qty>1?' ×'+p.qty:''}</span>
+          <span class="pr">${p.price? p.price.currency+p.price.amount : ''}</span>
+          <span class="row-arrow">›</span>
+        </div>`;
+      }).join('');
+      totalEl.textContent = hasPrice ? `${picks.length} cards · ~€${sum.toFixed(2)} (where priced)` : `${picks.length} cards`;
+      copyBtn.disabled = false;
+      copyBtn.textContent = 'Copy my list';
+    }
+  }
+
+  document.getElementById('copyBtn').addEventListener('click', async () => {
+    const lines = picks.map(p => `${p.qty} ${p.name}`);
+    const text = lines.length ? lines.join('\n') : 'Nothing picked this round.';
+    try{
+      await navigator.clipboard.writeText(text);
+      document.getElementById('copiedMsg').textContent = 'Copied — paste it wherever you talk to them.';
+    }catch(e){
+      document.getElementById('copiedMsg').textContent = text;
+    }
+  });
+  document.getElementById('againBtn').addEventListener('click', () => {
+    // Keeps everything already liked — just clears "passed" cards back into the pool
+    // so they can be reconsidered, and re-shuffles what's left under the current filters.
+    const wantedNames = new Set(picks.map(p => p.name.toLowerCase()));
+    const filteredFull = fullDeck.filter(cardMatchesFilters);
+    const pool = filteredFull.filter(c => !wantedNames.has(c.name.toLowerCase()));
+    const msgEl = document.getElementById('againMsg');
+    if(pool.length === 0){
+      msgEl.textContent = filteredFull.length === 0
+        ? "Nothing matches your current filters — try widening them."
+        : "You've already decided on every card here. Check your liked list above, or use Clear picks to start over.";
+      return;
+    }
+    msgEl.textContent = '';
+    deck = buildOrderedDeck(pool);
+    decidedNames = new Set(wantedNames);
+    cursor = 0;
+    startSwipe();
+  });
+  document.getElementById('clearPicksBtn').addEventListener('click', () => {
+    if(!confirm('Clear everything you\'ve liked so far and start this list over?')) return;
+    decidedNames = new Set();
+    picks = [];
+    deck = buildOrderedDeck(fullDeck.filter(cardMatchesFilters));
+    cursor = 0;
+    startSwipe();
+  });
+  document.getElementById('editListLink').addEventListener('click', () => { reviewMode = false; reviewCard = null; show('setup'); });
+
+  // ---------- setup screen actions ----------
+  async function handleSaveList(persist){
+    const raw = document.getElementById('listInput').value;
+    const entries = parseList(raw);
+    const errEl = document.getElementById('setupErr');
+    if(entries.length === 0){
+      errEl.style.display = 'block';
+      errEl.textContent = "Couldn't find any card names in that — check the file/paste and try again.";
+      return;
+    }
+    errEl.style.display = 'none';
+    await loadFromEntries(entries, persist);
+  }
+  document.getElementById('saveListBtn').addEventListener('click', () => handleSaveList(true));
+  document.getElementById('previewListBtn').addEventListener('click', () => handleSaveList(false));
+
+  function readAndLoadFile(file){
+    const errEl = document.getElementById('setupErr');
+    const reader = new FileReader();
+    reader.onload = () => {
+      document.getElementById('listInput').value = reader.result;
+      handleSaveList(true);
+    };
+    reader.onerror = () => {
+      errEl.style.display = 'block';
+      errEl.textContent = "Couldn't read that file — try dragging it in again, or paste the text instead.";
+    };
+    reader.readAsText(file);
+  }
+
+  const listInputEl = document.getElementById('listInput');
+  ['dragenter','dragover'].forEach(evt => listInputEl.addEventListener(evt, e => {
+    e.preventDefault(); e.stopPropagation();
+    listInputEl.classList.add('drag-over');
+  }));
+  ['dragleave','dragend'].forEach(evt => listInputEl.addEventListener(evt, e => {
+    e.preventDefault(); e.stopPropagation();
+    listInputEl.classList.remove('drag-over');
+  }));
+  listInputEl.addEventListener('drop', e => {
+    e.preventDefault(); e.stopPropagation();
+    listInputEl.classList.remove('drag-over');
+    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+    if(file) readAndLoadFile(file);
+  });
+
+  document.getElementById('chooseFileBtn').addEventListener('click', () => {
+    document.getElementById('fileInput').click();
+  });
+  document.getElementById('fileInput').addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    if(file) readAndLoadFile(file);
+  });
+
+  document.getElementById('demoBtn').addEventListener('click', async () => {
+    const demo = ['Lightning Bolt','Sol Ring','Counterspell','Llanowar Elves','Swords to Plowshares','Brainstorm','Wrath of God','Birds of Paradise'].map(n=>({name:n, qty:1}));
+    await loadFromEntries(demo, false);
+  });
+
+  window.addEventListener('dragover', e => e.preventDefault());
+  window.addEventListener('drop', e => e.preventDefault());
+
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
+
+  // ---------- boot ----------
+  (async function boot(){
+    show('loading');
+    document.getElementById('loadingText').textContent = 'Checking for a saved list…';
+    const hadList = await tryLoadSharedList();
+    if(!hadList) show('setup');
+  })();
+
+})();
+</script>
+</body>
+</html>
