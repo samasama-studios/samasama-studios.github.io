@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>codesters.club | 2025-2026 Pupils Survey</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -125,7 +126,7 @@ footer ul{padding-left:18px;max-width:var(--measure)} footer li{margin-bottom:8p
 .leg2{display:flex;align-items:center;margin-top:18px;padding-left:76px}
 .leg2 span{display:flex;align-items:center;margin-right:28px;font:700 13.5px "Poppins",sans-serif;color:#555}
 .leg2 .sw{margin-right:9px}
-@media(max-width:640px){.yr{width:48px;flex:0 0 48px;font-size:16px}.leg2{padding-left:0}}
+
 
 
 /* ── bar tooltips ─────────────────────────────── */
@@ -182,11 +183,89 @@ body::-webkit-scrollbar{display:none}
   box-shadow:0 1px 4px rgba(20,26,22,.2)}
 #rail .knob:active{cursor:grabbing;transform:translateY(-50%) scale(1.18)}
 @media(prefers-reduced-motion:reduce){#rail *{transition:none!important}}
-@media(max-width:900px){#rail{display:none}html{scrollbar-width:auto}body::-webkit-scrollbar{display:initial}}
-@media(max-width:640px){
-  .row,.lk{flex-wrap:wrap}
-  .row .lab,.lk .lab{text-align:left;width:100%;flex:1 1 100%;margin:0 0 4px}
-  .row .val,.lk .pct{margin-left:10px}
+#rail .bub{position:absolute;right:46px;transform:translateY(-50%);opacity:0;
+  background:var(--disagree);color:#fff;border-radius:6px;padding:7px 12px;
+  font:600 13px/1.2 "Poppins",sans-serif;white-space:nowrap;pointer-events:none;
+  transition:opacity .18s ease;box-shadow:0 3px 12px rgba(20,26,22,.3);display:none}
+#rail .bub:after{content:"";position:absolute;left:100%;top:50%;margin-top:-5px;
+  border:5px solid transparent;border-left-color:var(--disagree)}
+#rail.open .bub{opacity:1}
+
+/* touch: ticks only, with a bubble that names the section while you scrub */
+@media(max-width:900px){
+  #rail{width:56px;opacity:1}
+  #rail .hit{width:56px}
+  #rail .spine,#rail .prog{right:17px}
+  #rail .bub{display:block}
+  .rl{padding-left:0}
+  .rl .txt{display:none}
+  .rl .tick{margin-right:12px;margin-left:0;width:9px}
+  #rail:hover .rl .tick,#rail.open .rl .tick{width:9px;background:var(--rule)}
+  .rl.on .tick,#rail.open .rl.on .tick{width:18px;background:var(--green);height:3px}
+  #rail .knob{right:10px;width:18px;height:18px;touch-action:none}
+  #rail .spine{touch-action:none}
+}
+.tw{max-width:100%}
+
+/* ── mobile ───────────────────────────────────── */
+@media(max-width:760px){
+  body{font-size:16.5px;line-height:1.68}
+  .wrap{padding:0 58px 64px 20px}
+  header{padding:38px 0 26px}
+  h1{font-size:clamp(30px,8.5vw,42px)}
+  .sub{font-size:16.5px}
+  h2{font-size:23px}
+  h2 .num{display:block;margin:0 0 6px;vertical-align:0}
+  h3{margin:26px 0 10px}
+  section{padding:38px 0 8px}
+
+  /* stat tiles: two per row, not five */
+  .g{flex:1 1 42%;padding:16px 14px}
+  .g .n{font-size:29px}
+  .g .l{font-size:14px}
+
+  /* deck cards */
+  .card2{padding:22px 18px 18px;border-radius:14px}
+  .card2 h3{font-size:19px;margin-bottom:16px}
+  .yr{width:48px;flex:0 0 48px;font-size:16px;margin-right:10px}
+  .trk{height:30px}
+  .v{font-size:16px;padding-right:9px}
+  .leg2{padding-left:0;flex-wrap:wrap}
+  .leg2 span{font-size:12.5px;margin-right:18px}
+
+  /* charts: label, then full-width bar, then value */
+  .row,.lk{display:block;margin-bottom:15px}
+  .row .lab,.lk .lab{display:block;text-align:left;width:auto;margin:0 0 5px;font-size:14px}
+  .track,.stack{display:flex;width:100%;margin:0}
+  .row .val,.lk .pct{display:block;width:auto;margin:4px 0 0;text-align:right;font-size:13.5px}
+  .legend{font-size:12.5px}
+  .legend span{margin-right:16px}
+
+  /* callouts + quotes */
+  .call{padding:18px 18px;border-left-width:4px}
+  .quotes{margin:20px 0;max-width:100%}
+  blockquote{flex:1 1 100%;margin:0 0 10px;font-size:14.5px}
+
+  /* split bars */
+  .split{height:auto;flex-wrap:wrap;border-radius:4px}
+  .split div{flex:1 1 100%;padding:9px 12px;justify-content:flex-start;font-size:13px}
+
+  /* only genuinely wide tables scroll; the rest wrap normally */
+  .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:18px -20px 18px -20px;padding:0 20px}
+  .tw table{font-size:14.5px}
+  .tw table.cols{min-width:520px}
+  .tw table.wide{min-width:640px;font-size:13.5px}
+
+  ul.fix li{font-size:15px;padding-left:28px}
+  #tip{font-size:12.5px;padding:6px 9px}
+}
+
+@media(max-width:400px){
+  .wrap{padding:0 52px 56px 16px}
+  .g{flex:1 1 100%}
+  .tw{margin:18px -16px;padding:0 16px}
+  .tw table.cols{min-width:500px}
+  .lk .lab{font-size:13.5px}
 }
 </style>
 <div class="wrap">
@@ -238,11 +317,11 @@ body::-webkit-scrollbar{display:none}
   <p class="lede">The raw export held 131 rows, but 7 of them are not distinct students. After removing duplicate submissions and one test entry, <strong>124 valid responses</strong> remain against 170 enrolled students — a 73% response rate. Of those, 119 can be matched to a known group; 5 cannot. All figures in this report use the cleaned set.</p>
 
   <h3>What was removed</h3>
-  <table>
+  <div class="tw"><table>
     <tr><th>Rows</th><th>Reason</th></tr>
     <tr><td class="n">6</td><td>Repeat submissions from the same respondent ID. Four students submitted twice, one submitted three times. In every case the first submission was kept.</td></tr>
     <tr><td class="n">1</td><td>A test entry — the very first submission in the dataset (15 March, 19:37), with every free-text field filled in as keyboard mash.</td></tr>
-  </table>
+  </table></div>
   <p>Deduplication changes the headline figures by less than one point, so nothing in last week's read was materially wrong. It does, however, correct the coverage picture for two schools.</p>
 
   <h3>Response rate by grade</h3>
@@ -258,7 +337,7 @@ body::-webkit-scrollbar{display:none}
 
   <h3>Coverage by group</h3>
   <p style="font-size:14px;color:var(--ink-soft);margin:0 0 4px">Group IDs follow the registry convention: the suffix is the graduating year, so <strong>25</strong> = current 10th grade, <strong>24</strong> = 11th, <strong>23</strong> = 12th.</p>
-  <table class="wide">
+  <div class="tw"><table class="wide">
     <tr><th>School</th><th>Group</th><th>Grade</th><th>Enrolled</th><th>Valid</th><th>Rate</th></tr>
     <tr><td>Kadrioru Saksa Gümnaasium</td><td class="gid">KSG25</td><td>10th</td><td class="n">27</td><td class="n">23</td><td class="n">85%</td></tr>
     <tr><td>Kadrioru Saksa Gümnaasium</td><td class="gid">KSG24</td><td>11th</td><td class="n">23</td><td class="n">18</td><td class="n">78%</td></tr>
@@ -276,7 +355,7 @@ body::-webkit-scrollbar{display:none}
     <tr><td colspan="3"><em>Unattributed</em> — 4 from the 6 May sitting, 1 Narva 11th</td><td class="n">—</td><td class="n">5</td><td class="n">—</td></tr>
     <tr><td colspan="3"><strong>Matched to a group</strong></td><td class="n">170</td><td class="n">119</td><td class="n">70%</td></tr>
     <tr><td colspan="3"><strong>Total valid</strong></td><td class="n">170</td><td class="n">124</td><td class="n">73%</td></tr>
-  </table>
+  </table></div>
 
   <div class="call">
     <p><strong>Narva now reconciles. Tehnikagümnaasium does not.</strong></p>
@@ -291,12 +370,12 @@ body::-webkit-scrollbar{display:none}
 
   <h3>Does weighting change anything?</h3>
   <p>Because the 12th grade is under-represented, cohort-wide averages slightly over-weight the younger students. Re-weighting each grade to its true enrolment barely moves the headline numbers, so the figures in this report can be read as they stand.</p>
-  <table>
+  <div class="tw"><table>
     <tr><th>Measure</th><th>As reported</th><th>Weighted by enrolment</th></tr>
     <tr><td>Happy they joined</td><td class="n">73.4%</td><td class="n">72.8%</td></tr>
     <tr><td>Positive or neutral</td><td class="n">98.4%</td><td class="n">98.2%</td></tr>
     <tr><td>Mentor rating</td><td class="n">4.54</td><td class="n">4.55</td></tr>
-  </table>
+  </table></div>
 
   <div class="call good">
     <p><strong>Group size doesn't predict mentor satisfaction.</strong> The largest group in the program — 27 students at Kadrioru — returns a 4.76 mentor rating, the second highest of any school. The lowest come from Tartu Jaan Poska (3.96) and Tehnikagümnaasium (4.20), which run groups of 6 to 18. Whatever drives the mentor score, it isn't headcount.</p>
@@ -401,11 +480,11 @@ body::-webkit-scrollbar{display:none}
   <h2><span class="num">04</span>The central tension: "it still feels like homework"</h2>
   <p class="lede">76 of 124 students say the e-learning lessons still feel like another piece of homework rather than a normal lesson they do at home. This single split predicts almost everything else in the survey.</p>
 
-  <table>
+  <div class="tw"><table>
     <tr><th>Among students who say…</th><th>Neutral or unhappy</th><th>Can't complete on time</th></tr>
     <tr><td>"It still feels like another homework" <span class="mono">(n=76)</span></td><td class="n">38%</td><td class="n">33%</td></tr>
     <tr><td>"It's a normal lesson I do at home" <span class="mono">(n=48)</span></td><td class="n">8%</td><td class="n">10%</td></tr>
-  </table>
+  </table></div>
 
   <div class="call warn">
     <p><strong>27 of the 31 neutral students sit in the "homework" camp, and 25 of the 30 students who miss deadlines do too.</strong> The problem isn't the blended model — 88% want to keep the current one live lesson plus two e-learning sessions. It's that the e-learning half isn't landing as <em>lesson time</em>. It reads as extra work stacked on top of school.</p>
@@ -504,7 +583,7 @@ body::-webkit-scrollbar{display:none}
   <p>The split maps onto the tension in section 04. Students who want fewer, bigger, later deadlines are asking for autonomy; students who want small graded chunks are asking for structure so they don't fall behind. Both groups are describing the same underlying problem — <em>the current rhythm is unpredictable</em> — and proposing opposite fixes. Whichever direction is chosen, making the calendar visible further ahead serves both.</p>
 
   <h3>Career intentions</h3>
-  <table>
+  <div class="tw"><table class="cols">
     <tr><th>Direction</th><th>10th</th><th>11th</th><th>12th</th><th>Total</th></tr>
     <tr><td>Designer</td><td class="n">8</td><td class="n">18</td><td class="n">6</td><td class="n">32</td></tr>
     <tr><td>Programmer</td><td class="n">5</td><td class="n">13</td><td class="n">10</td><td class="n">28</td></tr>
@@ -512,7 +591,7 @@ body::-webkit-scrollbar{display:none}
     <tr><td>Manager</td><td class="n">5</td><td class="n">2</td><td class="n">8</td><td class="n">15</td></tr>
     <tr><td>Other / combination</td><td class="n">3</td><td class="n">7</td><td class="n">3</td><td class="n">13</td></tr>
     <tr><td>Not in tech</td><td class="n">4</td><td class="n">2</td><td class="n">3</td><td class="n">9</td></tr>
-  </table>
+  </table></div>
 
   <div class="call good">
     <p><strong>This is the clearest evidence that the program does its job.</strong> "Don't know yet" falls from 11 students in 10th grade to a single student in 12th. Whatever else is imperfect, three years in the program leaves students with a decided direction — and only 9 of 124 rule out tech altogether.</p>
@@ -574,14 +653,14 @@ body::-webkit-scrollbar{display:none}
   <h2><span class="num">10</span>If you do five things</h2>
   <p class="lede">Drawn from where the numbers and the free text agree.</p>
 
-  <table>
+  <div class="tw"><table>
     <tr><th>#</th><th>Action</th><th>Because</th></tr>
     <tr><td class="n">1</td><td>Publish the term calendar with big assignments flagged weeks ahead</td><td>Addresses the weakest item in the survey (on-time completion) and satisfies both sides of the direction split</td></tr>
     <tr><td class="n">2</td><td>Reframe e-learning as scheduled lesson time, not homework</td><td>61% still read it as extra work; that group holds 87% of the neutrals and 83% of the late submitters</td></tr>
     <tr><td class="n">3</td><td>Run the time-management sessions students asked for</td><td>65 students said yes; 23 currently use no strategy at all</td></tr>
     <tr><td class="n">4</td><td>Ship the platform fixes in section 09 and tell students they came from this survey</td><td>Cheap, visible, and directly moves "my feedback helps improve the program" (58% neutral)</td></tr>
     <tr><td class="n">5</td><td>Open a faster lane for students who are ready to move</td><td>Only 8 students find the program too complex; several say it's too slow and stretched</td></tr>
-  </table>
+  </table></div>
 </section>
 
 <section data-nav="Mentor by mentor" data-num="11">
@@ -592,7 +671,7 @@ body::-webkit-scrollbar{display:none}
     <p><strong>Read the small groups as impressions, not measurements.</strong> Four mentors have fewer than 15 responses, and two have fewer than 10. At that size one unhappy student moves the average by half a point. These figures are worth a conversation; they are not worth a ranking, and they should not be used for evaluation on their own.</p>
   </div>
 
-  <table class="wide">
+  <div class="tw"><table class="wide">
     <tr><th>Mentor</th><th>Groups</th><th>Answers</th><th>Rating</th><th>Feedback useful</th><th>Enough support</th><th>Reachable on Discord</th><th>Explains grades</th></tr>
     <tr><td><strong>Kenneth Ruut</strong></td><td class="gid">MG24, MG23</td><td class="n">7</td><td class="n">4.86</td><td class="n">43%</td><td class="n">86%</td><td class="n">86%</td><td class="n">86%</td></tr>
     <tr><td><strong>Nikita Podkopaev</strong></td><td class="gid">UG24, UG23, NARG23</td><td class="n">16</td><td class="n">4.81</td><td class="n">81%</td><td class="n">62%</td><td class="n">69%</td><td class="n">75%</td></tr>
@@ -601,7 +680,7 @@ body::-webkit-scrollbar{display:none}
     <tr><td><strong>Liuda Mishchenko</strong></td><td class="gid">UG25, TG24</td><td class="n">19</td><td class="n">4.37</td><td class="n">53%</td><td class="n">58%</td><td class="n">53%</td><td class="n">53%</td></tr>
     <tr><td><strong>Pärli Ruutel</strong></td><td class="gid">JPG23</td><td class="n">10</td><td class="n">4.10</td><td class="n">60%</td><td class="n">60%</td><td class="n" style="color:#8A3B2E">10%</td><td class="n">30%</td></tr>
     <tr><td><strong>Zhenyu Wang</strong></td><td class="gid">JPG24</td><td class="n">13</td><td class="n">3.85</td><td class="n">54%</td><td class="n">54%</td><td class="n">92%</td><td class="n">85%</td></tr>
-  </table>
+  </table></div>
 
   <h3>José Prieto <span style="font-weight:400;color:var(--ink-soft)">— 49 answers, 4.76</span></h3>
   <p>Carries 40% of all responses across three Kadrioru groups, including the largest group in the program, and holds the highest rating of any mentor at that volume. 38 of 49 students gave a 5; exactly one gave 3 or below. The praise is unusually consistent in what it names: calm, not judging students for not knowing something, checking repeatedly whether everyone understood.</p>
@@ -706,12 +785,12 @@ body::-webkit-scrollbar{display:none}
 
 </div>
 
-<nav id="rail" aria-label="Sections"><div class="hit"></div><div class="spine"></div><div class="prog"></div><div class="knob"></div></nav>
+<nav id="rail" aria-label="Sections"><div class="hit"></div><div class="spine"></div><div class="prog"></div><div class="knob"></div><div class="bub"></div></nav>
 <script>
 (function(){
   var rail=document.getElementById('rail');
   if(!rail) return;
-  var spine=rail.querySelector('.spine'), prog=rail.querySelector('.prog'), knob=rail.querySelector('.knob');
+  var spine=rail.querySelector('.spine'), prog=rail.querySelector('.prog'), knob=rail.querySelector('.knob'), bub=rail.querySelector('.bub');
   var els=[].slice.call(document.querySelectorAll('[data-nav]'));
   var btns=els.map(function(el){
     var b=document.createElement('button');
@@ -719,6 +798,7 @@ body::-webkit-scrollbar{display:none}
     b.innerHTML='<span class="txt">'+el.getAttribute('data-nav')+'</span><span class="tick"></span>';
     b.addEventListener('click',function(){
       window.scrollTo({top:el.offsetTop-24,behavior:'smooth'});
+      rail.classList.add('open');
     });
     rail.appendChild(b); return b;
   });
@@ -747,6 +827,8 @@ body::-webkit-scrollbar{display:none}
     var act=0;
     for(var i=0;i<els.length;i++) if(els[i].offsetTop-90<=y) act=i;
     btns.forEach(function(b,i){ b.classList.toggle('on',i===act); });
+    bub.textContent=els[act].getAttribute('data-nav');
+    bub.style.top=(TOP+f*h)+'px';
   }
   var drag=false;
   function scrub(ev){
