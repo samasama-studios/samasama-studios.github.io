@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>codesters.club | 2025-2026 Pupils Survey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,600&family=League+Spartan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* sampled from the codesters.club deck */
+  --green:#3A834F;
+  --green-dark:#2C663C;
+  --green-soft:#7AAC89;
+  --lime:#E2E263;
+  --lime-pale:#F1F1BE;
+  --ink:#141A16;
+  --ink-soft:#47514A;
+  --paper:#FFFFFF;
+  --card:#F7F9F6;
+  --rule:#DCE2DC;
+  /* data scale, brand-only */
+  --agree:#3A834F;
+  --neutral:#C6CFC5;
+  --disagree:#141A16;
+  --measure:664px;     /* one reading width for all prose */
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:400 17px/1.72 "League Spartan","Spartan",-apple-system,Segoe UI,sans-serif;
+  letter-spacing:.008em;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:836px;margin:0 auto;padding:0 28px 90px}
+h1,h2,h3,.g .n{font-family:"Poppins",-apple-system,Segoe UI,sans-serif;font-weight:700;letter-spacing:-.02em;margin:0}
+.mono{font-variant-numeric:tabular-nums}
+
+header{padding:60px 0 34px}
+.eyebrow{font:600 12px/1 "League Spartan",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--green)}
+h1{font-size:clamp(34px,5.6vw,56px);line-height:1.04;margin:18px 0 16px}
+.sub{color:var(--ink-soft);max-width:var(--measure);font-weight:400;font-size:17.5px;line-height:1.65}
+.rule-green{height:14px;background:var(--green);border-radius:3px;margin-top:34px}
+
+.glance{display:flex;flex-wrap:wrap;margin:26px -5px 0}
+.g{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:20px 18px;flex:1 1 168px;margin:5px}
+.g .n{font-size:34px;line-height:1;letter-spacing:-.03em;color:var(--green)}
+.g .l{font:400 15px/1.45 "League Spartan",sans-serif;color:var(--ink-soft);margin-top:10px}
+
+section{padding:52px 0 10px;border-bottom:1px solid var(--rule)}
+section:last-of-type{border-bottom:none}
+h2{font-size:29px;line-height:1.15;margin-bottom:6px}
+h2 .num{font:600 13px/1 "League Spartan",sans-serif;letter-spacing:.14em;color:var(--green-soft);vertical-align:8px;margin-right:14px}
+.lede{color:var(--ink-soft);max-width:var(--measure);margin:12px 0 26px;font-weight:400}
+p{max-width:var(--measure);font-weight:400}
+p strong,li strong,td strong{font-weight:600}
+h3{font-family:"Poppins",sans-serif;font-size:15px;font-weight:600;letter-spacing:0;margin:32px 0 12px;color:var(--green)}
+
+.chart{margin:22px 0 8px}
+.row{display:flex;align-items:center;margin-bottom:9px}
+.row .lab{font-size:13.5px;font-weight:400;text-align:right;line-height:1.3;width:190px;flex:0 0 190px;margin-right:12px}
+.track{background:#EDF1EC;height:26px;border-radius:3px;overflow:hidden;display:flex;flex:1 1 auto}
+.fill{background:var(--green);height:100%}
+.row .val{font-size:14px;font-weight:600;color:var(--green);font-variant-numeric:tabular-nums;width:52px;flex:0 0 52px;margin-left:14px}
+
+.lk{display:flex;align-items:center;margin-bottom:7px}
+.lk .lab{font-size:13.5px;font-weight:400;text-align:right;line-height:1.28;width:236px;flex:0 0 236px;margin-right:12px}
+.stack{display:flex;height:23px;border-radius:3px;overflow:hidden;flex:1 1 auto}
+.s-d{background:var(--disagree)} .s-n{background:var(--neutral)} .s-a{background:var(--agree)}
+.lk .pct{font-size:14px;font-weight:600;color:var(--green);font-variant-numeric:tabular-nums;width:48px;flex:0 0 48px;margin-left:14px}
+.legend{display:flex;font-size:13.5px;font-weight:400;color:var(--ink-soft);margin:0 0 20px;flex-wrap:wrap}
+.legend span{display:flex;align-items:center;margin-right:24px}
+.legend .sw{margin-right:8px}
+.sw{width:13px;height:13px;border-radius:2px;display:inline-block}
+
+.call{background:var(--card);border-left:5px solid var(--green);padding:22px 26px;margin:26px 0;
+  border-radius:0 6px 6px 0;color:var(--ink);max-width:721px}
+.call.warn{background:var(--lime-pale);border-left-color:var(--lime)}
+.call.good{background:var(--card);border-left-color:var(--green-soft)}
+.call p{margin:0;max-width:none}
+.call p+p{margin-top:11px}
+
+.quotes{display:flex;flex-wrap:wrap;margin:24px -7px;max-width:678px}
+blockquote{margin:7px;flex:1 1 255px;background:var(--paper);border:1px solid var(--rule);border-left:3px solid var(--green-soft);
+  border-radius:0 6px 6px 0;padding:17px 19px;font-size:15px;font-weight:400;font-style:italic;line-height:1.6}
+blockquote cite{display:block;font-style:normal;font-size:11px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--green-soft);margin-top:12px}
+
+.split{display:flex;height:46px;border-radius:4px;overflow:hidden;margin:20px 0 10px;max-width:var(--measure)}
+.split div{display:flex;align-items:center;justify-content:center;color:#fff;font:600 13.5px "League Spartan",sans-serif}
+
+table{border-collapse:collapse;width:100%;font-size:15.5px;font-weight:400;margin:18px 0;line-height:1.55}
+table.wide{font-size:14.5px}
+.gid-lab{font-weight:600;color:var(--green);letter-spacing:.02em}
+td.gid{font-weight:600;color:var(--green);white-space:nowrap;letter-spacing:.02em}
+table.wide td,table.wide th{padding-right:8px}
+th{text-align:left;font:600 11.5px "League Spartan",sans-serif;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--green);padding:0 12px 10px 0;border-bottom:2px solid var(--green)}
+td{padding:11px 12px 11px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+td.n{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--green)}
+
+ul.fix{list-style:none;padding:0;margin:18px 0;max-width:696px}
+ul.fix li{padding:13px 0 13px 32px;border-bottom:1px solid var(--rule);position:relative;font-size:15.5px;font-weight:400;line-height:1.6}
+ul.fix li:before{content:"";position:absolute;left:0;top:19px;width:14px;height:14px;border-radius:3px;background:var(--lime)}
+ul.fix li b{font-weight:600}
+ul.fix li span{color:var(--ink-soft);font-size:14.5px}
+
+footer{padding:44px 0 0;color:var(--ink-soft);font-size:14.5px;font-weight:400;line-height:1.65}
+footer ul{padding-left:18px;max-width:var(--measure)} footer li{margin-bottom:8px}
+.foot-rule{height:14px;background:var(--green);border-radius:3px;margin:40px 0 0}
+
+/* trend cards — matches the deck */
+.cards{margin:30px 0 0}
+.card2{border-radius:20px;padding:28px 32px 24px}
+.card2+.card2{margin-top:20px}
+.c-cream{background:#F7F8D7}
+.c-green{background:var(--green)}
+.card2 h3{font:700 23px/1.2 "Poppins",sans-serif;letter-spacing:-.01em;margin:0 0 20px;color:var(--ink)}
+.c-green h3{color:var(--lime)}
+.bar2{display:flex;align-items:center}
+.bar2+.bar2{margin-top:11px}
+.yr{font:700 19px/1 "Poppins",sans-serif;width:60px;flex:0 0 60px;margin-right:16px;color:var(--green)}
+.c-green .yr{color:var(--lime)}
+.trk{height:36px;border-radius:5px;display:flex;overflow:hidden;flex:1 1 auto;background:var(--lime)}
+.c-green .trk{background:#F7F8D7}
+.v{height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;
+  font:700 19px/1 "Poppins",sans-serif;background:var(--green);color:#fff}
+.c-green .v{background:var(--lime);color:var(--green)}
+.leg2{display:flex;align-items:center;margin-top:18px;padding-left:76px}
+.leg2 span{display:flex;align-items:center;margin-right:28px;font:700 13.5px "Poppins",sans-serif;color:#555}
+.leg2 .sw{margin-right:9px}
+@media(max-width:640px){.yr{width:48px;flex:0 0 48px;font-size:16px}.leg2{padding-left:0}}
+
+
+/* ── bar tooltips ─────────────────────────────── */
+[data-t]{cursor:default}
+#tip{position:fixed;z-index:90;pointer-events:none;opacity:0;
+  transform:translate(-50%,-124%);transition:opacity .12s ease;
+  background:var(--disagree);color:#fff;border-radius:6px;
+  padding:7px 11px;font:600 13px/1.3 "Poppins",sans-serif;
+  white-space:nowrap;box-shadow:0 3px 12px rgba(20,26,22,.28)}
+#tip:after{content:"";position:absolute;left:50%;top:100%;margin-left:-5px;
+  border:5px solid transparent;border-top-color:var(--disagree)}
+#tip.on{opacity:1}
+.stack>[data-t]:hover,.track>[data-t]:hover,.split>[data-t]:hover,.trk>[data-t]:hover{
+  filter:brightness(1.12)}
+@media(prefers-reduced-motion:reduce){#tip{transition:none}}
+
+/* ── section rail ───────────────────────────────── */
+html{scrollbar-width:none}
+body::-webkit-scrollbar{display:none}
+#rail{position:fixed;top:0;right:0;height:100vh;width:250px;z-index:60;
+  pointer-events:none;font-family:"Poppins",sans-serif;
+  opacity:0;transition:opacity .35s ease}
+#rail.ready{opacity:1}
+#rail .hit{position:absolute;inset:0 0 0 auto;width:62px;pointer-events:auto}
+#rail .spine{position:absolute;right:23px;top:26px;bottom:26px;width:2px;
+  background:var(--rule);border-radius:2px}
+#rail .prog{position:absolute;right:23px;top:26px;width:2px;background:var(--green);
+  border-radius:2px;height:0}
+
+.rl{position:absolute;right:0;display:flex;align-items:center;justify-content:flex-end;
+  transform:translateY(-50%);pointer-events:auto;cursor:pointer;
+  padding:3px 0 3px 14px;background:none;border:0;width:100%;
+  font-family:inherit;text-align:right}
+.rl .txt{font:600 12.5px/1.25 "Poppins",sans-serif;color:var(--ink-soft);
+  max-width:186px;opacity:0;transform:translateX(10px);
+  transition:opacity .22s ease,transform .22s ease,color .18s ease;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  background:rgba(255,255,255,.94);padding:4px 9px;border-radius:5px;
+  box-shadow:0 1px 3px rgba(20,26,22,.09)}
+.rl .tick{flex:0 0 auto;width:9px;height:2px;margin-left:9px;margin-right:19px;
+  background:var(--rule);border-radius:2px;
+  transition:width .2s ease,background .2s ease,height .2s ease}
+#rail:hover .rl .txt,#rail.open .rl .txt{opacity:1;transform:translateX(0)}
+#rail:hover .rl .tick,#rail.open .rl .tick{width:14px;background:var(--green-soft)}
+.rl:hover .txt{color:var(--green)}
+.rl:hover .tick{background:var(--green);width:20px}
+.rl.on .txt{opacity:1;transform:translateX(0);color:var(--green);
+  box-shadow:0 1px 5px rgba(20,26,22,.14)}
+.rl.on .tick{background:var(--green);width:22px;height:3px}
+
+#rail .knob{position:absolute;right:16px;width:16px;height:16px;border-radius:50%;
+  background:var(--lime);border:3px solid var(--green);transform:translateY(-50%);
+  pointer-events:auto;cursor:grab;transition:transform .12s ease;
+  box-shadow:0 1px 4px rgba(20,26,22,.2)}
+#rail .knob:active{cursor:grabbing;transform:translateY(-50%) scale(1.18)}
+@media(prefers-reduced-motion:reduce){#rail *{transition:none!important}}
+@media(max-width:900px){#rail{display:none}html{scrollbar-width:auto}body::-webkit-scrollbar{display:initial}}
+@media(max-width:640px){
+  .row,.lk{flex-wrap:wrap}
+  .row .lab,.lk .lab{text-align:left;width:100%;flex:1 1 100%;margin:0 0 4px}
+  .row .val,.lk .pct{margin-left:10px}
+}
+</style>
+<div class="wrap">
+
+<header data-nav="Overview" data-num="00">
+  <div class="eyebrow">codesters.club</div>
+  <h1>2025-2026<br>Pupils Survey</h1>
+  <p class="sub">Responses collected 15 March – 3 June 2026 across seven schools and three grades. This is a read of the whole cohort: what's working, where the friction is, and the handful of things worth changing first.</p>
+  <div class="rule-green"></div>
+</header>
+
+
+<div class="cards">
+  <div class="card2 c-cream">
+    <h3>Students Satisfaction (2021–2026)</h3>
+    <div class="bar2"><div class="yr">2021</div><div class="trk"><div class="v" style="width:100%">100%</div></div></div>
+    <div class="bar2"><div class="yr">2022</div><div class="trk"><div class="v" style="width:95%">95%</div></div></div>
+    <div class="bar2"><div class="yr">2023</div><div class="trk"><div class="v" style="width:97%">97%</div></div></div>
+    <div class="bar2"><div class="yr">2024</div><div class="trk"><div class="v" style="width:96%">96%</div></div></div>
+    <div class="bar2"><div class="yr">2025</div><div class="trk"><div class="v" style="width:93%">93%</div></div></div>
+    <div class="bar2"><div class="yr">2026</div><div class="trk"><div class="v" style="width:98%">98%</div></div></div>
+    <div class="leg2">
+      <span><i class="sw" style="background:var(--green)"></i>Positive or Neutral</span>
+      <span><i class="sw" style="background:var(--lime)"></i>Negative</span>
+    </div>
+  </div>
+  <div class="card2 c-green">
+    <h3>Mentor Rating (1–5) 6yr AVG: 4.5/5</h3>
+    <div class="bar2"><div class="yr">2021</div><div class="trk"><div class="v" style="width:92.4%">4.62</div></div></div>
+    <div class="bar2"><div class="yr">2022</div><div class="trk"><div class="v" style="width:83%">4.15</div></div></div>
+    <div class="bar2"><div class="yr">2023</div><div class="trk"><div class="v" style="width:89%">4.45</div></div></div>
+    <div class="bar2"><div class="yr">2024</div><div class="trk"><div class="v" style="width:90%">4.50</div></div></div>
+    <div class="bar2"><div class="yr">2025</div><div class="trk"><div class="v" style="width:90.4%">4.52</div></div></div>
+    <div class="bar2"><div class="yr">2026</div><div class="trk"><div class="v" style="width:90.8%">4.54</div></div></div>
+  </div>
+</div>
+
+<div class="glance">
+  <div class="g"><div class="n">124<span style="font-size:19px;color:var(--green-soft)">/170</span></div><div class="l">valid responses — 73% of enrolled students</div></div>
+  <div class="g"><div class="n">73%</div><div class="l">happy they joined</div></div>
+  <div class="g"><div class="n">4.5<span style="font-size:18px">/5</span></div><div class="l">mentor rating</div></div>
+  <div class="g"><div class="n">4.3<span style="font-size:18px">/5</span></div><div class="l">platform rating</div></div>
+  <div class="g"><div class="n">88%</div><div class="l">want to keep the current format</div></div>
+  <div class="g"><div class="n">61%</div><div class="l">still call e-learning "homework"</div></div>
+</div>
+
+<section data-nav="Who answered" data-num="01">
+  <h2><span class="num">01</span>Who answered, and who didn't</h2>
+  <p class="lede">The raw export held 131 rows, but 7 of them are not distinct students. After removing duplicate submissions and one test entry, <strong>124 valid responses</strong> remain against 170 enrolled students — a 73% response rate. Of those, 119 can be matched to a known group; 5 cannot. All figures in this report use the cleaned set.</p>
+
+  <h3>What was removed</h3>
+  <table>
+    <tr><th>Rows</th><th>Reason</th></tr>
+    <tr><td class="n">6</td><td>Repeat submissions from the same respondent ID. Four students submitted twice, one submitted three times. In every case the first submission was kept.</td></tr>
+    <tr><td class="n">1</td><td>A test entry — the very first submission in the dataset (15 March, 19:37), with every free-text field filled in as keyboard mash.</td></tr>
+  </table>
+  <p>Deduplication changes the headline figures by less than one point, so nothing in last week's read was materially wrong. It does, however, correct the coverage picture for two schools.</p>
+
+  <h3>Response rate by grade</h3>
+  <div class="chart">
+    <div class="row"><div class="lab">10th grade <span style="color:var(--ink-soft)">36 of 42</span></div><div class="track"><div class="fill" data-t="10th grade 36 of 42 — 86%" style="width:86%"></div></div><div class="val">86%</div></div>
+    <div class="row"><div class="lab">11th grade <span style="color:var(--ink-soft)">52 of 72 matched</span></div><div class="track"><div class="fill" data-t="11th grade 52 of 72 matched — 72%" style="width:72%"></div></div><div class="val">72%</div></div>
+    <div class="row"><div class="lab">12th grade <span style="color:var(--ink-soft)">31 of 56</span></div><div class="track"><div class="fill" data-t="12th grade 31 of 56 — 55%" style="width:55%;background:var(--green-soft)"></div></div><div class="val">55%</div></div>
+  </div>
+
+  <div class="call warn">
+    <p><strong>Almost half the graduating cohort didn't answer.</strong> The 12th grade has three full years of experience and the clearest view of whether the program paid off — and it is the group we hear least from. Every 12th-grade finding in this report rests on 31 students out of 56.</p>
+  </div>
+
+  <h3>Coverage by group</h3>
+  <p style="font-size:14px;color:var(--ink-soft);margin:0 0 4px">Group IDs follow the registry convention: the suffix is the graduating year, so <strong>25</strong> = current 10th grade, <strong>24</strong> = 11th, <strong>23</strong> = 12th.</p>
+  <table class="wide">
+    <tr><th>School</th><th>Group</th><th>Grade</th><th>Enrolled</th><th>Valid</th><th>Rate</th></tr>
+    <tr><td>Kadrioru Saksa Gümnaasium</td><td class="gid">KSG25</td><td>10th</td><td class="n">27</td><td class="n">23</td><td class="n">85%</td></tr>
+    <tr><td>Kadrioru Saksa Gümnaasium</td><td class="gid">KSG24</td><td>11th</td><td class="n">23</td><td class="n">18</td><td class="n">78%</td></tr>
+    <tr><td>Kadrioru Saksa Gümnaasium</td><td class="gid">KSG23</td><td>12th</td><td class="n">14</td><td class="n">8</td><td class="n">57%</td></tr>
+    <tr><td>Tallinna Ühisgümnaasium</td><td class="gid">UG25</td><td>10th</td><td class="n">15</td><td class="n">13</td><td class="n">87%</td></tr>
+    <tr><td>Tallinna Ühisgümnaasium</td><td class="gid">UG24</td><td>11th</td><td class="n">18</td><td class="n">11</td><td class="n">61%</td></tr>
+    <tr><td>Tallinna Ühisgümnaasium</td><td class="gid">UG23</td><td>12th</td><td class="n">10</td><td class="n">2</td><td class="n" style="color:#8A3B2E">20%</td></tr>
+    <tr><td>Tartu Jaan Poska Gümnaasium</td><td class="gid">JPG24</td><td>11th</td><td class="n">18</td><td class="n">13</td><td class="n">72%</td></tr>
+    <tr><td>Tartu Jaan Poska Gümnaasium</td><td class="gid">JPG23</td><td>12th</td><td class="n">16</td><td class="n">10</td><td class="n">62%</td></tr>
+    <tr><td>Tallinna Mustamäe Gümnaasium</td><td class="gid">MG24</td><td>11th</td><td class="n">7</td><td class="n">4</td><td class="n">57%</td></tr>
+    <tr><td>Tallinna Mustamäe Gümnaasium</td><td class="gid">MG23</td><td>12th</td><td class="n">8</td><td class="n">3</td><td class="n">38%</td></tr>
+    <tr><td>Tallinna Tehnikagümnaasium</td><td class="gid">TG24</td><td>11th</td><td class="n">6</td><td class="n">6</td><td class="n">100%</td></tr>
+    <tr><td>Lasnamäe Gümnaasium</td><td class="gid">LG23</td><td>12th</td><td class="n">5</td><td class="n">5</td><td class="n">100%</td></tr>
+    <tr><td>Narva Gümnaasium</td><td class="gid">NARG23</td><td>12th</td><td class="n">3</td><td class="n">3</td><td class="n">100%</td></tr>
+    <tr><td colspan="3"><em>Unattributed</em> — 4 from the 6 May sitting, 1 Narva 11th</td><td class="n">—</td><td class="n">5</td><td class="n">—</td></tr>
+    <tr><td colspan="3"><strong>Matched to a group</strong></td><td class="n">170</td><td class="n">119</td><td class="n">70%</td></tr>
+    <tr><td colspan="3"><strong>Total valid</strong></td><td class="n">170</td><td class="n">124</td><td class="n">73%</td></tr>
+  </table>
+
+  <div class="call">
+    <p><strong>Narva now reconciles. Tehnikagümnaasium does not.</strong></p>
+    <p><em>Narva</em> had three impossible rows. Two were removed by the cleaning — the test entry and one duplicate from a Ühisgümnaasium student who filled the form a third time and picked Narva. The 12th-grade group now matches exactly: 3 enrolled, 3 answered. One row remains, an 11th grader writing in Estonian who praises Nikita by name. Since Nikita also mentors both Ühisgümnaasium groups, this is most likely a Ühisgümnaasium student who chose the wrong school.</p>
+    <p><em>Tehnikagümnaasium</em> is not a duplication problem. All ten responses carry distinct respondent IDs and none are filler. They arrive as two separate sittings: six on 18 March, one of which names Liuda as their mentor — that is TG24, and six matches the roster exactly — then four more on 6 May, between 11:24 and 11:35, which the roster cannot hold. <strong>Those four are now counted separately rather than against TG24,</strong> so no group exceeds 100%.</p>
+</div>
+
+  <h3>Why the four can't be placed</h3>
+  <p>Splitting the two sittings apart makes TG24 reconcile exactly, but it doesn't say where the 6 May four belong. I compared them against the March six on every dimension that could distinguish a group — mentor rating, platform rating, happiness, grading clarity, all four mentor statements, how they perceive e-learning, career choice, social media awareness. The two batches are indistinguishable. Nothing in the responses identifies a school, a mentor or a class.</p>
+  <p>Timing gives a partial clue. Early May was when late responses came in generally: single stragglers appear from Kadrioru 11th, Ühisgümnaasium 11th and Tartu 11th between 4 and 9 May. But those are individuals filling the form on their own. Four submissions inside eleven minutes is a group doing it together in a lesson.</p>
+  <p>Every 11th-grade group still had missing students by then — Ühisgümnaasium was short seven, Kadrioru and Tartu five each, Mustamäe three — so capacity exists almost everywhere and none of it points anywhere in particular. Three explanations remain open: a group missing from the registry, four students from another school who picked the wrong option, or four TG students who enrolled after the roster was last updated. <strong>If the mentor teaching around 11:30 on 6 May can recall who was in the room, that settles it in one question.</strong></p>
+
+  <h3>Does weighting change anything?</h3>
+  <p>Because the 12th grade is under-represented, cohort-wide averages slightly over-weight the younger students. Re-weighting each grade to its true enrolment barely moves the headline numbers, so the figures in this report can be read as they stand.</p>
+  <table>
+    <tr><th>Measure</th><th>As reported</th><th>Weighted by enrolment</th></tr>
+    <tr><td>Happy they joined</td><td class="n">73.4%</td><td class="n">72.8%</td></tr>
+    <tr><td>Positive or neutral</td><td class="n">98.4%</td><td class="n">98.2%</td></tr>
+    <tr><td>Mentor rating</td><td class="n">4.54</td><td class="n">4.55</td></tr>
+  </table>
+
+  <div class="call good">
+    <p><strong>Group size doesn't predict mentor satisfaction.</strong> The largest group in the program — 27 students at Kadrioru — returns a 4.76 mentor rating, the second highest of any school. The lowest come from Tartu Jaan Poska (3.96) and Tehnikagümnaasium (4.20), which run groups of 6 to 18. Whatever drives the mentor score, it isn't headcount.</p>
+  </div>
+
+</section>
+
+<section data-nav="The headline" data-num="02">
+  <h2><span class="num">02</span>The headline: quietly positive, rarely enthusiastic</h2>
+  <p class="lede">91 students are happy they joined, 31 are neutral, and 2 are not happy. Nobody is angry — but a quarter of the cohort is sitting on the fence, and that fence is where every other problem in this survey shows up.</p>
+
+  <div class="split">
+    <div data-t="Happy · 91 — 73.4% of responses" style="width:73.4%;background:var(--green)">Happy · 91</div>
+    <div data-t="Neutral · 31 — 25% of responses" style="width:25%;background:var(--neutral);color:#2a3229">Neutral · 31</div>
+    <div data-t="Not happy — 2 students" style="width:1.5%;background:var(--disagree)"></div>
+  </div>
+  <p style="font-size:13.5px;color:var(--ink-soft);margin-top:0">Right-hand sliver: 2 students not happy.</p>
+
+  <p>Happiness is fairly even across grades — 75% in 10th, 75% in 11th, 68% in 12th — so this isn't three-year fatigue. It varies far more by school and by group, which is where the detail below matters.</p>
+
+  <div class="quotes">
+    <blockquote>"I've learned so much in three years. Programming and teamwork."<cite>12th grade</cite></blockquote>
+    <blockquote>"It has taught me to make apps accessible for people with disabilities, problem solve and how to bring ideas to life."<cite>Happy</cite></blockquote>
+    <blockquote>"I have acquired a plethora of new skills and a lot of flexibility in my timetable — but I also wish I could've taken more classes the school provides."<cite>Neutral</cite></blockquote>
+    <blockquote>"Boring, some tasks take too much of my free time, I have other subjects I need to grind."<cite>Not happy</cite></blockquote>
+  </div>
+
+  <div class="call good">
+    <p><strong>The most common reason for being happy is not "it's fun" — it's "it's useful."</strong> Students repeatedly frame the program in terms of future value: skills for a career, preparation for IT studies, an opening at TalTech, something they could start a company with. The word doing the most work in these answers is <em>future</em>.</p>
+  </div>
+
+  <h3>Satisfaction by school</h3>
+  <p style="font-size:14px;color:var(--ink-soft);margin:0 0 6px">Share answering "yes, I'm happy". Bars run happy / neutral / not happy. Based on the 119 responses matched to a group, so school totals and group totals agree.</p>
+  <div class="chart">
+    <div class="lk"><div class="lab">Narva Gümnaasium <span style="color:var(--ink-soft);font-weight:400">n=3</span></div><div class="stack"><div class="s-a" data-t="happy — 100%" style="width:100%"></div><div class="s-n" style="width:0%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">100%</div></div>
+    <div class="lk"><div class="lab">Kadrioru Saksa Gümnaasium <span style="color:var(--ink-soft);font-weight:400">n=49</span></div><div class="stack"><div class="s-a" data-t="happy — 82%" style="width:82%"></div><div class="s-n" data-t="neutral — 16%" style="width:16%"></div><div class="s-d" data-t="not happy — 2%" style="width:2%"></div></div><div class="pct">82%</div></div>
+    <div class="lk"><div class="lab">Tallinna Mustamäe Gümnaasium <span style="color:var(--ink-soft);font-weight:400">n=7</span></div><div class="stack"><div class="s-a" data-t="happy — 71%" style="width:71%"></div><div class="s-n" data-t="neutral — 29%" style="width:29%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">71%</div></div>
+    <div class="lk"><div class="lab">Tartu Jaan Poska Gümnaasium <span style="color:var(--ink-soft);font-weight:400">n=23</span></div><div class="stack"><div class="s-a" data-t="happy — 70%" style="width:70%"></div><div class="s-n" data-t="neutral — 30%" style="width:30%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">70%</div></div>
+    <div class="lk"><div class="lab">Tallinna Ühisgümnaasium <span style="color:var(--ink-soft);font-weight:400">n=26</span></div><div class="stack"><div class="s-a" data-t="happy — 65%" style="width:65%"></div><div class="s-n" data-t="neutral — 31%" style="width:31%"></div><div class="s-d" data-t="not happy — 4%" style="width:4%"></div></div><div class="pct">65%</div></div>
+    <div class="lk"><div class="lab">Lasnamäe Gümnaasium <span style="color:var(--ink-soft);font-weight:400">n=5</span></div><div class="stack"><div class="s-a" data-t="happy — 60%" style="width:60%"></div><div class="s-n" data-t="neutral — 40%" style="width:40%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">60%</div></div>
+    <div class="lk"><div class="lab">Tallinna Tehnikagümnaasium <span style="color:var(--ink-soft);font-weight:400">n=6</span></div><div class="stack"><div class="s-a" data-t="happy — 50%" style="width:50%"></div><div class="s-n" data-t="neutral — 50%" style="width:50%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">50%</div></div>
+  </div>
+
+  <div class="call">
+    <p><strong>Kadrioru is the outlier, and it's the one school where the sample is large enough to trust.</strong> 82% happy across 49 responses. Ühisgümnaasium sits at 65% across 26 — the lowest figure backed by a real sample, and 17 points below Kadrioru.</p>
+    <p>Narva at 100% and Mustamäe at 71% rest on 3 and 7 responses. Treat them as encouraging, not as evidence.</p>
+  </div>
+
+  <h3>Satisfaction by group</h3>
+  <div class="chart">
+    <div class="lk"><div class="lab gid-lab">MG24 <span style="color:var(--ink-soft);font-weight:400">n=4</span></div><div class="stack"><div class="s-a" data-t="happy — 100%" style="width:100%"></div><div class="s-n" style="width:0%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">100%</div></div>
+    <div class="lk"><div class="lab gid-lab">NARG23 <span style="color:var(--ink-soft);font-weight:400">n=3</span></div><div class="stack"><div class="s-a" data-t="happy — 100%" style="width:100%"></div><div class="s-n" style="width:0%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">100%</div></div>
+    <div class="lk"><div class="lab gid-lab">UG23 <span style="color:var(--ink-soft);font-weight:400">n=2</span></div><div class="stack"><div class="s-a" data-t="happy — 100%" style="width:100%"></div><div class="s-n" style="width:0%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">100%</div></div>
+    <div class="lk"><div class="lab gid-lab">KSG24 <span style="color:var(--ink-soft);font-weight:400">n=18</span></div><div class="stack"><div class="s-a" data-t="happy — 94%" style="width:94%"></div><div class="s-n" data-t="neutral — 6%" style="width:6%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">94%</div></div>
+    <div class="lk"><div class="lab gid-lab">JPG24 <span style="color:var(--ink-soft);font-weight:400">n=13</span></div><div class="stack"><div class="s-a" data-t="happy — 77%" style="width:77%"></div><div class="s-n" data-t="neutral — 23%" style="width:23%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">77%</div></div>
+    <div class="lk"><div class="lab gid-lab">UG25 <span style="color:var(--ink-soft);font-weight:400">n=13</span></div><div class="stack"><div class="s-a" data-t="happy — 77%" style="width:77%"></div><div class="s-n" data-t="neutral — 23%" style="width:23%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">77%</div></div>
+    <div class="lk"><div class="lab gid-lab">KSG23 <span style="color:var(--ink-soft);font-weight:400">n=8</span></div><div class="stack"><div class="s-a" data-t="happy — 75%" style="width:75%"></div><div class="s-n" data-t="neutral — 12%" style="width:12%"></div><div class="s-d" data-t="not happy — 13%" style="width:13%"></div></div><div class="pct">75%</div></div>
+    <div class="lk"><div class="lab gid-lab">KSG25 <span style="color:var(--ink-soft);font-weight:400">n=23</span></div><div class="stack"><div class="s-a" data-t="happy — 74%" style="width:74%"></div><div class="s-n" data-t="neutral — 26%" style="width:26%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">74%</div></div>
+    <div class="lk"><div class="lab gid-lab">JPG23 <span style="color:var(--ink-soft);font-weight:400">n=10</span></div><div class="stack"><div class="s-a" data-t="happy — 60%" style="width:60%"></div><div class="s-n" data-t="neutral — 40%" style="width:40%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">60%</div></div>
+    <div class="lk"><div class="lab gid-lab">LG23 <span style="color:var(--ink-soft);font-weight:400">n=5</span></div><div class="stack"><div class="s-a" data-t="happy — 60%" style="width:60%"></div><div class="s-n" data-t="neutral — 40%" style="width:40%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">60%</div></div>
+    <div class="lk"><div class="lab gid-lab">TG24 <span style="color:var(--ink-soft);font-weight:400">n=6</span></div><div class="stack"><div class="s-a" data-t="happy — 50%" style="width:50%"></div><div class="s-n" data-t="neutral — 50%" style="width:50%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">50%</div></div>
+    <div class="lk"><div class="lab gid-lab">UG24 <span style="color:var(--ink-soft);font-weight:400">n=11</span></div><div class="stack"><div class="s-a" data-t="happy — 45%" style="width:45%"></div><div class="s-n" data-t="neutral — 45%" style="width:45%"></div><div class="s-d" data-t="not happy — 10%" style="width:10%"></div></div><div class="pct">45%</div></div>
+    <div class="lk"><div class="lab gid-lab">MG23 <span style="color:var(--ink-soft);font-weight:400">n=3</span></div><div class="stack"><div class="s-a" data-t="happy — 33%" style="width:33%"></div><div class="s-n" data-t="neutral — 67%" style="width:67%"></div><div class="s-d" style="width:0%"></div></div><div class="pct">33%</div></div>
+  </div>
+
+  <div class="call warn">
+    <p><strong>UG24 is the group to look at.</strong> 45% happy — the lowest of any group with more than six responses — with five neutral students and the only unhappy student outside Kadrioru. It is also the group that lost the most respondents to duplicate submissions, and at 61% coverage we are missing seven of its eighteen students.</p>
+    <p>The contrast inside the same school is stark: UG25, the year below, sits at 77%.</p>
+  </div>
+
+  <div class="call good">
+    <p><strong>Mentor quality does not explain these differences.</strong> JPG24 rates its mentor 3.85, the lowest in the program, yet 77% of that group is happy. UG24 rates its mentor 4.73 and only 45% are happy. KSG23 gives a perfect 5.00 and sits at 75%.</p>
+    <p>Whatever separates a happy group from a lukewarm one, it isn't the person teaching them. Timetable position, class culture, and how the group was formed are better places to look.</p>
+  </div>
+
+  <p>One number holds almost everywhere: <strong>"positive or neutral" is 100% in eleven of the thirteen groups.</strong> Only two students in the whole program said they were unhappy, one in KSG23 and one in UG24. The variation above is entirely movement between "happy" and "neutral" — no group has a body of students who actively regret joining.</p>
+</section>
+
+<section data-nav="Mentors" data-num="03">
+  <h2><span class="num">03</span>Mentors are the program's strongest asset</h2>
+  <p class="lede">Mentor rating averages 4.54/5, with 94% giving 4 or 5. Every mentor-related statement scores at the top of the agreement list, and the free-text comments name individuals repeatedly and warmly.</p>
+
+  <div class="chart">
+    <div class="row"><div class="lab">5 — excellent</div><div class="track"><div class="fill" data-t="5 — excellent — 78" style="width:100%;background:var(--green)"></div></div><div class="val">78</div></div>
+    <div class="row"><div class="lab">4</div><div class="track"><div class="fill" data-t="4 — 38" style="width:49%;background:var(--green)"></div></div><div class="val">38</div></div>
+    <div class="row"><div class="lab">3</div><div class="track"><div class="fill" data-t="3 — 6" style="width:7%;background:var(--neutral)"></div></div><div class="val">6</div></div>
+    <div class="row"><div class="lab">2</div><div class="track"><div class="fill" data-t="2 — 1" style="width:1.2%;background:var(--disagree)"></div></div><div class="val">1</div></div>
+    <div class="row"><div class="lab">1</div><div class="track"><div class="fill" data-t="1 — 1" style="width:1.2%;background:var(--disagree)"></div></div><div class="val">1</div></div>
+  </div>
+
+  <p>The qualities students single out are consistent across all mentors: patience, availability, willingness to re-explain, and not making anyone feel stupid for not knowing something. Two mild criticisms recur — Discord response time, and a wish that mentors would be firmer with students who disrupt the class atmosphere. That second one is notable because it comes from students, not staff.</p>
+
+  <div class="quotes">
+    <blockquote>"Very supportive and always stays calm. He doesn't get mad and doesn't judge for not knowing something."<cite>On a mentor</cite></blockquote>
+    <blockquote>"She's actually fairly strict: she doesn't let students chat while there's still work to be done, so we actually make great progress during classes."<cite>On a mentor</cite></blockquote>
+    <blockquote>"They are patient even if some of the students seem to sabotage the class."<cite>On a mentor</cite></blockquote>
+    <blockquote>"Fairly good at teaching stuff but hard to reach when in need of help outside of school."<cite>Criticism</cite></blockquote>
+  </div>
+</section>
+
+<section data-nav="Feels like homework" data-num="04">
+  <h2><span class="num">04</span>The central tension: "it still feels like homework"</h2>
+  <p class="lede">76 of 124 students say the e-learning lessons still feel like another piece of homework rather than a normal lesson they do at home. This single split predicts almost everything else in the survey.</p>
+
+  <table>
+    <tr><th>Among students who say…</th><th>Neutral or unhappy</th><th>Can't complete on time</th></tr>
+    <tr><td>"It still feels like another homework" <span class="mono">(n=76)</span></td><td class="n">38%</td><td class="n">33%</td></tr>
+    <tr><td>"It's a normal lesson I do at home" <span class="mono">(n=48)</span></td><td class="n">8%</td><td class="n">10%</td></tr>
+  </table>
+
+  <div class="call warn">
+    <p><strong>27 of the 31 neutral students sit in the "homework" camp, and 25 of the 30 students who miss deadlines do too.</strong> The problem isn't the blended model — 88% want to keep the current one live lesson plus two e-learning sessions. It's that the e-learning half isn't landing as <em>lesson time</em>. It reads as extra work stacked on top of school.</p>
+  </div>
+
+  <p>Two things in the free text point at the cause. First, load distribution: several students describe quiet weeks followed by a sudden large assignment with no warning. Second, boundaries: some report doing codesters work on Sunday mornings or across the weekend, which makes it feel like it lives outside the school day rather than inside it.</p>
+
+  <div class="quotes">
+    <blockquote>"Some weeks there's nothing to do, and then suddenly you have to do basically a year's worth of things for one assignment. It should be divided better, or make it clear that a bigger assignment is coming so we could start earlier."<cite>11th grade</cite></blockquote>
+    <blockquote>"I like everything but too much work."<cite>10th grade</cite></blockquote>
+    <blockquote>"Maybe give notifications about each week's projects, because some things go unnoticed until the missing assignment pops up."<cite>Suggested change</cite></blockquote>
+  </div>
+
+  <h3>Workload compared with other subjects</h3>
+  <div class="split">
+    <div data-t="Same · 66 — 53% of responses" style="width:53%;background:var(--green)">Same · 66</div>
+    <div data-t="Bigger · 30 — 24% of responses" style="width:24%;background:var(--lime);color:#1a2a1e">Bigger · 30</div>
+    <div data-t="Smaller · 28 — 23% of responses" style="width:23%;background:var(--green-soft)">Smaller · 28</div>
+  </div>
+  <p>The majority read the workload as normal. So the felt burden is less about total hours and more about <em>when</em> the hours land.</p>
+</section>
+
+<section data-nav="Agreement ranked" data-num="05">
+  <h2><span class="num">05</span>Every agreement statement, ranked</h2>
+  <p class="lede">All 17 Likert items on one scale, sorted by agreement. The top of this list is what to protect; the bottom is the work for next year.</p>
+
+  <div class="legend">
+    <span><i class="sw" style="background:var(--disagree)"></i>more disagree</span>
+    <span><i class="sw" style="background:var(--neutral)"></i>neutral</span>
+    <span><i class="sw" style="background:var(--agree)"></i>more agree</span>
+  </div>
+
+  <div class="chart">
+    <div class="lk"><div class="lab">Mentor can explain my grades</div><div class="stack"><div class="s-d" data-t="more disagree — 2%" style="width:2%"></div><div class="s-n" data-t="neutral — 25%" style="width:25%"></div><div class="s-a" data-t="more agree — 73%" style="width:73%"></div></div><div class="pct">73%</div></div>
+    <div class="lk"><div class="lab">I understand how to get a good grade</div><div class="stack"><div class="s-d" data-t="more disagree — 4%" style="width:4%"></div><div class="s-n" data-t="neutral — 23%" style="width:23%"></div><div class="s-a" data-t="more agree — 73%" style="width:73%"></div></div><div class="pct">73%</div></div>
+    <div class="lk"><div class="lab">Mentor gives enough support</div><div class="stack"><div class="s-d" data-t="more disagree — 3%" style="width:3%"></div><div class="s-n" data-t="neutral — 26%" style="width:26%"></div><div class="s-a" data-t="more agree — 71%" style="width:71%"></div></div><div class="pct">71%</div></div>
+    <div class="lk"><div class="lab">Mentor feedback is useful</div><div class="stack"><div class="s-d" data-t="more disagree — 4%" style="width:4%"></div><div class="s-n" data-t="neutral — 27%" style="width:27%"></div><div class="s-a" data-t="more agree — 69%" style="width:69%"></div></div><div class="pct">69%</div></div>
+    <div class="lk"><div class="lab">I can reach my mentor on Discord</div><div class="stack"><div class="s-d" data-t="more disagree — 6%" style="width:6%"></div><div class="s-n" data-t="neutral — 27%" style="width:27%"></div><div class="s-a" data-t="more agree — 67%" style="width:67%"></div></div><div class="pct">67%</div></div>
+    <div class="lk"><div class="lab">Platform is easy to navigate</div><div class="stack"><div class="s-d" data-t="more disagree — 2%" style="width:2%"></div><div class="s-n" data-t="neutral — 31%" style="width:31%"></div><div class="s-a" data-t="more agree — 66%" style="width:66%"></div></div><div class="pct">66%</div></div>
+    <div class="lk"><div class="lab">Program is evolving in the right direction</div><div class="stack"><div class="s-d" data-t="more disagree — 1%" style="width:1%"></div><div class="s-n" data-t="neutral — 35%" style="width:35%"></div><div class="s-a" data-t="more agree — 64%" style="width:64%"></div></div><div class="pct">64%</div></div>
+    <div class="lk"><div class="lab">Live vs e-learning difference is clear</div><div class="stack"><div class="s-d" data-t="more disagree — 2%" style="width:2%"></div><div class="s-n" data-t="neutral — 38%" style="width:38%"></div><div class="s-a" data-t="more agree — 60%" style="width:60%"></div></div><div class="pct">60%</div></div>
+    <div class="lk"><div class="lab">I enjoy working independently at home</div><div class="stack"><div class="s-d" data-t="more disagree — 8%" style="width:8%"></div><div class="s-n" data-t="neutral — 35%" style="width:35%"></div><div class="s-a" data-t="more agree — 57%" style="width:57%"></div></div><div class="pct">57%</div></div>
+    <div class="lk"><div class="lab">I work mainly because the grade depends on it</div><div class="stack"><div class="s-d" data-t="more disagree — 3%" style="width:3%"></div><div class="s-n" data-t="neutral — 48%" style="width:48%"></div><div class="s-a" data-t="more agree — 49%" style="width:49%"></div></div><div class="pct">49%</div></div>
+    <div class="lk"><div class="lab">I enjoy teamwork with classmates</div><div class="stack"><div class="s-d" data-t="more disagree — 15%" style="width:15%"></div><div class="s-n" data-t="neutral — 37%" style="width:37%"></div><div class="s-a" data-t="more agree — 48%" style="width:48%"></div></div><div class="pct">48%</div></div>
+    <div class="lk"><div class="lab">I enjoy working in class with mentor</div><div class="stack"><div class="s-d" data-t="more disagree — 6%" style="width:6%"></div><div class="s-n" data-t="neutral — 46%" style="width:46%"></div><div class="s-a" data-t="more agree — 48%" style="width:48%"></div></div><div class="pct">48%</div></div>
+    <div class="lk"><div class="lab">Platform assignments are clear</div><div class="stack"><div class="s-d" data-t="more disagree — 6%" style="width:6%"></div><div class="s-n" data-t="neutral — 51%" style="width:51%"></div><div class="s-a" data-t="more agree — 44%" style="width:44%"></div></div><div class="pct">44%</div></div>
+    <div class="lk"><div class="lab">Should be in every school in Estonia</div><div class="stack"><div class="s-d" data-t="more disagree — 10%" style="width:10%"></div><div class="s-n" data-t="neutral — 51%" style="width:51%"></div><div class="s-a" data-t="more agree — 39%" style="width:39%"></div></div><div class="pct">39%</div></div>
+    <div class="lk"><div class="lab">My feedback helps improve the program</div><div class="stack"><div class="s-d" data-t="more disagree — 4%" style="width:4%"></div><div class="s-n" data-t="neutral — 58%" style="width:58%"></div><div class="s-a" data-t="more agree — 38%" style="width:38%"></div></div><div class="pct">38%</div></div>
+    <div class="lk"><div class="lab">I complete lessons &amp; assignments on time</div><div class="stack"><div class="s-d" data-t="more disagree — 24%" style="width:24%"></div><div class="s-n" data-t="neutral — 39%" style="width:39%"></div><div class="s-a" data-t="more agree — 37%" style="width:37%"></div></div><div class="pct">37%</div></div>
+    <div class="lk"><div class="lab">Program is too complex for high schoolers</div><div class="stack"><div class="s-d" data-t="more disagree — 55%" style="width:55%"></div><div class="s-n" data-t="neutral — 39%" style="width:39%"></div><div class="s-a" data-t="more agree — 6%" style="width:6%"></div></div><div class="pct">6%</div></div>
+  </div>
+
+  <div class="call">
+    <p><strong>Three things stand out at the bottom.</strong></p>
+    <p><em>On-time completion</em> is the weakest item in the survey — 30 students actively disagree, more than any other statement. This is the operational problem to solve.</p>
+    <p><em>"My feedback helps improve the program"</em> sits at 58% neutral. Students don't disbelieve it; they've just never seen the loop close. Publishing what changed as a result of this survey is close to free and would move it.</p>
+    <p><em>"Too complex"</em> is emphatically rejected — only 8 students agree. Several students say the opposite in free text: too easy, too slow, stretched over three years when they could ship in a month. The ceiling may be too low for the strongest students.</p>
+  </div>
+</section>
+
+<section data-nav="Topics & focus" data-num="06">
+  <h2><span class="num">06</span>Topics, procrastination, and the design paradox</h2>
+  <p class="lede">Students rank Design first, Code a close second, Product a clear third. But Design is also the single most-cited procrastination trigger — it's the polarizing subject, not the popular one.</p>
+
+  <h3>Topic ranking (weighted score, 3–2–1 by position)</h3>
+  <div class="chart">
+    <div class="row"><div class="lab">Design</div><div class="track"><div class="fill" data-t="Design — 283" style="width:100%"></div></div><div class="val">283</div></div>
+    <div class="row"><div class="lab">Code</div><div class="track"><div class="fill" data-t="Code — 253" style="width:89.4%"></div></div><div class="val">253</div></div>
+    <div class="row"><div class="lab">Product</div><div class="track"><div class="fill" data-t="Product — 208" style="width:73.5%"></div></div><div class="val">208</div></div>
+  </div>
+  <p style="font-size:14px;color:var(--ink-soft)">First-place votes: Design 58, Code 51, Product 15.</p>
+
+  <p>Of the students who named a procrastination trigger, roughly 30 pointed at design work (Figma specifically named six times) and roughly 33 at coding — with a further cluster naming long, repetitive, or vague tasks regardless of topic. Product development draws the least energy in both directions: rarely loved, rarely hated, mostly invisible.</p>
+
+  <div class="quotes">
+    <blockquote>"Ones that supposedly take longer — design, big coding practices — because I know it will take a lot of time, so I don't even want to start."<cite>Procrastination</cite></blockquote>
+    <blockquote>"Design… (I know it's needed, but I strongly dislike it)."<cite>Most lame thing</cite></blockquote>
+    <blockquote>"Ones that are long and where I'm repeating the same action multiple times."<cite>Procrastination</cite></blockquote>
+  </div>
+
+  <h3>Time management</h3>
+  <p>64 students break tasks into smaller parts, 52 set specific goals, 49 seek help from a mentor — but 23 use no strategy at all, and only 17 have tried timer techniques. <strong>65 students say they would like to be taught time-management strategies.</strong> Given that on-time completion is the weakest item in the survey, that's a standing offer worth taking up.</p>
+</section>
+
+<section data-nav="Direction" data-num="07">
+  <h2><span class="num">07</span>Where should the program go?</h2>
+  <p class="lede">There is no mandate here. The cohort splits three ways, and the two leading options pull in opposite directions.</p>
+
+  <div class="split">
+    <div data-t="University-style · 54 — 44% of responses" style="width:44%;background:var(--green)">University-style · 54</div>
+    <div data-t="School-style · 46 — 37% of responses" style="width:37%;background:var(--green-soft)">School-style · 46</div>
+    <div data-t="Tech company · 24 — 19% of responses" style="width:19%;background:var(--lime);color:#1a2a1e">Tech company · 24</div>
+  </div>
+  <p style="font-size:14px;color:var(--ink-soft);margin-top:0">University-style: flexible schedule, one large assignment graded at the end. School-style: more guidance, small clear assignments each graded. Tech company: judged on the final result.</p>
+
+  <p>The split maps onto the tension in section 04. Students who want fewer, bigger, later deadlines are asking for autonomy; students who want small graded chunks are asking for structure so they don't fall behind. Both groups are describing the same underlying problem — <em>the current rhythm is unpredictable</em> — and proposing opposite fixes. Whichever direction is chosen, making the calendar visible further ahead serves both.</p>
+
+  <h3>Career intentions</h3>
+  <table>
+    <tr><th>Direction</th><th>10th</th><th>11th</th><th>12th</th><th>Total</th></tr>
+    <tr><td>Designer</td><td class="n">8</td><td class="n">18</td><td class="n">6</td><td class="n">32</td></tr>
+    <tr><td>Programmer</td><td class="n">5</td><td class="n">13</td><td class="n">10</td><td class="n">28</td></tr>
+    <tr><td>Don't know yet</td><td class="n">11</td><td class="n">15</td><td class="n">1</td><td class="n">27</td></tr>
+    <tr><td>Manager</td><td class="n">5</td><td class="n">2</td><td class="n">8</td><td class="n">15</td></tr>
+    <tr><td>Other / combination</td><td class="n">3</td><td class="n">7</td><td class="n">3</td><td class="n">13</td></tr>
+    <tr><td>Not in tech</td><td class="n">4</td><td class="n">2</td><td class="n">3</td><td class="n">9</td></tr>
+  </table>
+
+  <div class="call good">
+    <p><strong>This is the clearest evidence that the program does its job.</strong> "Don't know yet" falls from 11 students in 10th grade to a single student in 12th. Whatever else is imperfect, three years in the program leaves students with a decided direction — and only 9 of 124 rule out tech altogether.</p>
+  </div>
+</section>
+
+<section data-nav="AI" data-num="08">
+  <h2><span class="num">08</span>AI: near-universal use, genuinely divided opinion</h2>
+  <p class="lede">118 of 124 students use AI, and 108 use it in their education. But when asked what AI topics they'd want added to the program, the answers split into two camps that don't overlap at all.</p>
+
+  <h3>How AI is used in education <span style="font-weight:300;color:var(--ink-soft);font-size:13px">(n=108)</span></h3>
+  <div class="chart">
+    <div class="row"><div class="lab">To understand topics &amp; ask questions</div><div class="track"><div class="fill" data-t="To understand topics & ask questions — 60" style="width:100%"></div></div><div class="val">60</div></div>
+    <div class="row"><div class="lab">Help with assignments, check answers</div><div class="track"><div class="fill" data-t="Help with assignments, check answers — 39" style="width:65%"></div></div><div class="val">39</div></div>
+    <div class="row"><div class="lab">Other</div><div class="track"><div class="fill" data-t="Other — 7" style="width:11%"></div></div><div class="val">7</div></div>
+    <div class="row"><div class="lab">Solve it and copy-paste</div><div class="track"><div class="fill" data-t="Solve it and copy-paste — 2" style="width:3%"></div></div><div class="val">2</div></div>
+  </div>
+
+  <h3>Modalities used</h3>
+  <div class="chart">
+    <div class="row"><div class="lab">Text</div><div class="track"><div class="fill" data-t="Text — 115" style="width:100%"></div></div><div class="val">115</div></div>
+    <div class="row"><div class="lab">Image</div><div class="track"><div class="fill" data-t="Image — 75" style="width:65%"></div></div><div class="val">75</div></div>
+    <div class="row"><div class="lab">Video</div><div class="track"><div class="fill" data-t="Video — 27" style="width:23%"></div></div><div class="val">27</div></div>
+    <div class="row"><div class="lab">Audio</div><div class="track"><div class="fill" data-t="Audio — 14" style="width:12%"></div></div><div class="val">14</div></div>
+    <div class="row"><div class="lab">Other</div><div class="track"><div class="fill" data-t="Other — 12" style="width:10%"></div></div><div class="val">12</div></div>
+  </div>
+
+  <div class="call warn">
+    <p><strong>The fault line is real and worth naming.</strong> One group wants substantially more: prompting technique, agents and automation, how LLMs work and how to train one, building a product start-to-finish with AI, how to read and repair vibe-coded output. The other group named AI as the <em>most lame thing in the program</em> — three separate students did — and asked explicitly for less of it.</p>
+    <p>Both camps are articulate about it. The reconciling position appears in the answers themselves: several students want AI taught as <em>critical practice</em> — how to verify what it produces, how to use it without losing your own thinking, how to fact-check it — rather than as a set of tools to adopt.</p>
+  </div>
+
+  <div class="quotes">
+    <blockquote>"How to read, implement and fix vibe-code correctly. How to use AI to learn programming without vibe-coding."<cite>Wants more</cite></blockquote>
+    <blockquote>"How to use it while preserving your own doing and thinking abilities."<cite>Wants more, carefully</cite></blockquote>
+    <blockquote>"Everyone talks about AI way too much already, in so many subjects and outside school too."<cite>Wants less</cite></blockquote>
+    <blockquote>"I want code made by man."<cite>Wants less</cite></blockquote>
+  </div>
+</section>
+
+<section data-nav="Small fixes" data-num="09">
+  <h2><span class="num">09</span>Small fixes with outsized returns</h2>
+  <p class="lede">The "most lame thing" and "one thing you'd change" questions produced an unusually concrete list. Most of these are platform bugs and workflow annoyances, not curriculum disagreements — which makes them cheap to fix and highly visible when fixed.</p>
+
+  <ul class="fix">
+    <li><b>Dark mode renders some text invisible</b> <span>— named independently by several students, specifically in quizzes. Most-repeated single complaint.</span></li>
+    <li><b>Submitting scrolls you back to the top of the page</b> <span>— "I click 'add submission' and I need to scroll the page again. Please fix it, I beg you."</span></li>
+    <li><b>Can't open codesters in a second tab without logging out and back in</b> <span>— raised three times, along with a wish to simply stay logged in.</span></li>
+    <li><b>Back button returns you to the courses page instead of the previous view</b> <span>— "getting annoying when I am especially tired."</span></li>
+    <li><b>Too many third-party tools to track</b> <span>— "I keep forgetting the names and what I had to do in each one." A single index of tools and current tasks was explicitly requested.</span></li>
+    <li><b>Video / recorded presentation assignments</b> <span>— disliked by six students; Loom and "recording homework" named directly. Worth checking whether the learning goal needs the camera.</span></li>
+    <li><b>No deadline notifications</b> <span>— two students asked for homework alerts in Stuudium or eKool, which is where they already look.</span></li>
+    <li><b>Figma frustration</b> <span>— seven mentions, mostly about time cost and getting lost rather than the tool itself.</span></li>
+    <li><b>Nobody knows the social media exists</b> <span>— 99 of 124 answered "Wait, you have a social media??" Instagram is the only channel with meaningful reach, at 15 followers in this cohort.</span></li>
+  </ul>
+</section>
+
+<section data-nav="If you do five things" data-num="10">
+  <h2><span class="num">10</span>If you do five things</h2>
+  <p class="lede">Drawn from where the numbers and the free text agree.</p>
+
+  <table>
+    <tr><th>#</th><th>Action</th><th>Because</th></tr>
+    <tr><td class="n">1</td><td>Publish the term calendar with big assignments flagged weeks ahead</td><td>Addresses the weakest item in the survey (on-time completion) and satisfies both sides of the direction split</td></tr>
+    <tr><td class="n">2</td><td>Reframe e-learning as scheduled lesson time, not homework</td><td>61% still read it as extra work; that group holds 87% of the neutrals and 83% of the late submitters</td></tr>
+    <tr><td class="n">3</td><td>Run the time-management sessions students asked for</td><td>65 students said yes; 23 currently use no strategy at all</td></tr>
+    <tr><td class="n">4</td><td>Ship the platform fixes in section 09 and tell students they came from this survey</td><td>Cheap, visible, and directly moves "my feedback helps improve the program" (58% neutral)</td></tr>
+    <tr><td class="n">5</td><td>Open a faster lane for students who are ready to move</td><td>Only 8 students find the program too complex; several say it's too slow and stretched</td></tr>
+  </table>
+</section>
+
+<section data-nav="Mentor by mentor" data-num="11">
+  <h2><span class="num">11</span>Mentor by mentor</h2>
+  <p class="lede">The questionnaire never asked who the student's mentor was, so each response is attributed by matching school and grade to the group registry. The named comments confirm the mapping — every mentor named in free text appears only inside their own inferred group. These figures use the 119 matched responses; the 5 unattributed ones are excluded.</p>
+
+  <div class="call warn">
+    <p><strong>Read the small groups as impressions, not measurements.</strong> Four mentors have fewer than 15 responses, and two have fewer than 10. At that size one unhappy student moves the average by half a point. These figures are worth a conversation; they are not worth a ranking, and they should not be used for evaluation on their own.</p>
+  </div>
+
+  <table class="wide">
+    <tr><th>Mentor</th><th>Groups</th><th>Answers</th><th>Rating</th><th>Feedback useful</th><th>Enough support</th><th>Reachable on Discord</th><th>Explains grades</th></tr>
+    <tr><td><strong>Kenneth Ruut</strong></td><td class="gid">MG24, MG23</td><td class="n">7</td><td class="n">4.86</td><td class="n">43%</td><td class="n">86%</td><td class="n">86%</td><td class="n">86%</td></tr>
+    <tr><td><strong>Nikita Podkopaev</strong></td><td class="gid">UG24, UG23, NARG23</td><td class="n">16</td><td class="n">4.81</td><td class="n">81%</td><td class="n">62%</td><td class="n">69%</td><td class="n">75%</td></tr>
+    <tr><td><strong>Sten Leinasaar</strong></td><td class="gid">LG23</td><td class="n">5</td><td class="n">4.80</td><td class="n">100%</td><td class="n">100%</td><td class="n">100%</td><td class="n">100%</td></tr>
+    <tr><td><strong>José Prieto</strong></td><td class="gid">KSG25, KSG24, KSG23</td><td class="n">49</td><td class="n">4.76</td><td class="n">78%</td><td class="n">80%</td><td class="n">67%</td><td class="n">82%</td></tr>
+    <tr><td><strong>Liuda Mishchenko</strong></td><td class="gid">UG25, TG24</td><td class="n">19</td><td class="n">4.37</td><td class="n">53%</td><td class="n">58%</td><td class="n">53%</td><td class="n">53%</td></tr>
+    <tr><td><strong>Pärli Ruutel</strong></td><td class="gid">JPG23</td><td class="n">10</td><td class="n">4.10</td><td class="n">60%</td><td class="n">60%</td><td class="n" style="color:#8A3B2E">10%</td><td class="n">30%</td></tr>
+    <tr><td><strong>Zhenyu Wang</strong></td><td class="gid">JPG24</td><td class="n">13</td><td class="n">3.85</td><td class="n">54%</td><td class="n">54%</td><td class="n">92%</td><td class="n">85%</td></tr>
+  </table>
+
+  <h3>José Prieto <span style="font-weight:400;color:var(--ink-soft)">— 49 answers, 4.76</span></h3>
+  <p>Carries 40% of all responses across three Kadrioru groups, including the largest group in the program, and holds the highest rating of any mentor at that volume. 38 of 49 students gave a 5; exactly one gave 3 or below. The praise is unusually consistent in what it names: calm, not judging students for not knowing something, checking repeatedly whether everyone understood.</p>
+  <p><strong>The one soft spot is Discord.</strong> Reachability scores 67%, the lowest of the four mentor statements for this group, and the free text says the same thing directly — one student writes that the only thing to improve is answering faster because a reply can take a long time. Given the volume of students, that's likely a load problem rather than an attention problem.</p>
+  <div class="quotes">
+    <blockquote>"Jose Prieto is very supportive and always stays calm. I appreciate how he doesn't get mad and doesn't judge for not knowing something. Makes lessons fun."<cite>On José</cite></blockquote>
+    <blockquote>"Very active in lessons and explains everything in depth. He also asks multiple times if anyone didnt understand or needs help."<cite>On José</cite></blockquote>
+    <blockquote>"Good mentor, acts like a friend rather than a teacher"<cite>On José</cite></blockquote>
+    <blockquote>"Only thing that he could do better is answer faster because sometimes it takes so long to get answer from him on discord."<cite>The one criticism</cite></blockquote>
+    <blockquote>"jose the goat"<cite>On José</cite></blockquote>
+    <blockquote>"Some grades just show up and when I do the assignments the bad grades are not replaced"<cite>On grading, same group</cite></blockquote>
+  </div>
+
+
+  <h3>Nikita Podkopaev <span style="font-weight:400;color:var(--ink-soft)">— 16 answers, 4.81</span></h3>
+  <p>The highest average of any mentor with a meaningful sample: 13 of 16 students gave a 5, none below 4. Students single out flexibility on deadlines as something that lowers their stress, and one notes he stays patient even when part of the class is deliberately disruptive.</p>
+  <p>Two numbers sit oddly against that. "Enough support to complete the weekly tasks" comes in at 62%, below the program average, and his groups report the lowest happiness of any mentor's cohort at 65%. The likely reading is that the students like him a great deal but that the Ühisgümnaasium 12th group — which returned only 2 of 10 — is struggling with something other than mentoring.</p>
+  <div class="quotes">
+    <blockquote>"My mentor is Nikita and honestly everything is great. I also really like that he isn't THAT strict with when I have to submit an assignment, makes it less stressful."<cite>On Nikita</cite></blockquote>
+    <blockquote>"They are patient even if some of the students seem to sabotage the class"<cite>On Nikita</cite></blockquote>
+    <blockquote>"he is very intelligent and kind, he helps out a lot"<cite>On Nikita</cite></blockquote>
+    <blockquote>"lahke, kaastundlik, mõistev ja lihtsalt lahe"<cite>On Nikita — kind, compassionate, understanding and simply cool</cite></blockquote>
+  </div>
+
+
+  <h3>Liuda Mishchenko <span style="font-weight:400;color:var(--ink-soft)">— 19 answers, 4.37</span></h3>
+  <p>The flattest profile in the set: all four mentor statements land between 53% and 58%, with no strong point and no weak one. Nothing in the free text is critical — the four comments that mention her are all positive and specific, about finding correct code and understanding assignments — but only four students wrote anything at all, which is a low rate for a group this size.</p>
+  <p>These figures now cover her two confirmed groups only — Ühisgümnaasium 10th and the six TG24 students. The four unattributed 6 May responses have been excluded; including them would have pulled her rating down to 4.30.</p>
+  <div class="quotes">
+    <blockquote>"My mentor is Liudmyla — she has helped me to understand how I can use AI as a tool to help me with some things I don't know how to do, or why the code isn't working."<cite>On Liuda</cite></blockquote>
+    <blockquote>"Helped me understand assignments better"<cite>On Liuda</cite></blockquote>
+    <blockquote>"Ludmila has helped me find correct codes for coding."<cite>On Liuda</cite></blockquote>
+    <blockquote>"That every week we have a graded assignment"<cite>Most lame thing, same group</cite></blockquote>
+  </div>
+
+
+  <h3>Zhenyu Wang <span style="font-weight:400;color:var(--ink-soft)">— 13 answers, 3.85</span></h3>
+  <p>The lowest average rating, and the most polarized: 4 students gave a 5 and 4 gave a 3 or below. But the shape of the result contradicts the usual explanation. He scores <em>highest of all mentors</em> on Discord reachability (92%) and near the top on explaining grades (85%) — so it isn't availability or transparency. The weak items are feedback usefulness and support, both at 54%.</p>
+  <p>All four free-text comments about him are warm, describing him circling the room checking that everyone understands. His group's happiness is 77%, above the program average. That combination — students who like him, feel he's present and available, and still rate him low — is the single most puzzling result in this survey, and it won't be resolved from the data. It's worth asking the group directly.</p>
+  <div class="quotes">
+    <blockquote>"I like my mentor Zhenyu, he cool. He has good explanations when I have a question and he is actively going around the class and making sure everyone knows what they are doing."<cite>On Zhenyu</cite></blockquote>
+    <blockquote>"Mr Wang is very helpful. He has helped me in explaining things and always checks if we understand or not"<cite>On Zhenyu</cite></blockquote>
+    <blockquote>"They have helped me with mending my mistakes on my assignments and given great advice on how to improve stuff in the future."<cite>On Zhenyu</cite></blockquote>
+    <blockquote>"mentor"<cite>Most lame thing, same group</cite></blockquote>
+    <blockquote>"make the platform better, reform the teaching, make better themes."<cite>Change one thing, same group</cite></blockquote>
+  </div>
+
+
+  <h3>Pärli Ruutel <span style="font-weight:400;color:var(--ink-soft)">— 10 answers, 4.10</span></h3>
+  <p><strong>Discord reachability is 10% — one student in ten.</strong> That is the weakest number anywhere in the mentor data, and the free text is unambiguous about it: two students independently describe her as hard to reach outside school and slow to respond. "Explains grades" at 30% is the second-lowest figure in the table.</p>
+  <p>The classroom picture is different and considerably better. One student praises her specifically for being strict enough that the class actually makes progress instead of chatting, another says she is very understanding and should get a raise, and a third notes she summarizes topics well but is thinner on detail and worked examples. The pattern reads as strong in the room, absent between lessons — which is a fixable problem, and probably a workload or expectations question rather than a teaching one.</p>
+  <div class="quotes">
+    <blockquote>"What I like about Pärli is that she is actually fairly strict: she doesn't let students chat while there is still work to be done, and that makes it so that we actually make great progress during classes"<cite>On Pärli</cite></blockquote>
+    <blockquote>"She is very understanding and helpful. You should give her a raise."<cite>On Pärli</cite></blockquote>
+    <blockquote>"Fairly good at teaching stuff but hard to reach when in need of help outside of school."<cite>On Pärli</cite></blockquote>
+    <blockquote>"Although she can summarize a topic well, there are some problems with going into the smaller details or examples. Also it sometimes takes a long time for Pärli Rüütel to respond."<cite>On Pärli</cite></blockquote>
+    <blockquote>"The mentor should check their discord more often"<cite>Change one thing, same group</cite></blockquote>
+    <blockquote>"The no code stuff and replit — why not teach git?"<cite>Most lame thing, same group</cite></blockquote>
+  </div>
+
+
+  <h3>Kenneth Ruut <span style="font-weight:400;color:var(--ink-soft)">— 7 answers, 4.86</span></h3>
+  <p>Highest raw rating in the program, with 6 of 7 students giving a 5 — but on seven answers that is one student away from looking quite different. Against that, "I receive useful feedback on my platform submissions" sits at 43%, out of step with everything else in his row. With this sample size it could be two students having a bad week; it could also be real. Worth a direct question rather than a conclusion.</p>
+  <p>Comments are brief and friendly. One asks that his photo be added to the team picture on the site, which is a small thing worth doing.</p>
+  <div class="quotes">
+    <blockquote>"i like Kennerth but you should put his picture to the team picture up aswell"<cite>On Kenneth</cite></blockquote>
+    <blockquote>"they are nice and helpfull"<cite>On Kenneth</cite></blockquote>
+    <blockquote>"cool cool cool"<cite>On Kenneth</cite></blockquote>
+    <blockquote>"Marten Vooro helped me choose my product idea in 10th grade."<cite>A former mentor, still remembered</cite></blockquote>
+  </div>
+
+
+  <h3>Sten Leinasaar <span style="font-weight:400;color:var(--ink-soft)">— 5 answers, 4.80</span></h3>
+  <p>A clean sweep: 100% agreement on all four mentor statements, 4 of 5 students giving a 5. On five responses this can't carry much weight statistically, but it is the only group in the program with no disagreement anywhere in the mentor block. One student describes him as responsive and knowledgeable about what fits, and rates him 10 out of 10.</p>
+  <div class="quotes">
+    <blockquote>"My mentor is Sten, I really like his desire to help students, he is responsive and knows a lot about what fits, just 10 out of 10"<cite>On Sten</cite></blockquote>
+    <blockquote>"He is great and was ready to help with any issue."<cite>On Sten</cite></blockquote>
+  </div>
+
+  <p>Worth noting the contrast: his group's satisfaction with him is total, yet only 60% say they're happy they joined and 80% still experience e-learning as homework. That gap is a useful reminder that mentor quality and program experience are separable.</p>
+
+  <div class="call">
+    <p><strong>Two patterns across the whole set.</strong></p>
+    <p>First, <em>Discord is where mentoring breaks down.</em> It's the lowest-scoring mentor statement for José, Liuda and Pärli — three mentors covering 82 of the 124 students. Between-lesson availability is the program's weakest link, not classroom teaching.</p>
+    <p>Second, <em>the mentor score doesn't track the program score.</em> Sten's students rate him 4.80 and the program 60% happy; Zhenyu's rate him 3.85 and the program 77% happy. Whatever makes students happy with codesters.club is largely independent of how they rate the person teaching it.</p>
+  </div>
+</section>
+
+<footer data-nav="Notes on the data" data-num="12">
+  <div class="foot-rule"></div>
+  <h3 style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--green)">Notes on the data</h3>
+  <ul>
+    <li><strong>Two questions are unusable.</strong> "How satisfied are you with the program?" and "How likely would you recommend this?" each have only 6 responses out of 124, all submitted between 15 and 23 March. They appear to have been removed or made conditional early in the collection window. No NPS or satisfaction score can be calculated for this year.</li>
+    <li><strong>The sample is self-selected.</strong> 124 of 170 enrolled students gave a valid response. Those who disengaged are less likely to have answered, so the 73% happiness figure is probably a ceiling rather than a midpoint — most sharply in the 12th grade, where only 55% answered.</li>
+    <li><strong>Enrolment figures</strong> come from the group registry: 42 students in 10th grade, 72 in 11th, 56 in 12th. Two groups do not reconcile with the survey (see section 01).</li>
+    <li><strong>Percentages are of valid responses per question,</strong> not of all 124, and are rounded — some rows total 99% or 101%.</li>
+    <li><strong>Duplicate detection used the respondent ID</strong> assigned by the form, not names, so two different students sharing a device would not be caught. A few surviving submissions are terse rather than filler ("homework", "class") and were kept.</li>
+    <li><strong>Quotes are reproduced as written,</strong> with typos preserved except where a word was unreadable.</li>
+    <li><strong>Mentor attribution is inferred,</strong> not asked. Section 11 maps each response to a mentor via school and grade using the group registry. It is corroborated by the named free-text comments but cannot be verified per student. Adding a mentor question to next year&#39;s form would remove the guesswork.</li>
+  </ul>
+</footer>
+
+</div>
+
+<nav id="rail" aria-label="Sections"><div class="hit"></div><div class="spine"></div><div class="prog"></div><div class="knob"></div></nav>
+<script>
+(function(){
+  var rail=document.getElementById('rail');
+  if(!rail) return;
+  var spine=rail.querySelector('.spine'), prog=rail.querySelector('.prog'), knob=rail.querySelector('.knob');
+  var els=[].slice.call(document.querySelectorAll('[data-nav]'));
+  var btns=els.map(function(el){
+    var b=document.createElement('button');
+    b.className='rl'; b.type='button';
+    b.innerHTML='<span class="txt">'+el.getAttribute('data-nav')+'</span><span class="tick"></span>';
+    b.addEventListener('click',function(){
+      window.scrollTo({top:el.offsetTop-24,behavior:'smooth'});
+    });
+    rail.appendChild(b); return b;
+  });
+  var TOP=26, BOT=26, positions=[];
+  function maxScroll(){ return Math.max(1, document.body.scrollHeight - window.innerHeight); }
+  function layout(){
+    var h=window.innerHeight-TOP-BOT, ms=maxScroll(), gap=25, last=-1e9;
+    positions=els.map(function(el){
+      var f=Math.min(1,Math.max(0,(el.offsetTop-24)/ms));
+      return TOP+f*h;
+    });
+    for(var i=0;i<positions.length;i++){
+      if(positions[i]-last<gap) positions[i]=last+gap;
+      last=positions[i];
+    }
+    var over=positions[positions.length-1]-(TOP+h);
+    if(over>0) for(var j=0;j<positions.length;j++) positions[j]-=over;
+    btns.forEach(function(b,i){ b.style.top=positions[i]+'px'; });
+  }
+  function update(){
+    var y=window.scrollY||window.pageYOffset, ms=maxScroll();
+    var f=Math.min(1,Math.max(0,y/ms));
+    var h=window.innerHeight-TOP-BOT;
+    prog.style.height=(f*h)+'px';
+    knob.style.top=(TOP+f*h)+'px';
+    var act=0;
+    for(var i=0;i<els.length;i++) if(els[i].offsetTop-90<=y) act=i;
+    btns.forEach(function(b,i){ b.classList.toggle('on',i===act); });
+  }
+  var drag=false;
+  function scrub(ev){
+    var h=window.innerHeight-TOP-BOT;
+    var f=Math.min(1,Math.max(0,(ev.clientY-TOP)/h));
+    window.scrollTo(0,f*maxScroll());
+  }
+  function down(ev){ drag=true; rail.classList.add('open'); scrub(ev); ev.preventDefault(); }
+  knob.addEventListener('pointerdown',down);
+  spine.addEventListener('pointerdown',down);
+  window.addEventListener('pointermove',function(e){ if(drag) scrub(e); });
+  window.addEventListener('pointerup',function(){ if(drag){drag=false; rail.classList.remove('open');} });
+  var t;
+  window.addEventListener('scroll',function(){
+    update();
+    rail.classList.add('open'); clearTimeout(t);
+    t=setTimeout(function(){ if(!drag) rail.classList.remove('open'); },1100);
+  },{passive:true});
+  window.addEventListener('resize',function(){ layout(); update(); });
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){layout();update();});
+  layout(); update(); rail.classList.add('ready');
+  window.addEventListener('load',function(){ layout(); update(); });
+})();
+</script>
+
+<div id="tip" role="status" aria-live="polite"></div>
+<script>
+(function(){
+  var tip=document.getElementById('tip'), cur=null;
+  function show(el){
+    cur=el; tip.textContent=el.getAttribute('data-t');
+    var r=el.getBoundingClientRect();
+    tip.style.left=(r.left+r.width/2)+'px';
+    tip.style.top=r.top+'px';
+    tip.classList.add('on');
+  }
+  function hide(){ cur=null; tip.classList.remove('on'); }
+  document.addEventListener('mouseover',function(e){
+    var el=e.target.closest('[data-t]');
+    if(el&&el!==cur) show(el); else if(!el&&cur) hide();
+  });
+  document.addEventListener('mouseout',function(e){
+    var el=e.target.closest('[data-t]');
+    if(el&&!el.contains(e.relatedTarget)) hide();
+  });
+  window.addEventListener('scroll',function(){ if(cur) show(cur); },{passive:true});
+  document.addEventListener('touchstart',function(e){
+    var el=e.target.closest('[data-t]');
+    if(el){ show(el); setTimeout(hide,1800); }
+  },{passive:true});
+})();
+</script>
