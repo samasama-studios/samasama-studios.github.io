@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E9E5DB" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#10171E" media="(prefers-color-scheme: dark)">
+<title>Cronología del conflicto del Atlántico Sur</title>
+<style>
+:root{
+  --paper:#E9E5DB; --land:#D9D2C0; --ink:#1B2733; --ink-soft:#5A6672; --rule:#B9B2A0;
+  --ar:#2C5FA8; --uk:#A8482C; --neutral:#7A7669; --panel:#F2EFE7;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#10171E; --land:#1F2A34; --ink:#DCD7CA; --ink-soft:#98A2AC; --rule:#33404B;
+         --ar:#78ABE4; --uk:#E08B6C; --neutral:#8C9198; --panel:#17202A; }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  font-size:17px; line-height:1.55;
+  -webkit-text-size-adjust:100%;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 18px 32px}
+header{border-bottom:1px solid var(--rule);padding-bottom:12px;margin-bottom:14px}
+h1{font-size:20px;font-weight:600;margin:0;letter-spacing:.01em}
+header p{margin:4px 0 0;font-size:14px;color:var(--ink-soft)}
+.chart{border:1px solid var(--rule);background:var(--paper);border-radius:2px;overflow:hidden;touch-action:pan-y}
+svg{display:block;width:100%;height:auto;max-height:58vh}
+.panel{position:relative;margin-top:14px;background:var(--panel);border:1px solid var(--rule);border-radius:2px;padding:14px 16px;min-height:150px}
+.meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;min-height:38px}
+.date{font-size:18px;font-weight:600}
+.side{font-size:13px;letter-spacing:.02em;border-bottom:2px solid currentColor;padding-bottom:1px}
+.flagbox{display:inline-flex;align-items:center;line-height:0}
+.warn{min-width:0;min-height:34px;padding:3px 9px;gap:6px;align-items:center;border-color:var(--uk);color:var(--uk);font-size:16px;line-height:1}
+.warn[hidden]{display:none}
+.warn svg{outline:1px solid var(--rule)}
+#ukpop{position:absolute;left:14px;right:14px;top:56px;z-index:5;background:var(--panel);border:1px solid var(--uk);border-left:4px solid var(--uk);border-radius:2px;padding:11px 13px;font-size:15.5px;line-height:1.5}
+#ukpop[hidden]{display:none}
+#ukpop b{display:block;font-size:13px;color:var(--ink-soft);font-weight:400;margin-bottom:4px}
+.dates .w{flex:0 0 auto;color:var(--uk);font-size:15px}
+.dates .wa{flex:0 0 auto;color:var(--ar);font-size:15px}
+.warn.arn{border-color:var(--ar);color:var(--ar)}
+#ukpop.arn{border-color:var(--ar);border-left-color:var(--ar)}
+.flagbox svg{outline:1px solid var(--rule)}
+.txt{margin:0;font-size:16.5px;color:var(--ink)}
+.controls{display:flex;align-items:center;gap:12px;margin-top:14px}
+button{
+  font:inherit;font-size:16px;color:var(--ink);background:transparent;
+  border:1px solid var(--rule);border-radius:2px;
+  min-width:52px;min-height:48px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+}
+button:active{background:var(--land)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--ar);outline-offset:2px}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;flex:1;height:48px;background:transparent;margin:0;
+}
+input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--rule)}
+input[type=range]::-moz-range-track{height:2px;background:var(--rule)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--ink);margin-top:-10px}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border:0;border-radius:50%;background:var(--ink)}
+.dates{margin-top:18px;border-top:1px solid var(--rule);padding-top:12px}
+.dates ol{list-style:none;margin:0;padding:0}
+.dates li{border-bottom:1px solid var(--rule)}
+.dates button{
+  width:100%;min-height:44px;justify-content:flex-start;text-align:left;
+  border:0;border-left:3px solid transparent;padding:9px 10px;font-size:15px;gap:10px;
+}
+.dates button[aria-current=true]{border-left-color:var(--ink);background:var(--panel);font-weight:600}
+.dates .d{flex:0 0 104px;color:var(--ink-soft)}
+.dates .s{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+footer{margin-top:22px;font-size:13px;color:var(--ink-soft)}
+@media (min-width:860px){
+  .cols{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(250px,1fr);gap:24px;align-items:start}
+  svg{max-height:56vh}
+  .controls{margin-top:0}
+  .dates{max-height:72vh;overflow:auto}
+}
+@media (prefers-reduced-motion:no-preference){
+  .pulse{animation:p 1.8s ease-out infinite}
+  @keyframes p{0%{r:8;opacity:.9}100%{r:18;opacity:0}}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Cronología del conflicto del Atlántico Sur</h1>
+  <p>De los primeros avistamientos europeos al zarpe de la Task Force</p>
+</header>
+
+<div class="cols">
+  <div class="stage">
+  <div class="chart" id="chart">
+    <svg id="mp" viewBox="0 0 440 492" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="mt md">
+      <title id="mt">Mapa del Atlántico</title>
+      <desc id="md">Rutas entre Portsmouth, Gibraltar, Belice, Puerto Belgrano, Montevideo, Punta Arenas, Malvinas y Georgias del Sur.</desc>
+      <defs><clipPath id="uj"><rect x="0" y="0" width="24" height="12"/></clipPath><marker id="aAR" viewBox="0 0 10 10" refX="9.5" refY="5" markerUnits="strokeWidth" markerWidth="4.2" markerHeight="4.2" orient="auto"><path d="M0,0.5 L10,5 L0,9.5 Z" fill="var(--ar)"/></marker><marker id="aUK" viewBox="0 0 10 10" refX="9.5" refY="5" markerUnits="strokeWidth" markerWidth="4.2" markerHeight="4.2" orient="auto"><path d="M0,0.5 L10,5 L0,9.5 Z" fill="var(--uk)"/></marker><marker id="aARd" viewBox="0 0 10 10" refX="9.5" refY="5" markerUnits="strokeWidth" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0.5 L10,5 L0,9.5 Z" fill="var(--ar)" fill-opacity="0.35"/></marker><marker id="aUKd" viewBox="0 0 10 10" refX="9.5" refY="5" markerUnits="strokeWidth" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0.5 L10,5 L0,9.5 Z" fill="var(--uk)" fill-opacity="0.35"/></marker><marker id="aNE" viewBox="0 0 10 10" refX="9.5" refY="5" markerUnits="strokeWidth" markerWidth="4.2" markerHeight="4.2" orient="auto"><path d="M0,0.5 L10,5 L0,9.5 Z" fill="var(--neutral)"/></marker><marker id="aNEd" viewBox="0 0 10 10" refX="9.5" refY="5" markerUnits="strokeWidth" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0.5 L10,5 L0,9.5 Z" fill="var(--neutral)" fill-opacity="0.35"/></marker></defs>
+      <g id="land" fill="var(--land)" stroke="var(--rule)" stroke-width="0.75">
+        <path d="M72,208 L92,192 L140,196 L172,220 L180,240 L204,252 L228,260 L240,272 L224,296 L220,324 L188,340 L168,376 L152,392 L132,400 L120,420 L108,440 L100,452 L80,448 L88,420 L88,392 L96,360 L100,332 L96,312 L76,296 L64,272 L56,260 L64,248 L68,232 Z"/>
+        <path d="M0,156 L36,160 L30,172 L48,192 L72,208 L52,208 L30,186 L10,182 L0,180 Z"/>
+        <path d="M356,96 L344,108 L328,128 L312,156 L316,184 L328,204 L348,220 L372,220 L400,226 L416,244 L428,276 L428,312 L436,352 L440,368 L440,96 Z"/>
+        <path d="M344,68 L344,92 L356,96 L380,88 L396,72 L412,64 L440,60 L440,0 L400,0 L412,12 L400,28 L388,36 L376,44 L364,48 L376,56 L372,68 Z"/>
+        <path d="M360,40 L356,24 L368,8 L380,24 L384,36 Z"/>
+      </g>
+      <g id="pol"></g>
+      <g id="statics"></g>
+      <g id="tracks" fill="none" stroke-linecap="round"></g>
+      <g id="dots"></g>
+    </svg>
+  </div>
+
+    <div class="panel">
+      <div class="meta">
+        <span class="date" id="date">—</span>
+        <span class="flagbox" id="pflag" aria-hidden="true"></span>
+        <span class="side" id="side">—</span>
+        <button class="warn" id="uknote" hidden aria-expanded="false"><span id="ukflag" aria-hidden="true"></span><span aria-hidden="true">!</span><span class="sr">Ver la versión británica</span></button><button class="warn arn" id="arnote" hidden aria-expanded="false"><span id="arflag" aria-hidden="true"></span><span aria-hidden="true">!</span><span class="sr">Ver la objeción argentina</span></button>
+      </div>
+      <div id="ukpop" hidden role="note"><b id="popttl"></b><span id="uktxt"></span></div>
+      <p class="txt" id="txt">—</p>
+    </div>
+  </div>
+
+  <div class="side-col">
+    <div class="controls">
+      <button id="prev" aria-label="Evento anterior">&#8249;</button>
+      <button id="play" aria-label="Reproducir la secuencia"><span id="pi">&#9654;</span></button>
+      <button id="next" aria-label="Evento siguiente">&#8250;</button>
+      <input type="range" id="sl" min="0" max="39" step="1" value="0" aria-label="Línea de tiempo">
+    </div>
+
+    <nav class="dates" aria-label="Todos los eventos">
+      <ol id="list"></ol>
+    </nav>
+  </div>
+</div>
+
+<footer>Deslizá sobre el mapa o usá las flechas del teclado para avanzar. Los signos <span style="color:var(--uk)">!</span> y <span style="color:var(--ar)">!</span> marcan los puntos que el relato británico o el argentino no dan por buenos.</footer>
+</div>
+
+<script>
+(function(){
+var P={
+ plymouth:[363.4,38.5],saintmalo:[371.9,45.4],rotterdam:[397.9,32.3],sevilla:[356,90.4],
+ buenosaires:[146.5,378.4],fuego:[126.8,458],
+ belgrano:[131.6,395.6],montevideo:[155.2,379.6],arenas:[96.4,452.6],
+ malvinas:[148.6,446.8],grytviken:[234,457.1],leith:[229,452],
+ ascension:[322.4,271.8],gibraltar:[358.6,95.6],portsmouth:[375.6,36.8],
+ belice:[27.2,170],atlsur:[290,340],londres:[372,40]
+};
+var S=[["portsmouth","Portsmouth",-1,-6,"end"],["gibraltar","Gibraltar",-6,3,"end"],
+ ["belice","Belice",7,-2,"start"],["ascension","Ascensión",-6,3,"end"],
+ ["montevideo","Montevideo",7,-4,"start"],["belgrano","Pto. Belgrano",-6,5,"end"],
+ ["arenas","Punta Arenas",-6,4,"end"],["malvinas","Malvinas",7,-5,"start"],
+ ["grytviken","Georgias del Sur",-4,-8,"middle"]];
+var E=[
+ {d:"Antes de 1500",s:"ne",n:"Sin población estable",r:"Islas deshabitadas",fl:[],ic:["isle"],f:"malvinas",k:[["fuego","malvinas","ne"]],
+  t:"Las islas no tenían población permanente. Un estudio de 2021 halló en New Island carbón de fogatas, grandes acumulaciones de huesos de lobos marinos y pingüinos y una punta de proyectil de cuarcita local, todo anterior a los europeos: probables visitas en canoa de yaganes (yámana) desde Tierra del Fuego. El warrah, zorro-lobo que era el único mamífero terrestre nativo, pudo haber llegado con ellos; se extinguió hacia 1876."},
+ {d:"1520",s:"ne",n:"España",r:"Primeros avistamientos",fl:["es"],f:"malvinas",k:[["sevilla","malvinas","ne"]],
+  t:"El San Antón, nave de la expedición de Magallanes, avista tierras al este del estrecho que podrían ser las islas. Se le suman otros avistamientos discutidos: Camargo en 1540 y, según algunas versiones, Vespucio en 1502.",
+  uk:"Londres no acepta ninguno de esos avistamientos como probado y sostiene que el primero verificable es el de John Davis en 1592."},
+ {d:"1592",ar:"Buenos Aires no acepta el descubrimiento inglés: sostiene que las islas ya aparecían en cartas españolas y portuguesas desde la década de 1520 y que, en cualquier caso, el descubrimiento sin ocupación no otorga título.",s:"en",r:"John Davis",fl:["en"],f:"malvinas",k:[["plymouth","malvinas","en"]],
+  t:"John Davis, con el Desire, avista las islas al ser empujado hacia el este por un temporal. Dos años después Richard Hawkins recorre la costa norte. Es el hecho en el que Gran Bretaña funda su derecho de descubrimiento."},
+ {d:"1600",s:"ne",n:"Provincias Unidas neerlandesas",r:"Sebald de Weert",fl:["nl"],f:"malvinas",k:[["rotterdam","malvinas","ne"]],
+  t:"El neerlandés Sebald de Weert avista y cartografía las islas del noroeste. Es el primer avistamiento que nadie discute. Durante dos siglos el archipiélago figura en las cartas como islas Sebaldinas."},
+ {d:"1690",ar:"Para la posición argentina, Strong solo desembarcó y puso un nombre: no fundó nada ni realizó acto formal de posesión, y Gran Bretaña no volvió al archipiélago hasta 75 años después.",s:"en",r:"Primer desembarco",fl:["en"],f:"malvinas",k:[["plymouth","malvinas","en"]],ic:["ship"],
+  t:"John Strong hace el primer desembarco registrado y bautiza Falkland Sound al canal entre las dos islas mayores, en honor al vizconde de Falkland. El nombre pasaría después a todo el archipiélago."},
+ {d:"1700–1712",s:"ne",n:"Francia",r:"Los malouins",fl:["fr"],f:"malvinas",k:[["saintmalo","malvinas","ne"]],ic:["ship"],
+  t:"Durante la guerra de Sucesión española, armadores de Saint-Malo consiguen permiso para comerciar con Chile y Perú por el cabo de Hornos. Sus barcos pasan una y otra vez junto al archipiélago: Beauchesne-Gouin avista en 1701 la isla que hoy lleva su nombre y hacia 1705 se cartografían otros islotes. Son esos malouins los que terminarán dando nombre a las islas."},
+ {d:"1713",s:"ne",n:"España y Reino Unido",r:"Tratado de Utrecht",fl:["es","uk"],fo:[-40,-30],f:"malvinas",k:[],ic:["council"],
+  t:"El Tratado de Utrecht cierra la guerra y confirma las posesiones españolas en América del Sur. Madrid, y más tarde Buenos Aires, lo leen como el reconocimiento del dominio exclusivo español en el Atlántico Sur, islas incluidas.",
+  uk:"Londres rechaza esa lectura: Utrecht no menciona las islas, no reconoce un derecho exclusivo sobre territorios que nadie ocupaba, y Gran Bretaña nunca aceptó el reparto del Tratado de Tordesillas."},
+ {d:"1716–1722",s:"ne",n:"Francia",r:"Nace el nombre Malvinas",fl:["fr"],f:"malvinas",k:[],ic:["isle"],
+  t:"Frézier publica en 1716 una carta que las llama Isles Nouvelles, descubiertas por los navíos de Saint-Malo desde 1700. En 1721 el neerlandés Roggeveen las bautiza Belgia Austral, nombre que no prende. En 1722 el cartógrafo Delisle fija Îles Malouines; el español lo convierte en Malvinas y así quedan en las cartas."},
+ {d:"1749",s:"uk",r:"El plan de Anson",fl:["uk"],f:"malvinas",k:[],ic:["council"],
+  t:"De vuelta de su circunnavegación, el almirante Anson informa que las islas serían la base ideal para operar en el Pacífico. En 1749 el Almirantazgo prepara una expedición para reconocerlas y establecerse. España protesta con dureza y Londres desiste, aunque sin admitir el reclamo español.",
+  ar:"Buenos Aires lee el episodio al revés que Londres: ante la protesta española Gran Bretaña abandonó el proyecto, es decir, se abstuvo de ocupar un territorio cuyo dominio español no estaba en condiciones de discutir en los hechos."},
+ {d:"1764",s:"ne",n:"Francia",r:"Port Louis",fl:["fr"],f:"malvinas",k:[["saintmalo","malvinas","ne"]],ic:["settle"],
+  t:"Tras perder Canadá en la Guerra de los Siete Años, Bougainville propone a la corona un establecimiento que asegure a Francia el paso al Pacífico. Zarpa de Saint-Malo el 15 de septiembre de 1763 con la fragata L\u0027Aigle y la corbeta Le Sphinx y unos 150 colonos, entre ellos familias acadianas expulsadas de Canadá. Toca tierra en febrero de 1764 y el 5 de abril toma posesión formal: Port Louis es el primer asentamiento estable de las islas."},
+ {d:"1765",ar:"Buenos Aires lo considera un establecimiento clandestino: Byron actuó en secreto sobre un archipiélago que Francia ya ocupaba y que España reclamaba por los tratados vigentes, y España protestó apenas lo supo.",s:"uk",r:"Port Egmont",fl:["uk"],f:"malvinas",k:[["plymouth","malvinas","uk"]],ic:["settle"],
+  t:"John Byron toma posesión en nombre de Jorge III en la isla Trinidad (Saunders) y al año siguiente McBride funda allí Port Egmont. Durante meses ninguna de las dos potencias supo de la presencia de la otra."},
+ {d:"1767",s:"ne",n:"Francia y España",r:"España compra la colonia",fl:["fr","es"],fo:[-40,-30],f:"malvinas",k:[],ic:["council"],
+  t:"Francia entrega Port Louis a España, que compensa a Bougainville, rebautiza el lugar Puerto Soledad y lo administra desde Buenos Aires."},
+ {d:"1770",uk:"Para Londres fue un ataque por sorpresa contra un establecimiento británico legítimo, reparado al año siguiente con la devolución del puerto.",s:"ne",n:"España",r:"Expulsión de Port Egmont",fl:["es"],f:"malvinas",k:[["buenosaires","malvinas","ne"]],ic:["fire"],
+  t:"Una escuadra española de cinco naves y unos 1.400 hombres obliga a la guarnición británica a dejar Port Egmont. Tras unos disparos simbólicos los británicos capitulan; no hubo muertos. El incidente lleva a España y Gran Bretaña al borde de la guerra."},
+ {d:"1771",ar:"Buenos Aires sostiene que la devolución vino acompañada de una promesa reservada de que Gran Bretaña se retiraría después, cumplida en 1774.",s:"ne",n:"España y Reino Unido",r:"Port Egmont restituido",fl:["es","uk"],fo:[-40,-30],f:"malvinas",k:[],ic:["council"],
+  t:"Por un canje de declaraciones España devuelve Port Egmont a Gran Bretaña, dejando expresamente a salvo la cuestión de fondo de la soberanía.",
+  uk:"Londres sostiene que el canje de declaraciones cerró el incidente sin ceder nada: la reserva de derechos fue española, y la británica quedó igualmente en pie."},
+ {d:"1774",ar:"Para Buenos Aires equivalió a renunciar al reclamo: siguieron 55 años sin presencia ni actos de gobierno británicos, frente a casi cuatro décadas de presencia española continua.",s:"uk",r:"Retiro británico",fl:["uk"],f:"malvinas",k:[["malvinas","plymouth","uk"]],ic:["settle"],
+  t:"Gran Bretaña abandona Port Egmont dentro de un recorte general de guarniciones de ultramar y deja una placa de plomo declarando las islas propiedad británica.",
+  uk:"Para Londres fue un repliegue dentro de un recorte general de guarniciones, que no invalidó sus derechos: la placa de plomo lo dejaba asentado por escrito."},
+ {d:"1776",s:"ne",n:"España",r:"Virreinato del Río de la Plata",fl:["es"],f:"malvinas",k:[],ic:["council"],
+  t:"España crea el Virreinato del Río de la Plata con capital en Buenos Aires. Puerto Soledad queda bajo su jurisdicción: entre 1767 y 1811 se suceden allí una treintena de gobernadores nombrados desde Buenos Aires, con guarnición, capilla y presidio.",
+  uk:"Londres responde que una reorganización administrativa interna del imperio español no podía afectar derechos británicos ya declarados, y que la placa dejada en Port Egmont en 1774 mantenía vivo el reclamo."},
+ {d:"1811",s:"ne",n:"España",r:"España se retira",fl:["es"],f:"malvinas",k:[],ic:["settle"],
+  t:"España retira la guarnición de Puerto Soledad por la guerra en la península. Las islas quedan otra vez sin población estable, frecuentadas por loberos y balleneros británicos y estadounidenses."},
+ {d:"1820",ar:"La respuesta argentina es que el acto fue público: Jewett lo comunicó a los barcos fondeados, se publicó en la prensa de Estados Unidos e Inglaterra al año siguiente y Gran Bretaña no protestó entonces.",s:"ar",r:"Jewett iza la bandera",fl:["ar"],f:"malvinas",k:[["buenosaires","malvinas","ar"]],ic:["council"],
+  t:"El coronel David Jewett, al mando de la Heroína, entra a Puerto Soledad a reparar la nave y el 6 de noviembre iza la bandera de las Provincias Unidas del Río de la Plata tomando posesión de las islas.",
+  uk:"Londres no reconoce ese acto: Jewett llegó como corsario en apuros, con la tripulación diezmada y entre medio centenar de balleneros británicos y estadounidenses fondeados allí; no dejó ocupación efectiva y Buenos Aires no difundió el acto hasta tiempo después."},
+ {d:"1828",ar:"Buenos Aires responde que Vernet gestionó como particular y que tanto la concesión de tierras como el mando se los dio el gobierno de Buenos Aires, el único que ejercía autoridad allí desde 1811.",s:"ar",r:"Colonia de Vernet",fl:["ar"],f:"malvinas",k:[],ic:["settle"],
+  t:"Luis Vernet consolida una colonia en Puerto Luis, sobre las ruinas de Puerto Soledad. En junio de 1829 Buenos Aires lo nombra comandante político y militar de las islas y le concede el monopolio de la caza de lobos marinos.",
+  uk:"El consulado británico protestó formalmente el nombramiento de 1829. Londres agrega que Vernet había pedido antes autorización y protección británicas para instalarse, lo que a su juicio suponía reconocer el derecho británico."},
+ {d:"dic 1831",ar:"Argentina sostiene que Vernet actuaba con autoridad legítima al hacer cumplir la veda de caza, considera la incursión del Lexington un acto de agresión y reclamó reparaciones a Estados Unidos durante décadas.",s:"ne",n:"Estados Unidos",r:"Incursión del Lexington",fl:["us"],f:"malvinas",k:[["montevideo","malvinas","ne"]],ic:["fire"],
+  t:"Vernet había capturado tres balleneros estadounidenses por cazar sin permiso. En represalia la corbeta USS Lexington desmantela el asentamiento de Puerto Luis, detiene a varios colonos acusados de piratería y declara las islas libres de todo gobierno."},
+ {d:"nov 1832",s:"ar",r:"Motín de Mestivier",fl:["ar"],f:"malvinas",k:[],ic:["fire"],
+  t:"Buenos Aires envía al mayor Esteban Mestivier a restablecer la guarnición y montar una colonia penal. Sus soldados se amotinan y lo asesinan. El orden se restablece con ayuda de un ballenero francés y del bergantín Sarandí, al mando de José María Pinedo, poco antes de la llegada británica."},
+ {d:"3 ene 1833",ar:"La posición argentina es que sí hubo desalojo por la fuerza de la autoridad y la guarnición legítimas, sin combate por orden de Pinedo, y que Buenos Aires protestó el acto desde 1833 de forma ininterrumpida.",uk:"Londres no lo describe como una ocupación sino como la reafirmación de una soberanía anterior. Onslow, del Clio, pidió al Sarandí de Pinedo que arriara la bandera y se retirara; se fue la guarnición, llegada semanas antes, pero los pobladores civiles de Vernet se quedaron y la colonia siguió funcionando. El nombre Falkland Islands es muy anterior a 1833.",s:"uk",r:"Ocupación británica",t:"El Reino Unido ocupa las Islas Malvinas. Desde entonces figuran como Falkland Islands.",f:"malvinas",k:[]},
+ {d:"1845",ar:"Para Buenos Aires la continuidad administrativa no crea título: hubo protesta formal desde 1833 y la ONU trata el caso, desde 1965, como una disputa de soberanía pendiente.",s:"uk",r:"Se funda Stanley",fl:["uk"],f:"malvinas",k:[],ic:["settle"],
+  t:"La capital se traslada de Port Louis a Stanley, el actual Puerto Argentino, mejor abrigado para los barcos. Desde 1834 la administración británica es continua, salvo las diez semanas de 1982."},
+ {d:"16 dic 1965",ar:"Buenos Aires responde que la ONU incluye a las Malvinas entre los territorios coloniales con disputa de soberanía, donde no se aplica la libre determinación porque la población fue implantada por la potencia ocupante.",uk:"El Reino Unido acepta que la 2065 invitó a negociar, pero sostiene que no obliga a transferir la soberanía y que cualquier arreglo depende de la autodeterminación de los isleños.",s:"ne",n:"Argentina y Reino Unido",fl:["ar","uk"],fo:[-40,-34],r:"Resolución 2065",t:"La Asamblea General de la ONU aprueba la Resolución 2065: los gobiernos argentino y británico deben resolver por un arreglo pacífico la situación de las Malvinas.",f:"malvinas",k:[]},
+ {d:"19 mar 1982",uk:"Para Londres no fue un arribo regular. El buque desembarcó en Leith sin registrarse en Grytviken, se izó la bandera argentina y entre los 41 operarios de Davidoff había militares infiltrados (Operación Alfa). Es el hecho que desata la crisis.",s:"ar",r:"Bahía Buen Suceso",t:"El buque ARA Bahía Buen Suceso arriba a las Georgias del Sur.",f:"grytviken",k:[["belgrano","grytviken","ar"]]},
+ {d:"21 mar",s:"uk",r:"Endurance",t:"El Endurance zarpa de Puerto Argentino hacia las Georgias del Sur con 22 infantes de marina para reforzar la guarnición de Grytviken.",f:"grytviken",k:[["malvinas","grytviken","uk"]]},
+ {d:"24 mar",uk:"Las fuentes británicas describen ese viaje como el relevo anual de la Naval Party 8901, no como un refuerzo: la nueva dotación llegó a Stanley el 29 de marzo.",s:"uk",r:"John Biscoe",t:"El John Biscoe, amarrado en Montevideo, zarpa rumbo a Malvinas con refuerzos de infantería de marina británica.",f:"malvinas",k:[["montevideo","malvinas","uk"]]},
+ {d:"25 mar",s:"uk",r:"Bransfield",uk:"El Bransfield era un buque civil del British Antarctic Survey en tareas de rutina, no un movimiento militar.",t:"El Bransfield se aleja de Punta Arenas con destino a Puerto Argentino.",f:"malvinas",k:[["arenas","malvinas","uk"]]},
+ {d:"25 mar",s:"uk",r:"Destructor Exeter",uk:"El Exeter continuó como guardia de las Antillas y recién partió al Atlántico Sur el 7 de mayo, después del hundimiento del Sheffield. No hay registro británico de una salida el 25 de marzo.",t:"El destructor Exeter, en las Belices, se dirige hacia el Atlántico.",f:"atlsur",k:[["belice","atlsur","uk"]]},
+ {d:"25 mar",s:"ar",r:"Bahía Paraíso",uk:"Londres lo registra como el desembarco encubierto de unos 40 infantes de marina argentinos en territorio británico. Ese mismo día llegó el Endurance y desembarcó a sus royal marines.",t:"El Bahía Paraíso desembarca infantería de marina argentina en Puerto Leith, isla San Pedro.",f:"leith",k:[["belgrano","leith","ar"]]},
+ {d:"26 mar",uk:"No hay registro británico de ese movimiento. El 26 de marzo zarpó de Gibraltar el submarino Superb, pero rumbo al norte; la prensa supuso erróneamente que iba al sur.",s:"uk",r:"Auxiliar de la RN",t:"Un buque auxiliar de la Royal Navy sigue idéntico rumbo que el Exeter.",f:"atlsur",k:[["belice","atlsur","uk"]]},
+ {d:"28 mar",uk:"Según el registro británico el Fort Austin zarpó de Gibraltar el 29 de marzo, con la orden de reabastecer al Endurance. El SAS y el SBS embarcaron en Ascensión el 9 de abril, no en Gibraltar.",s:"uk",r:"SAS y SBS",t:"Personal de las unidades SAS y SBS parte desde Gibraltar en el buque Fort Austin hacia el Atlántico Sur. Ese mismo día zarpa de Puerto Belgrano una fuerza naval con destino a las Malvinas.",f:"gibraltar",k:[["gibraltar","atlsur","uk"],["belgrano","malvinas","ar"]]},
+ {d:"29 mar",s:"uk",uk:"El Spartan recibió la orden el 29 de marzo pero zarpó de Gibraltar el 1 de abril, junto con el Splendid desde Escocia.",r:"Submarino Spartan",t:"Desde Gibraltar zarpa hacia el Atlántico Sur el submarino nuclear Spartan.",f:"gibraltar",k:[["gibraltar","atlsur","uk"]]},
+ {d:"29 mar",s:"ar",r:"25 de Mayo",t:"El portaaviones 25 de Mayo zarpa de Puerto Belgrano.",f:"belgrano",k:[["belgrano","malvinas","ar"]]},
+ {d:"30 mar",s:"ar",r:"Corbeta Guerrico",t:"Zarpa la corbeta ARA Guerrico con destino a Grytviken.",f:"grytviken",k:[["belgrano","grytviken","ar"]]},
+ {d:"31 mar",s:"uk",r:"Fondeo en Grytviken",t:"El Endurance fondea en Grytviken a las 18:40.",f:"grytviken",k:[["malvinas","grytviken","uk"]]},
+ {d:"2 abr",uk:"Para el Reino Unido fue una invasión, no una recuperación. Es cierto que no hubo muertos británicos: la guarnición se rindió por orden del gobernador Rex Hunt. Pero sí hubo combate en Government House, con un muerto argentino, el capitán de corbeta Giachino.",s:"ar",r:"Toma de las Malvinas",t:"Argentina toma las Islas Malvinas tras 150 años de ocupación británica. En las acciones militares no hubo derramamiento de sangre de ciudadanos del Reino Unido.",f:"malvinas",k:[["belgrano","malvinas","ar"]]},
+ {d:"3 abr",uk:"Dos correcciones: la Resolución 502 fue del Consejo de Seguridad, no de la Asamblea General, y exigió el retiro de las fuerzas argentinas. Y en Grytviken hubo combate: los 22 royal marines derribaron un helicóptero y averiaron al Guerrico antes de rendirse.",s:"ar",r:"Georgias del Sur",t:"Argentina toma las Georgias del Sur con el Bahía Paraíso y la corbeta Guerrico. La ONU aprueba la Resolución 502 y la Cámara de los Comunes autoriza el envío de la Task Force.",f:"grytviken",k:[["leith","grytviken","ar"]]},
+ {d:"4 abr",s:"uk",r:"Submarino Conqueror",t:"El submarino nuclear Conqueror se dirige hacia el Atlántico Sur.",f:"atlsur",k:[["londres","atlsur","uk"]]},
+ {d:"5 abr",s:"uk",r:"Zarpa la Task Force",t:"Parten las primeras unidades navales de la Task Force. Los portaaviones Hermes e Invincible zarpan de Portsmouth hacia Ascensión y el Atlántico Sur, con Gibraltar como punto intermedio.",f:"portsmouth",k:[["portsmouth","gibraltar","uk"],["gibraltar","ascension","uk"]]}
+];
+var C={ar:"var(--ar)",uk:"var(--uk)",en:"var(--uk)",ne:"var(--neutral)"};
+var NAME={ar:"Argentina",uk:"Reino Unido",en:"Inglaterra",ne:"Contexto"};
+var NS="http://www.w3.org/2000/svg";
+function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e}
+
+var st=document.getElementById("statics"),MP=document.getElementById("mp"),LAND=document.getElementById("land");
+function drawStatics(){
+  st.textContent="";
+  LAND.setAttribute("stroke-width",0.75*K);
+  S.forEach(function(p){
+    var c=P[p[0]];
+    st.appendChild(el("circle",{cx:c[0],cy:c[1],r:2.5*K,fill:"var(--ink-soft)"}));
+    var t=el("text",{x:c[0]+p[2]*K,y:c[1]+p[3]*K,"text-anchor":p[4],fill:"var(--ink-soft)",
+      "font-size":13*K,"font-family":"inherit"});
+    t.textContent=p[1];st.appendChild(t);
+  });
+}
+var WAY={
+ "plymouth>malvinas":[[348,48],[332,96],[300,160],[260,240],[244,320],[180,400]],
+ "malvinas>plymouth":[[180,400],[244,320],[260,240],[300,160],[332,96],[348,48]],
+ "saintmalo>malvinas":[[352,52],[336,72],[332,96],[300,160],[260,240],[244,320],[180,400]],
+ "rotterdam>malvinas":[[380,40],[348,50],[332,96],[300,160],[260,240],[244,320],[180,400]],
+ "sevilla>malvinas":[[344,94],[308,148],[264,246],[244,320],[180,400]],
+ "belice>atlsur":[[60,160],[110,166],[160,182],[220,222],[280,285]],
+ "gibraltar>atlsur":[[348,96],[324,120],[300,160],[292,210],[288,262],[290,304]],
+ "gibraltar>ascension":[[348,96],[324,120],[300,160],[292,206],[306,240]],
+ "portsmouth>gibraltar":[[368,40],[352,52],[340,72],[342,92]],
+ "arenas>malvinas":[[104,451],[116,449],[132,448]]
+};
+function smooth(pts){
+  var d="M"+pts[0][0]+","+pts[0][1];
+  for(var n=0;n<pts.length-1;n++){
+    var p0=pts[n-1]||pts[n],p1=pts[n],p2=pts[n+1],p3=pts[n+2]||pts[n+1];
+    d+=" C"+(p1[0]+(p2[0]-p0[0])/6).toFixed(1)+","+(p1[1]+(p2[1]-p0[1])/6).toFixed(1)
+      +" "+(p2[0]-(p3[0]-p1[0])/6).toFixed(1)+","+(p2[1]-(p3[1]-p1[1])/6).toFixed(1)
+      +" "+p2[0]+","+p2[1];
+  }
+  return d;
+}
+function routeD(k){
+  var w=WAY[k[0]+">"+k[1]];
+  return w?smooth([P[k[0]]].concat(w,[P[k[1]]])):arc(P[k[0]],P[k[1]]);
+}
+var PZ={
+ sa:"M72,208 L92,192 L140,196 L172,220 L180,240 L204,252 L228,260 L240,272 L224,296 L220,324 L188,340 L168,376 L152,392 L132,400 L120,420 L108,440 L100,452 L80,448 L88,420 L88,392 L96,360 L100,332 L96,312 L76,296 L64,272 L56,260 L64,248 L68,232 Z",
+ br:"M180,240 L204,252 L228,260 L240,272 L224,296 L220,324 L188,340 L168,346 L156,320 L150,286 L156,256 L168,244 Z",
+ rp:"M110,318 L150,306 L175,330 L188,342 L168,376 L152,392 L132,400 L120,420 L108,440 L100,452 L100,410 L104,382 L104,350 Z",
+ ag:"M112,336 L152,336 L162,362 L160,380 L152,392 L132,400 L120,420 L108,440 L100,452 L100,410 L104,382 L106,358 Z"
+};
+var CES="#B07A2A",CPT="#4E8A2A";
+var ERAS=[
+ {to:1499,r:[{p:"sa",c:"var(--neutral)",o:0.1,t:["Territorios","originarios"],x:140,y:252}]},
+ {to:1775,r:[{p:"sa",c:CES,t:["América","española"],x:140,y:246},
+             {p:"br",c:CPT,t:["Brasil","portugués"],x:190,y:290}]},
+ {to:1809,r:[{p:"sa",c:CES,t:["América","española"],x:120,y:240},
+             {p:"br",c:CPT,t:["Brasil","portugués"],x:190,y:290},
+             {p:"rp",c:"var(--ar)",o:0.2,t:["Virreinato del","Río de la Plata"],x:140,y:356}]},
+ {to:1830,r:[{p:"sa",c:"var(--neutral)",o:0.08,t:["Repúblicas","en formación"],x:120,y:240},
+             {p:"br",c:CPT,t:["Brasil"],x:190,y:296},
+             {p:"rp",c:"var(--ar)",o:0.2,t:["Provincias Unidas","del Río de la Plata"],x:142,y:356}]},
+ {to:1861,r:[{p:"sa",c:"var(--neutral)",o:0.08,t:[""],x:0,y:0},
+             {p:"br",c:CPT,t:["Brasil"],x:190,y:296},
+             {p:"ag",c:"var(--ar)",o:0.2,t:["Confederación","Argentina"],x:132,y:370}]},
+ {to:9999,r:[{p:"sa",c:"var(--neutral)",o:0.08,t:[""],x:0,y:0},
+             {p:"br",c:CPT,t:["Brasil"],x:190,y:296},
+             {p:"ag",c:"var(--ar)",o:0.2,t:["Argentina"],x:132,y:372}]}
+];
+var POLG=document.getElementById("pol");
+function politics(){
+  POLG.textContent="";
+  var yr=E[i].y,era=ERAS[ERAS.length-1];
+  for(var n=0;n<ERAS.length;n++){if(yr<=ERAS[n].to){era=ERAS[n];break}}
+  era.r.forEach(function(g){
+    POLG.appendChild(el("path",{d:PZ[g.p],fill:g.c,"fill-opacity":g.o||0.16,
+      stroke:g.c,"stroke-opacity":0.45,"stroke-width":0.8*K,"stroke-dasharray":(3*K)+" "+(3*K)}));
+    if(!g.t[0])return;
+    var t=el("text",{x:g.x,y:g.y,"text-anchor":"middle",fill:g.c,"fill-opacity":0.95,
+      "font-size":12*K,"font-family":"inherit"});
+    for(var q=0;q<g.t.length;q++){
+      var sp=el("tspan",{x:g.x,dy:q?13*K:0});sp.textContent=g.t[q];t.appendChild(sp);
+    }
+    POLG.appendChild(t);
+  });
+}
+var POP=document.getElementById("ukpop");
+var ND=[{b:"uknote",k:"uk",t:"El registro británico difiere"},
+        {b:"arnote",k:"ar",t:"La lectura argentina difiere"}];
+var VB=[0,0,440,492],K=1,anim=null,AR=440/492;
+function fit(pts){
+  var x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  for(var n=0;n<pts.length;n++){var q=pts[n];
+    if(q[0]<x0)x0=q[0];if(q[0]>x1)x1=q[0];if(q[1]<y0)y0=q[1];if(q[1]>y1)y1=q[1];}
+  var w=x1-x0,h=y1-y0,pad=Math.max(48,0.26*Math.max(w,h));
+  x0-=pad;y0-=pad;w+=2*pad;h+=2*pad;
+  if(w<232){x0-=(232-w)/2;w=232}
+  if(w/h<AR){var nw=h*AR;x0-=(nw-w)/2;w=nw}else{var nh=w/AR;y0-=(nh-h)/2;h=nh}
+  if(w>=440)return [0,0,440,492];
+  if(x0<0)x0=0;if(x0+w>440)x0=440-w;
+  if(y0<0)y0=0;if(y0+h>492)y0=492-h;
+  return [x0,y0,w,h];
+}
+function similar(a,b){
+  return Math.abs(a[2]-b[2])/b[2]<0.16
+    && Math.abs((a[0]+a[2]/2)-(b[0]+b[2]/2))<0.14*b[2]
+    && Math.abs((a[1]+a[3]/2)-(b[1]+b[3]/2))<0.14*b[3];
+}
+function setView(box){
+  var from=VB.slice(),t0=0,dur=560;
+  VB=box;K=box[2]/440;
+  if(anim)cancelAnimationFrame(anim);
+  if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    MP.setAttribute("viewBox",box.join(" "));return;
+  }
+  function step(ts){
+    if(!t0)t0=ts;
+    var u=Math.min(1,(ts-t0)/dur),e=u<0.5?2*u*u:1-Math.pow(-2*u+2,2)/2,v=[];
+    for(var n=0;n<4;n++)v.push(from[n]+(box[n]-from[n])*e);
+    MP.setAttribute("viewBox",v.join(" "));
+    if(u<1)anim=requestAnimationFrame(step);
+  }
+  anim=requestAnimationFrame(step);
+}
+function arc(a,b){
+  var mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,dx=b[0]-a[0],dy=b[1]-a[1];
+  return "M"+a[0]+","+a[1]+" Q"+(mx-dy*0.14)+","+(my+dx*0.14)+" "+b[0]+","+b[1];
+}
+
+var FO={malvinas:[-40,-8],grytviken:[48,-8],leith:[53,-10],gibraltar:[12,-10],
+        portsmouth:[12,-10],atlsur:[12,-8],belgrano:[12,-8]};
+var FG={
+ ar:{w:24,h:15,s:[["rect",{width:24,height:15,fill:"#75AADB"}],["rect",{y:5,width:24,height:5,fill:"#FFFFFF"}],["circle",{cx:12,cy:7.5,r:1.9,fill:"#F6B40E"}]]},
+ uk:{w:24,h:12,s:[["g",{"clip-path":"url(#uj)"},[
+   ["rect",{width:24,height:12,fill:"#012169"}],
+   ["path",{d:"M0,0 L24,12 M24,0 L0,12",stroke:"#FFFFFF","stroke-width":3.4,fill:"none"}],
+   ["path",{d:"M0,0 L24,12 M24,0 L0,12",stroke:"#C8102E","stroke-width":1.6,fill:"none"}],
+   ["rect",{x:9,width:6,height:12,fill:"#FFFFFF"}],["rect",{y:3,width:24,height:6,fill:"#FFFFFF"}],
+   ["rect",{x:10.2,width:3.6,height:12,fill:"#C8102E"}],["rect",{y:4.2,width:24,height:3.6,fill:"#C8102E"}]]]]},
+ en:{w:24,h:14,s:[["rect",{width:24,height:14,fill:"#FFFFFF"}],["rect",{x:9.6,width:4.8,height:14,fill:"#CE1124"}],["rect",{y:4.6,width:24,height:4.8,fill:"#CE1124"}]]},
+ es:{w:24,h:16,s:[["rect",{width:24,height:16,fill:"#AA151B"}],["rect",{y:4,width:24,height:8,fill:"#F1BF00"}]]},
+ fr:{w:24,h:16,s:[["rect",{width:8,height:16,fill:"#0055A4"}],["rect",{x:8,width:8,height:16,fill:"#FFFFFF"}],["rect",{x:16,width:8,height:16,fill:"#EF4135"}]]},
+ nl:{w:24,h:16,s:[["rect",{width:24,height:16,fill:"#AE1C28"}],["rect",{y:5.3,width:24,height:5.4,fill:"#FFFFFF"}],["rect",{y:10.7,width:24,height:5.3,fill:"#21468B"}]]},
+ us:{w:24,h:13,s:[["rect",{width:24,height:13,fill:"#FFFFFF"}],
+   ["rect",{width:24,height:1,fill:"#B22234"}],["rect",{y:2,width:24,height:1,fill:"#B22234"}],
+   ["rect",{y:4,width:24,height:1,fill:"#B22234"}],["rect",{y:6,width:24,height:1,fill:"#B22234"}],
+   ["rect",{y:8,width:24,height:1,fill:"#B22234"}],["rect",{y:10,width:24,height:1,fill:"#B22234"}],
+   ["rect",{y:12,width:24,height:1,fill:"#B22234"}],["rect",{width:10,height:7,fill:"#3C3B6E"}],
+   ["circle",{cx:2.6,cy:2,r:0.6,fill:"#FFFFFF"}],["circle",{cx:5,cy:2,r:0.6,fill:"#FFFFFF"}],
+   ["circle",{cx:7.4,cy:2,r:0.6,fill:"#FFFFFF"}],["circle",{cx:3.8,cy:4.6,r:0.6,fill:"#FFFFFF"}],
+   ["circle",{cx:6.2,cy:4.6,r:0.6,fill:"#FFFFFF"}]]}
+};
+function ser(l){var o="";for(var i=0;i<l.length;i++){var t=l[i][0],a=l[i][1],c=l[i][2],x="<"+t;
+  for(var k in a)x+=" "+k+'="'+a[k]+'"';o+=c?x+">"+ser(c)+"</"+t+">":x+"/>";}return o}
+function build(l,par){for(var i=0;i<l.length;i++){var e=el(l[i][0],l[i][1]);
+  if(l[i][2])build(l[i][2],e);par.appendChild(e);}}
+function flag(k){var f=FG[k];if(!f)return null;if(!f.m)f.m=ser(f.s);return f}
+function flagNode(k){var f=flag(k),g=el("g",{});build(f.s,g);
+  g.appendChild(el("rect",{width:f.w,height:f.h,fill:"none",stroke:"var(--ink)","stroke-width":0.8}));return g}
+function mid(a,b){
+  var mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,dx=b[0]-a[0],dy=b[1]-a[1];
+  var cx=mx-dy*0.14,cy=my+dx*0.14;
+  return [0.25*a[0]+0.5*cx+0.25*b[0],0.25*a[1]+0.5*cy+0.25*b[1]];
+}
+function iconNode(kind,col){
+  var g=el("g",{});
+  g.appendChild(el("circle",{cx:8,cy:8,r:9.6,fill:"var(--paper)",stroke:col,"stroke-width":0.8,"stroke-opacity":0.5}));
+  if(kind==="fire"){
+    g.appendChild(el("path",{d:"M8,1.8 C9.7,4.5 11.9,5.7 11.9,8.9 A3.9,3.9 0 0 1 4.1,8.9 C4.1,7 5.4,6.3 6.3,4.6 C6.7,6.1 7.3,6.3 7.5,5.1 C7.7,4.1 7.7,2.9 8,1.8 Z",fill:col}));
+    g.appendChild(el("path",{d:"M8,6.6 C8.9,8.1 9.6,8.6 9.6,10 A1.6,1.6 0 0 1 6.4,10 C6.4,8.9 7.4,8.2 8,6.6 Z",fill:"var(--paper)","fill-opacity":0.85}));
+  }else if(kind==="council"){
+    var r=el("g",{transform:"rotate(-35 8 7)"});
+    r.appendChild(el("rect",{x:3.2,y:3.6,width:9.6,height:3.4,rx:1,fill:col}));
+    r.appendChild(el("rect",{x:7.1,y:7,width:1.8,height:4.6,rx:0.6,fill:col}));
+    g.appendChild(r);
+    g.appendChild(el("rect",{x:3,y:12.2,width:10,height:1.8,rx:0.9,fill:col}));
+  }else if(kind==="settle"){
+    g.appendChild(el("path",{d:"M2.9,8.2 L8,3.3 L13.1,8.2 Z",fill:col}));
+    g.appendChild(el("rect",{x:4.7,y:8.2,width:6.6,height:5.2,fill:col}));
+    g.appendChild(el("rect",{x:7.1,y:10.2,width:1.8,height:3.2,fill:"var(--paper)"}));
+  }else if(kind==="isle"){
+    g.appendChild(el("path",{d:"M2.4,10.8 C4.2,7.6 5.7,4.6 8,4.6 C10.3,4.6 11.8,7.6 13.6,10.8 Z",fill:col}));
+    g.appendChild(el("path",{d:"M2.6,12.6 q1.35,-1.1 2.7,0 t2.7,0 t2.7,0 t2.7,0",stroke:col,"stroke-width":0.9,fill:"none"}));
+  }else{
+    g.appendChild(el("path",{d:"M2.6,10.4 L13.4,10.4 L11.4,13.7 L4.6,13.7 Z",fill:col}));
+    g.appendChild(el("path",{d:"M8,10.4 L8,2.4",stroke:col,"stroke-width":1.1}));
+    g.appendChild(el("path",{d:"M8.9,3 L12.9,6.2 L8.9,8 Z",fill:col}));
+  }
+  return g;
+}
+var TR=document.getElementById("tracks"),DT=document.getElementById("dots"),
+    SL=document.getElementById("sl"),LI=document.getElementById("list");
+var i=0,timer=null;
+
+E.forEach(function(e,n){
+  var li=document.createElement("li"),b=document.createElement("button");
+  b.innerHTML='<span class="d"></span><span class="s"></span>'+(e.uk?'<span class="w" aria-hidden="true">!</span>':'')+(e.ar?'<span class="wa" aria-hidden="true">!</span>':'');
+  b.querySelector(".d").textContent=e.d;
+  b.querySelector(".s").textContent=e.r;
+  b.onclick=function(){stop();go(n)};
+  li.appendChild(b);LI.appendChild(li);
+});
+(function(){var y=0;E.forEach(function(e){
+  if(/Antes/.test(e.d))y=1400;else{var m=e.d.match(/\d{4}/);if(m)y=+m[0];}
+  e.y=y;});})();
+var LB=LI.querySelectorAll("button");
+SL.max=E.length-1;
+
+var CTRL=document.querySelector(".controls"),STAGE=document.querySelector(".stage"),
+    SIDE=document.querySelector(".side-col"),PANEL=document.querySelector(".panel"),
+    WIDE=window.matchMedia("(min-width:860px)");
+function place(){
+  if(WIDE.matches){if(CTRL.parentNode!==SIDE)SIDE.insertBefore(CTRL,SIDE.firstChild)}
+  else if(CTRL.parentNode!==STAGE)STAGE.insertBefore(CTRL,PANEL);
+}
+place();
+if(WIDE.addEventListener)WIDE.addEventListener("change",place);
+else if(WIDE.addListener)WIDE.addListener(place);
+var NAVL=document.querySelector(".dates");
+function reveal(b){
+  if(!NAVL||NAVL.scrollHeight<=NAVL.clientHeight+2)return;
+  var nb=NAVL.getBoundingClientRect(),bb=b.getBoundingClientRect();
+  if(bb.top<nb.top)NAVL.scrollTop+=bb.top-nb.top-8;
+  else if(bb.bottom>nb.bottom)NAVL.scrollTop+=bb.bottom-nb.bottom+8;
+}
+function putIcon(kind,x,y,col){
+  var nd=iconNode(kind,col);
+  nd.setAttribute("transform","translate("+(x-8*K)+","+(y-8*K)+") scale("+K+")");
+  DT.appendChild(nd);
+}
+function draw(){
+  var pts=[P[E[i].f]];
+  E[i].k.forEach(function(k){pts.push(P[k[0]]);pts.push(P[k[1]]);
+    var w=WAY[k[0]+">"+k[1]];if(w)pts=pts.concat(w);});
+  var box=fit(pts);
+  if(!similar(box,VB))setView(box);
+  politics();
+  drawStatics();
+  TR.textContent="";DT.textContent="";
+  var legs=[];
+  for(var n=0;n<=i;n++){
+    var cur=n===i;
+    E[n].k.forEach(function(k){
+      var pe=el("path",{d:routeD(k),fill:"none",stroke:C[k[2]],
+        "stroke-width":(cur?2.2:1)*K,"stroke-opacity":cur?1:0.3,
+        "stroke-dasharray":cur?"none":(4*K)+" "+(5*K),
+        "marker-end":"url(#a"+(k[2]==="ar"?"AR":(k[2]==="ne"?"NE":"UK"))+(cur?"":"d")+")"});
+      TR.appendChild(pe);
+      if(cur)legs.push([pe,k]);
+      var o=P[k[0]];
+      DT.appendChild(el("circle",{cx:o[0],cy:o[1],r:(cur?3.2:2.2)*K,fill:C[k[2]],"fill-opacity":cur?1:0.35}));
+    });
+    if(cur){
+      var f=P[E[n].f];
+      var rg=el("g",{transform:"translate("+f[0]+","+f[1]+") scale("+K+")"});
+      rg.appendChild(el("circle",{"class":"pulse",cx:0,cy:0,r:8,fill:"none",stroke:C[E[n].s],"stroke-width":1.5}));
+      rg.appendChild(el("circle",{cx:0,cy:0,r:11,fill:"none",stroke:C[E[n].s],"stroke-width":1.2,"stroke-opacity":0.55}));
+      DT.appendChild(rg);
+      var fl=E[n].fl||[E[n].s],of=E[n].fo||FO[E[n].f]||[12,-8],ox=0;
+      var tot=0;for(var q=0;q<fl.length;q++)tot+=flag(fl[q]).w+4;
+      var gx=f[0]+K*(of[0]<0?of[0]-(tot-28):of[0]),gy=f[1]+K*of[1];
+      if(fl.length)DT.appendChild(el("line",{x1:f[0],y1:f[1],
+        x2:of[0]<0?gx+K*(tot-4):gx,y2:gy+7*K,
+        stroke:C[E[n].s],"stroke-width":0.8*K,"stroke-dasharray":(2*K)+" "+(2*K)}));
+      for(var q2=0;q2<fl.length;q2++){
+        var fd=flag(fl[q2]),nd=flagNode(fl[q2]);
+        nd.setAttribute("transform","translate("+(gx+ox)+","+gy+") scale("+K+")");
+        DT.appendChild(nd);ox+=K*(fd.w+4);
+      }
+      var ic=E[n].ic||["ship"];
+      if(ic[0]==="ship"&&legs.length){
+        legs.forEach(function(lg){
+          var m;
+          try{var L=lg[0].getTotalLength();var q=lg[0].getPointAtLength(L*0.5);m=[q.x,q.y]}
+          catch(err){m=mid(P[lg[1][0]],P[lg[1][1]])}
+          putIcon("ship",m[0],m[1],C[lg[1][2]]);
+        });
+      }else{
+        for(var q4=0;q4<ic.length;q4++)putIcon(ic[q4],f[0]+q4*22*K,f[1]+18*K,C[E[n].s]);
+      }
+    }
+  }
+  var ev=E[i];
+  document.getElementById("date").textContent=ev.d;
+  var sd=document.getElementById("side");
+  sd.textContent=ev.n||NAME[ev.s];sd.style.color=C[ev.s];
+  var pfl=ev.fl||[ev.s],pb=document.getElementById("pflag"),ph="";
+  for(var q3=0;q3<pfl.length;q3++){var pf=flag(pfl[q3]);
+    ph+='<svg width="'+(pf.w*0.9)+'" height="'+(pf.h*0.9)+'" viewBox="0 0 '+pf.w+' '+pf.h+'" style="margin-right:5px">'+pf.m+'</svg>';}
+  pb.innerHTML=ph;
+  for(var nd2=0;nd2<ND.length;nd2++){
+    var def=ND[nd2],btn=document.getElementById(def.b);
+    btn.hidden=!ev[def.k];
+    if(!btn.hidden&&!btn.firstChild.innerHTML){var ff=flag(def.k);
+      btn.firstChild.innerHTML='<svg width="18" height="'+(18*ff.h/ff.w).toFixed(1)+'" viewBox="0 0 '+ff.w+' '+ff.h+'">'+ff.m+'</svg>';}
+    btn.setAttribute("aria-expanded","false");
+  }
+  POP.hidden=true;
+  document.getElementById("txt").textContent=ev.t;
+  SL.value=i;
+  for(var j=0;j<LB.length;j++)LB[j].setAttribute("aria-current",j===i?"true":"false");
+  reveal(LB[i]);
+}
+function go(n){i=Math.max(0,Math.min(E.length-1,n));draw()}
+function stop(){if(timer){clearInterval(timer);timer=null;document.getElementById("pi").innerHTML="&#9654;"}}
+
+document.getElementById("next").onclick=function(){stop();go(i+1)};
+document.getElementById("prev").onclick=function(){stop();go(i-1)};
+SL.oninput=function(){stop();go(+this.value)};
+document.getElementById("play").onclick=function(){
+  if(timer){stop();return}
+  if(i>=E.length-1)i=0;
+  document.getElementById("pi").innerHTML="&#10074;&#10074;";
+  timer=setInterval(function(){if(i>=E.length-1){stop();return}go(i+1)},1900);
+  draw();
+};
+function closePop(){POP.hidden=true;POP.dataset.pin="0";
+  for(var n=0;n<ND.length;n++)document.getElementById(ND[n].b).setAttribute("aria-expanded","false")}
+function openPop(def){
+  document.getElementById("popttl").textContent=def.t;
+  document.getElementById("uktxt").textContent=E[i][def.k]||"";
+  POP.className=def.k==="ar"?"arn":"";
+  POP.hidden=false;POP.dataset.side=def.k;
+  for(var n=0;n<ND.length;n++)document.getElementById(ND[n].b)
+    .setAttribute("aria-expanded",ND[n].k===def.k?"true":"false");
+}
+ND.forEach(function(def){
+  var b=document.getElementById(def.b);
+  b.addEventListener("mouseenter",function(){openPop(def)});
+  b.addEventListener("mouseleave",function(){if(POP.dataset.pin!=="1")closePop()});
+  b.addEventListener("focus",function(){openPop(def)});
+  b.addEventListener("blur",function(){closePop()});
+  b.addEventListener("click",function(){
+    if(POP.dataset.pin==="1"&&POP.dataset.side===def.k){closePop();return}
+    openPop(def);POP.dataset.pin="1";
+  });
+});
+POP.addEventListener("click",closePop);
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape")closePop();
+  if(e.key==="ArrowRight"){stop();go(i+1)}
+  else if(e.key==="ArrowLeft"){stop();go(i-1)}
+});
+var x0=null;
+var ch=document.getElementById("chart");
+ch.addEventListener("touchstart",function(e){x0=e.touches[0].clientX},{passive:true});
+ch.addEventListener("touchend",function(e){
+  if(x0===null)return;
+  var dx=e.changedTouches[0].clientX-x0;x0=null;
+  if(Math.abs(dx)<40)return;
+  stop();go(dx<0?i+1:i-1);
+},{passive:true});
+
+draw();
+})();
+</script>
+</body>
+</html>
