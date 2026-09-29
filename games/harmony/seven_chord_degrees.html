@@ -35,14 +35,18 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* The whole game fits one screen: the question card absorbs the spare height */
   .app {
     max-width: 780px;
     margin: 0 auto;
-    padding: 20px 16px 48px;
+    padding: 20px 16px;
+    min-height: 100vh; min-height: 100dvh;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    justify-content: center;
+    gap: 16px;
   }
+  .app > * { flex-shrink: 0; }
 
   /* ---------- Header ---------- */
   header {
@@ -58,6 +62,7 @@
     font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em;
   }
   .brand .dot {
+    flex-shrink: 0;
     width: 10px; height: 10px; border-radius: 50%;
     background: var(--accent); box-shadow: 0 0 12px var(--accent);
   }
@@ -93,11 +98,11 @@
 
   /* ---------- Question card ---------- */
   .card {
-    position: relative; overflow: hidden; text-align: center;
+    position: relative; overflow: hidden; overflow: clip; text-align: center;
     background: linear-gradient(180deg, var(--card), var(--bg2));
     border: 1px solid var(--line); border-radius: 22px;
-    padding: 30px 20px 28px;
-    min-height: 310px;
+    padding: 20px;
+    flex: 1 1 auto !important; max-height: 400px;
     display: flex; flex-direction: column; justify-content: center;
   }
   .card.flash-good { box-shadow: 0 0 0 1px var(--good), 0 0 30px rgba(74, 222, 128, 0.12); transition: box-shadow 0.25s; }
@@ -106,7 +111,7 @@
   .question { animation: qin 0.35s ease; }
   .numeral {
     font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(4rem, 17vw, 7.2rem);
+    font-size: clamp(3rem, min(17vw, 11vh), 7.2rem);
     transition: font-size 0.4s cubic-bezier(.2,.7,.2,1);
     line-height: 1; font-weight: 600; letter-spacing: 0.02em;
   }
@@ -119,7 +124,7 @@
     transition: max-height 0.4s cubic-bezier(.2,.7,.2,1), opacity 0.3s ease 0.12s;
   }
   .card.answered .reveal { max-height: 180px; opacity: 1; }
-  .card.answered .numeral { font-size: clamp(2.8rem, 11vw, 4.4rem); }
+  .card.answered .numeral { font-size: clamp(2.2rem, min(11vw, 6.5vh), 4.4rem); }
   .card.answered .of { font-size: clamp(1rem, 3.8vw, 1.2rem); margin-top: 6px; }
   .card.resetting, .card.resetting * { transition: none !important; }
   .of strong { color: var(--text); font-weight: 600; }
@@ -152,8 +157,10 @@
     color: var(--muted); margin: 0 0 8px 4px;
   }
   .grid-roots { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
-  .grid-qual  { display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 8px; }
-  .grid-qual .opt { font-size: 1.12rem; }
+  /* one row, however many qualities the mode has (count set from JS) */
+  .grid-qual  { display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: 8px; }
+  .sec-qual { container-type: inline-size; }
+  .grid-qual .opt { font-size: clamp(0.6rem, 3.4cqi, 1.12rem); white-space: nowrap; padding-inline: 1px; letter-spacing: -0.01em; overflow: hidden; }
 
   .opt {
     min-height: 54px; padding: 10px 6px;
@@ -182,8 +189,10 @@
   .locked .opt:hover:not(.correct):not(.wrong):not(.selected) { background: var(--card); border-color: var(--line); }
 
   /* ---------- Actions ---------- */
-  .actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-  .actions .left { display: flex; gap: 8px; }
+  .actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .btn { white-space: nowrap; }
+  @media (max-width: 400px) { .long { display: none; } }
+  .actions .left, .actions .right { display: flex; gap: 8px; }
   .btn {
     padding: 10px 16px; border-radius: 10px;
     background: var(--bg2); color: var(--text); border: 1px solid var(--line);
@@ -205,6 +214,33 @@
   }
 
   /* ---------- Settings ---------- */
+  .sheet-backdrop {
+    position: fixed; inset: 0; z-index: 10;
+    background: rgba(5, 7, 10, 0.6); backdrop-filter: blur(3px);
+    display: flex; align-items: center; justify-content: center; padding: 16px;
+    animation: fadein 0.2s ease;
+  }
+  .sheet-backdrop[hidden] { display: none; }
+  .sheet {
+    width: 100%; max-width: 520px; max-height: calc(100dvh - 32px); overflow-y: auto;
+    background: var(--bg2); border: 1px solid var(--line); border-radius: 18px;
+    padding: 6px 18px 14px; animation: sheetin 0.25s cubic-bezier(.2,.7,.2,1);
+  }
+  .sheet-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0 12px; font-weight: 600;
+  }
+  .ref-table { width: 100%; max-width: 380px; border-collapse: collapse; font-size: 0.9rem; }
+  .ref-table th, .ref-table td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .ref-table thead th { color: var(--muted); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .ref-table tbody th { width: 3.2em; color: var(--muted); font-weight: 600; font-family: Georgia, "Times New Roman", serif; }
+  .ref-table td { font-weight: 600; }
+  .ref-table tr:last-child th, .ref-table tr:last-child td { border-bottom: 0; }
+  .ref-note { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+  .sheet .hint { font-size: 0.8rem; color: var(--muted); margin: 0 0 6px; }
+  @keyframes fadein  { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes sheetin { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
   details.settings {
     background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius);
     padding: 0 16px;
@@ -238,11 +274,69 @@
   }
 
   @media (max-width: 560px) {
-    .app { padding: 14px 12px 36px; gap: 14px; }
+    .app { padding: 12px; gap: 10px; }
+    header { padding-left: 9px; flex-wrap: nowrap; }
+    .brand { font-size: clamp(0.85rem, 4vw, 1rem); gap: 8px; white-space: nowrap; min-width: 0; }
+    .seg { flex-shrink: 0; }
+    .seg button { padding: 7px clamp(7px, 2.6vw, 11px); font-size: clamp(0.76rem, 3.6vw, 0.86rem); white-space: nowrap; }
+    .grid-qual { gap: 6px; }
+    .stat { padding: 6px 8px; }
+    .stat .value { font-size: 1.1rem; }
     .grid-roots { grid-template-columns: repeat(4, 1fr); }
-    .card { padding: 24px 14px 22px; min-height: 270px; }
-    .stat .value { font-size: 1.15rem; }
+    .opt { min-height: 46px; padding: 6px 4px; }
+    .enh { height: 30px; }
+    .enh .slash { height: 26px; }
+    .section-title { margin-bottom: 6px; }
+    .card { padding: 14px; border-radius: 18px; }
+    .feedback { margin-top: 12px; font-size: 1rem; }
+    .btn { padding: 9px 12px; }
     kbd { display: none; }
+    .sheet-backdrop { align-items: flex-end; padding: 0; }
+    .sheet { border-radius: 18px 18px 0 0; max-height: 85dvh; }
+  }
+  /* Very short screens: tighten further */
+  @media (max-height: 700px) {
+    .app { gap: 8px; padding-top: 8px; padding-bottom: 8px; }
+    .opt { min-height: 40px; }
+    .stat { padding: 5px 8px; }
+    .stat .sub { display: none; }
+    .card { padding: 10px 14px; }
+    .card.answered .numeral { font-size: clamp(2rem, 6vh, 3.2rem); }
+    .feedback { margin-top: 8px; font-size: 0.95rem; }
+    .scale { font-size: 0.85rem; margin-top: 4px; }
+    .section-title { margin-bottom: 4px; }
+  }
+
+  /* Landscape phones: question on the left, answer pad on the right */
+  @media (orientation: landscape) and (max-height: 520px) {
+    .app {
+      max-width: 1000px; height: 100vh; height: 100dvh; min-height: 0;
+      display: grid; gap: 8px 14px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+      grid-template-rows: auto auto 1fr auto auto;
+      grid-template-areas:
+        "head    head"
+        "stats   roots"
+        "card    roots"
+        "card    qual"
+        "card    actions";
+    }
+    header { grid-area: head; }
+    .stats { grid-area: stats; }
+    .card { grid-area: card; max-height: none; min-height: 0; }
+    .sec-roots { grid-area: roots; display: flex; flex-direction: column; min-height: 0; }
+    .sec-roots .grid-roots { flex: 1; grid-auto-rows: 1fr; }
+    .sec-qual { grid-area: qual; }
+    .actions { grid-area: actions; }
+    .grid-roots { grid-template-columns: repeat(6, 1fr); }
+    .opt { min-height: 38px; }
+    .enh { height: 28px; }
+    .enh .slash { height: 24px; }
+    .numeral { font-size: clamp(2.4rem, 16vh, 5rem); }
+    .card.answered .numeral { font-size: clamp(1.8rem, 9vh, 3rem); }
+    .stat .sub { display: none; }
+    kbd, .long { display: none; }
+    .btn { padding: 8px 12px; }
   }
 </style>
 </head>
@@ -275,12 +369,12 @@
     <div class="timerbar" id="timerbar"></div>
   </div>
 
-  <div>
+  <div class="sec-roots">
     <div class="section-title">Root note</div>
     <div class="grid-roots" id="rootGrid"></div>
   </div>
 
-  <div>
+  <div class="sec-qual">
     <div class="section-title">Chord quality</div>
     <div class="grid-qual" id="qualGrid"></div>
   </div>
@@ -288,13 +382,22 @@
   <div class="actions">
     <div class="left">
       <button class="btn" id="skipBtn">Skip<kbd>Space</kbd></button>
-      <button class="btn primary" id="nextBtn" hidden>Next question<kbd>Enter</kbd></button>
+      <button class="btn primary" id="nextBtn" hidden>Next<span class="long"> question</span><kbd>Enter</kbd></button>
     </div>
-    <button class="btn ghost" id="resetBtn">Reset stats</button>
+    <div class="right">
+      <button class="btn ghost" id="resetBtn">Reset<span class="long"> stats</span></button>
+      <button class="btn ghost" id="settingsBtn" aria-haspopup="dialog" aria-label="Settings">⚙<span class="long"> Settings</span></button>
+    </div>
   </div>
 
-  <details class="settings" data-native-keys>
-    <summary>Practice settings</summary>
+</div>
+
+<div class="sheet-backdrop" id="sheet" hidden data-native-keys>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Practice settings">
+    <div class="sheet-head">
+      <span>Practice settings</span>
+      <button class="btn" id="closeSettings">Done</button>
+    </div>
     <div class="setting-row">
       <div class="name">Chord type</div>
       <div class="seg" id="modeSeg2">
@@ -320,9 +423,11 @@
       </div>
       <div class="key-list" id="keyList"></div>
     </div>
-  </details>
-
-  <footer>Pick a root and a quality — the answer is checked as soon as both are chosen. After a mistake, take your time and press Next when ready.</footer>
+    <div class="setting-row ref">
+      <div class="name" id="refTitle">Chord qualities by degree</div>
+      <table class="ref-table" id="refTable"></table>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -404,6 +509,25 @@ const Theory = (() => {
     return { root, tones, quality };
   }
 
+  // Qualities that appear in the reference table but have no answer button
+  const EXTRA_QUALITIES = {
+    sevenths: [{ id: 'mmaj7', label: 'Minor-major 7', short: 'm(maj7)', intervals: [3, 7, 11] }],
+    triads: [],
+  };
+
+  // Quality of the diatonic chord on each degree of a scale type
+  function degreeQualities(type, mode) {
+    const scale = buildScale('C', type);
+    const size = mode === 'sevenths' ? 4 : 3;
+    return scale.map((_, degree) => {
+      const root = scale[degree];
+      const iv = [];
+      for (let k = 1; k < size; k++) iv.push(mod12(scale[(degree + 2 * k) % 7].pc - root.pc));
+      const all = [...QUALITIES[mode], ...EXTRA_QUALITIES[mode]];
+      return all.find(q => q.intervals.every((v, i) => v === iv[i]));
+    });
+  }
+
   const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 
   // Neutral numeral: always uppercase, no °/+ — the player works out
@@ -420,7 +544,7 @@ const Theory = (() => {
     minor: tiers(['A', 'E', 'B', 'D'], ['F#', 'G', 'C#', 'C'], ['G#', 'D#', 'F', 'Bb', 'Eb']),
   };
 
-  return { QUALITIES, KEY_SETS, SCALE_NAMES, parseNote, buildScale, buildChord, romanNumeral, mod12 };
+  return { QUALITIES, KEY_SETS, SCALE_NAMES, ROMAN, parseNote, buildScale, buildChord, degreeQualities, romanNumeral, mod12 };
 })();
 
 /* =====================================================================
@@ -460,14 +584,14 @@ const ROOT_BUTTONS = [
   { pc: 0,  main: 'C' },
   { pc: 1,  main: 'C♯', alt: 'D♭' },
   { pc: 2,  main: 'D' },
-  { pc: 3,  main: 'E♭' },
+  { pc: 3,  main: 'D♯', alt: 'E♭' },
   { pc: 4,  main: 'E' },
   { pc: 5,  main: 'F' },
   { pc: 6,  main: 'F♯', alt: 'G♭' },
   { pc: 7,  main: 'G' },
   { pc: 8,  main: 'G♯', alt: 'A♭' },
   { pc: 9,  main: 'A' },
-  { pc: 10, main: 'B♭' },
+  { pc: 10, main: 'A♯', alt: 'B♭' },
   { pc: 11, main: 'B' },
 ];
 
@@ -536,6 +660,7 @@ function buildRootButtons() {
 
 function buildQualityButtons() {
   els.qualGrid.innerHTML = '';
+  els.qualGrid.style.setProperty('--n', Theory.QUALITIES[state.mode].length);
   Theory.QUALITIES[state.mode].forEach(q => {
     const b = document.createElement('button');
     b.className = 'opt';
@@ -553,6 +678,7 @@ function renderSettings() {
     b.classList.toggle('active', b.dataset.mode === state.mode));
   document.querySelectorAll('[data-diff]').forEach(b =>
     b.classList.toggle('active', b.dataset.diff === state.difficulty));
+  renderReference();
   document.querySelectorAll('[data-scale]').forEach(b =>
     b.classList.toggle('active', state.scales.includes(b.dataset.scale)));
   if (state.difficulty === 'random') {
@@ -564,6 +690,20 @@ function renderSettings() {
       return `<div>${t === 'major' ? 'Major' : 'Minor'}: ${names}</div>`;
     }).join('');
   }
+}
+
+// Reference table: major vs harmonic minor, for the current chord type.
+// Minor cells that differ from natural minor are highlighted.
+function renderReference() {
+  const mode = state.mode;
+  const major = Theory.degreeQualities('major', mode);
+  const minor = Theory.degreeQualities('minor', mode);
+  const head = '<thead><tr><th></th><th>Major</th><th>Harmonic minor</th></tr></thead>';
+  const rows = Theory.ROMAN.map((r, i) =>
+    `<tr><th>${r}</th><td title="${major[i].label}">${major[i].short}</td>` +
+    `<td title="${minor[i].label}">${minor[i].short}</td></tr>`).join('');
+  $('refTable').innerHTML = head + '<tbody>' + rows + '</tbody>';
+  $('refTitle').textContent = `Qualities by degree — ${mode === 'sevenths' ? '7th chords' : 'triads'}`;
 }
 
 function bump(el, value) {
@@ -770,6 +910,14 @@ els.skipBtn.addEventListener('click', skip);
 els.nextBtn.addEventListener('click', nextQuestion);
 els.resetBtn.addEventListener('click', resetStats);
 
+// Settings sheet
+const sheet = $('sheet');
+const openSettings = () => { sheet.hidden = false; };
+const closeSettings = () => { sheet.hidden = true; };
+$('settingsBtn').addEventListener('click', openSettings);
+$('closeSettings').addEventListener('click', closeSettings);
+sheet.addEventListener('click', e => { if (e.target === sheet) closeSettings(); });
+
 // Mouse/touch clicks shouldn't leave keyboard focus on a control,
 // otherwise Space/Enter would re-trigger that control instead of the game.
 document.addEventListener('click', e => {
@@ -782,6 +930,7 @@ document.addEventListener('click', e => {
 // Keys inside the settings/mode controls keep their normal behaviour.
 document.addEventListener('keydown', e => {
   if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (!sheet.hidden) { if (e.key === 'Escape') closeSettings(); return; }
   if (e.target.closest && e.target.closest('[data-native-keys], input, select, textarea')) return;
   if (e.key === 'Enter') {
     if (state.locked) { e.preventDefault(); nextQuestion(); }
