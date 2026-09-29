@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harmony Trainer</title>
+<style>
+  :root {
+    --bg: #0d1015;
+    --bg2: #141920;
+    --card: #1a2029;
+    --card2: #222a36;
+    --line: #2a3240;
+    --line-hover: #3b4659;
+    --text: #e8ecf2;
+    --muted: #8a95a7;
+    --accent: #8ab4ff;
+    --accent-soft: rgba(138, 180, 255, 0.14);
+    --good: #4ade80;
+    --good-soft: rgba(74, 222, 128, 0.14);
+    --bad: #f87171;
+    --bad-soft: rgba(248, 113, 113, 0.14);
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+
+  body {
+    min-height: 100vh;
+    background: radial-gradient(1200px 600px at 50% -10%, #1b2331 0%, var(--bg) 60%);
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 20px 16px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-left: 13px; /* logo starts at the Score panel's inner edge; switch stays flush right */
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em;
+  }
+  .brand .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 12px var(--accent);
+  }
+
+  .seg {
+    display: inline-flex; gap: 4px; padding: 4px;
+    background: var(--bg2); border: 1px solid var(--line); border-radius: 999px;
+  }
+  .seg button {
+    border: 0; background: transparent; color: var(--muted);
+    padding: 8px 14px; border-radius: 999px;
+    font: inherit; font-size: 0.9rem; cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .seg button:hover { color: var(--text); }
+  .seg button.active { background: var(--card2); color: var(--text); }
+
+  /* ---------- Stats ---------- */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .stat {
+    background: var(--bg2); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 10px 12px; text-align: center;
+  }
+  .stat .label {
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);
+  }
+  .stat .value {
+    font-size: 1.35rem; font-weight: 700; margin-top: 2px;
+    font-variant-numeric: tabular-nums; display: inline-block;
+  }
+  .stat .value.bump { animation: bump 0.35s ease; }
+  .stat .sub { font-size: 0.72rem; color: var(--muted); }
+
+  /* ---------- Question card ---------- */
+  .card {
+    position: relative; overflow: hidden; text-align: center;
+    background: linear-gradient(180deg, var(--card), var(--bg2));
+    border: 1px solid var(--line); border-radius: 22px;
+    padding: 30px 20px 28px;
+    min-height: 310px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .card.flash-good { box-shadow: 0 0 0 1px var(--good), 0 0 30px rgba(74, 222, 128, 0.12); transition: box-shadow 0.25s; }
+  .card.flash-bad  { box-shadow: 0 0 0 1px var(--bad),  0 0 30px rgba(248, 113, 113, 0.10); transition: box-shadow 0.25s; }
+
+  .question { animation: qin 0.35s ease; }
+  .numeral {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(4rem, 17vw, 7.2rem);
+    transition: font-size 0.4s cubic-bezier(.2,.7,.2,1);
+    line-height: 1; font-weight: 600; letter-spacing: 0.02em;
+  }
+  .of { margin-top: 10px; font-size: clamp(1.2rem, 4.6vw, 1.6rem); color: var(--muted);
+         transition: font-size 0.4s cubic-bezier(.2,.7,.2,1), margin 0.4s; }
+
+  /* Answer reveal: question shrinks and rises, explanation slides in below */
+  .reveal {
+    max-height: 0; opacity: 0; overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(.2,.7,.2,1), opacity 0.3s ease 0.12s;
+  }
+  .card.answered .reveal { max-height: 180px; opacity: 1; }
+  .card.answered .numeral { font-size: clamp(2.8rem, 11vw, 4.4rem); }
+  .card.answered .of { font-size: clamp(1rem, 3.8vw, 1.2rem); margin-top: 6px; }
+  .card.resetting, .card.resetting * { transition: none !important; }
+  .of strong { color: var(--text); font-weight: 600; }
+
+  .feedback { min-height: 1.6em; margin-top: 18px; font-size: 1.1rem; font-weight: 600; }
+  .feedback.good { color: var(--good); animation: fadeup 0.25s ease; }
+  .feedback.bad  { color: var(--bad);  animation: fadeup 0.25s ease; }
+  .feedback.skip { color: var(--muted); animation: fadeup 0.25s ease; }
+
+  .scale {
+    min-height: 1.5em; margin-top: 8px;
+    display: flex; justify-content: center; align-items: baseline; flex-wrap: wrap; gap: 4px 10px;
+    font-size: 0.95rem; color: var(--muted);
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .scale.show { opacity: 1; }
+  .scale .key-label { margin-right: 4px; }
+  .scale .tone { color: #c3cbd8; }
+  .scale .root { color: var(--text); font-weight: 700; border-bottom: 2px solid var(--accent); }
+
+  .timerbar {
+    position: absolute; left: 0; bottom: 0; height: 3px; width: 0;
+    background: var(--accent); opacity: 0.6;
+  }
+  .timerbar.run { animation-name: drain; animation-timing-function: linear; animation-fill-mode: forwards; }
+
+  /* ---------- Answer buttons ---------- */
+  .section-title {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--muted); margin: 0 0 8px 4px;
+  }
+  .grid-roots { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .grid-qual  { display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 8px; }
+  .grid-qual .opt { font-size: 1.12rem; }
+
+  .opt {
+    min-height: 54px; padding: 10px 6px;
+    background: var(--card); color: var(--text);
+    border: 1px solid var(--line); border-radius: 12px;
+    font: inherit; font-size: 1.02rem; font-weight: 600;
+    cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+    transition: transform 0.12s ease, background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  /* Enharmonic pair laid out along a "/" : sharp top-left, flat bottom-right */
+  .enh { position: relative; display: block; width: 100%; height: 34px; font-size: 0.92rem; }
+  .enh .a { position: absolute; left: 50%; top: 0; transform: translateX(-115%); }
+  .enh .b { position: absolute; left: 50%; bottom: 0; transform: translateX(15%); }
+  .enh .slash {
+    position: absolute; left: 50%; top: 50%; width: 1.5px; height: 30px;
+    background: currentColor; opacity: 0.35; border-radius: 1px;
+    transform: translate(-50%, -50%) rotate(28deg);
+  }
+  .opt:hover { background: var(--card2); border-color: var(--line-hover); }
+  .opt:active { transform: scale(0.96); }
+  .opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .opt.selected { background: var(--accent-soft); border-color: var(--accent); animation: pop 0.2s ease; }
+  .opt.correct  { background: var(--good-soft); border-color: var(--good); color: var(--good); animation: pop 0.25s ease; }
+  .opt.wrong    { background: var(--bad-soft);  border-color: var(--bad);  color: var(--bad);  animation: shake 0.35s ease; }
+  .locked .opt { cursor: default; }
+  .locked .opt:hover:not(.correct):not(.wrong):not(.selected) { background: var(--card); border-color: var(--line); }
+
+  /* ---------- Actions ---------- */
+  .actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .actions .left { display: flex; gap: 8px; }
+  .btn {
+    padding: 10px 16px; border-radius: 10px;
+    background: var(--bg2); color: var(--text); border: 1px solid var(--line);
+    font: inherit; font-size: 0.92rem; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.12s;
+  }
+  .btn:hover { background: var(--card2); border-color: var(--line-hover); }
+  .btn:active { transform: scale(0.97); }
+  .btn.primary { background: var(--accent-soft); border-color: var(--accent); }
+  .btn.ghost { background: transparent; color: var(--muted); }
+  .btn.ghost:hover { color: var(--text); }
+  .btn[hidden] { display: none; }
+  .btn.attention { animation: fadeup 0.25s ease, glow 1.6s ease-in-out 0.3s infinite; }
+  @keyframes glow { 0%,100% { box-shadow: 0 0 0 0 rgba(138,180,255,0); } 50% { box-shadow: 0 0 0 4px rgba(138,180,255,0.18); } }
+  kbd {
+    font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.72rem;
+    padding: 1px 6px; margin-left: 6px; border-radius: 5px;
+    border: 1px solid var(--line); color: var(--muted);
+  }
+
+  /* ---------- Settings ---------- */
+  details.settings {
+    background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 0 16px;
+  }
+  details.settings summary {
+    cursor: pointer; padding: 14px 0; color: var(--muted); font-size: 0.92rem;
+    list-style: none; display: flex; align-items: center; justify-content: space-between;
+  }
+  details.settings summary::-webkit-details-marker { display: none; }
+  details.settings summary::after { content: "▾"; transition: transform 0.2s; }
+  details.settings[open] summary::after { transform: rotate(180deg); }
+  details.settings[open] summary { color: var(--text); }
+  .setting-row { display: flex; flex-direction: column; gap: 8px; padding: 4px 0 16px; }
+  .setting-row .name { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  .setting-row .seg { flex-wrap: wrap; border-radius: 14px; align-self: flex-start; }
+  .setting-row .seg button { border-radius: 10px; }
+  .key-list { font-size: 0.85rem; color: var(--muted); }
+
+  footer { text-align: center; font-size: 0.78rem; color: var(--muted); }
+
+  /* ---------- Animations ---------- */
+  @keyframes qin    { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeup { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  @keyframes pop    { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+  @keyframes bump   { 0% { transform: scale(1); } 40% { transform: scale(1.18); } 100% { transform: scale(1); } }
+  @keyframes shake  { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(3px); } }
+  @keyframes drain  { from { width: 100%; } to { width: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  @media (max-width: 560px) {
+    .app { padding: 14px 12px 36px; gap: 14px; }
+    .grid-roots { grid-template-columns: repeat(4, 1fr); }
+    .card { padding: 24px 14px 22px; min-height: 270px; }
+    .stat .value { font-size: 1.15rem; }
+    kbd { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="brand"><span class="dot"></span>Harmony Trainer</div>
+    <div class="seg" id="modeSeg" data-native-keys>
+      <button data-mode="triads">Triads</button>
+      <button data-mode="sevenths">7th chords</button>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="label">Score</div><div class="value" id="statScore">0</div></div>
+    <div class="stat"><div class="label">Streak</div><div class="value" id="statStreak">0</div><div class="sub" id="statBest">best 0</div></div>
+    <div class="stat"><div class="label">Accuracy</div><div class="value" id="statAcc">—</div><div class="sub" id="statCount">0 / 0</div></div>
+  </div>
+
+  <div class="card" id="card">
+    <div class="question" id="question">
+      <div class="numeral" id="numeral">I</div>
+      <div class="of">of <strong id="keyName">C</strong> <span id="keyType">major</span></div>
+    </div>
+    <div class="reveal">
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+      <div class="scale" id="scale"></div>
+    </div>
+    <div class="timerbar" id="timerbar"></div>
+  </div>
+
+  <div>
+    <div class="section-title">Root note</div>
+    <div class="grid-roots" id="rootGrid"></div>
+  </div>
+
+  <div>
+    <div class="section-title">Chord quality</div>
+    <div class="grid-qual" id="qualGrid"></div>
+  </div>
+
+  <div class="actions">
+    <div class="left">
+      <button class="btn" id="skipBtn">Skip<kbd>Space</kbd></button>
+      <button class="btn primary" id="nextBtn" hidden>Next question<kbd>Enter</kbd></button>
+    </div>
+    <button class="btn ghost" id="resetBtn">Reset stats</button>
+  </div>
+
+  <details class="settings" data-native-keys>
+    <summary>Practice settings</summary>
+    <div class="setting-row">
+      <div class="name">Chord type</div>
+      <div class="seg" id="modeSeg2">
+        <button data-mode="triads">Triads</button>
+        <button data-mode="sevenths">7th chords</button>
+      </div>
+    </div>
+    <div class="setting-row">
+      <div class="name">Scales</div>
+      <div class="seg" id="scaleSeg">
+        <button data-scale="major">Major</button>
+        <button data-scale="minor">Minor</button>
+      </div>
+      <div class="key-list">Pick one or both. Minor uses the harmonic minor scale (raised 7th).</div>
+    </div>
+    <div class="setting-row">
+      <div class="name">Keys</div>
+      <div class="seg" id="diffSeg">
+        <button data-diff="easy">Easy</button>
+        <button data-diff="medium">Medium</button>
+        <button data-diff="hard">All keys</button>
+        <button data-diff="random">Random difficulty</button>
+      </div>
+      <div class="key-list" id="keyList"></div>
+    </div>
+  </details>
+
+  <footer>Pick a root and a quality — the answer is checked as soon as both are chosen. After a mistake, take your time and press Next when ready.</footer>
+</div>
+
+<script>
+/* =====================================================================
+   MUSIC THEORY
+   Pure data + logic. No DOM access here, so it is easy to modify/test.
+   ===================================================================== */
+const Theory = (() => {
+  const LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+  const NATURAL_PC = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+  // Semitones above the tonic for each scale type
+  const SCALE_STEPS = {
+    major: [0, 2, 4, 5, 7, 9, 11],   // W W H W W W H
+    minor: [0, 2, 3, 5, 7, 8, 11],   // harmonic minor: W H W W H W+H H (raised 7th)
+  };
+  const SCALE_NAMES = { major: 'major', minor: 'minor' };
+  const ACC_SYMBOL = { '-2': '𝄫', '-1': '♭', '0': '', '1': '♯', '2': '𝄪' };
+  const mod12 = n => ((n % 12) + 12) % 12;
+
+  // A note = letter name + accidental offset + pitch class (0–11)
+  function makeNote(letter, acc) {
+    return { letter, acc, pc: mod12(NATURAL_PC[letter] + acc), name: letter + ACC_SYMBOL[acc] };
+  }
+
+  // "Eb" -> E♭, "F#" -> F♯
+  function parseNote(str) {
+    const letter = str[0].toUpperCase();
+    let acc = 0;
+    for (const ch of str.slice(1)) {
+      if (ch === '#' || ch === '♯') acc++;
+      else if (ch === 'b' || ch === '♭') acc--;
+    }
+    return makeNote(letter, acc);
+  }
+
+  // Build a correctly spelled scale: one of each letter, in order, with
+  // whatever accidental makes the pitch match the scale's step pattern.
+  function buildScale(tonicStr, type) {
+    const tonic = parseNote(tonicStr);
+    const start = LETTERS.indexOf(tonic.letter);
+    return SCALE_STEPS[type].map((step, i) => {
+      const letter = LETTERS[(start + i) % 7];
+      const targetPc = mod12(tonic.pc + step);
+      let acc = targetPc - NATURAL_PC[letter];
+      if (acc > 6) acc -= 12;
+      if (acc < -6) acc += 12;
+      return makeNote(letter, acc);
+    });
+  }
+
+  // Chord qualities, defined by semitone intervals above the root.
+  const QUALITIES = {
+    triads: [
+      { id: 'maj', label: 'Major',      short: 'maj', symbol: '',  intervals: [4, 7] },
+      { id: 'min', label: 'Minor',      short: 'm',   symbol: 'm', intervals: [3, 7] },
+      { id: 'dim', label: 'Diminished', short: 'dim', symbol: '°', intervals: [3, 6] },
+      { id: 'aug', label: 'Augmented',  short: 'aug', symbol: '+', intervals: [4, 8] },
+    ],
+    sevenths: [
+      { id: 'maj7',  label: 'Major 7',           short: 'maj7', symbol: 'maj7', intervals: [4, 7, 11] },
+      { id: 'min7',  label: 'Minor 7',           short: 'm7',   symbol: 'm7',   intervals: [3, 7, 10] },
+      { id: 'dom7',  label: 'Dominant 7',        short: '7',    symbol: '7',    intervals: [4, 7, 10] },
+      { id: 'hdim7', label: 'Half-diminished 7', short: 'm7♭5', symbol: 'm7♭5', intervals: [3, 6, 10] },
+      { id: 'dim7',  label: 'Diminished 7',      short: '°7',   symbol: '°7',   intervals: [3, 6, 9] },
+      { id: 'augmaj7', label: 'Augmented major 7', short: 'maj7♯5', symbol: 'maj7♯5', intervals: [4, 8, 11] },
+    ],
+  };
+
+  // Stack diatonic thirds from the chosen degree and measure the intervals
+  // to determine the quality — derived from the scale, not a lookup table.
+  function buildChord(scale, degree, mode) {
+    const size = mode === 'sevenths' ? 4 : 3;
+    const tones = [];
+    for (let k = 0; k < size; k++) tones.push(scale[(degree + 2 * k) % 7]);
+    const root = tones[0];
+    const intervals = tones.slice(1).map(t => mod12(t.pc - root.pc));
+    const quality = QUALITIES[mode].find(q => q.intervals.every((v, i) => v === intervals[i]));
+    if (!quality) throw new Error('Unrecognised chord: ' + tones.map(t => t.name).join(' '));
+    return { root, tones, quality };
+  }
+
+  const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+
+  // Neutral numeral: always uppercase, no °/+ — the player works out
+  // the quality themselves, so the question gives no hint.
+  function romanNumeral(degree) {
+    return ROMAN[degree];
+  }
+
+  // Key pools per scale type. Minor tiers are the relative minors of the
+  // major tiers, so each difficulty covers the same key signatures.
+  const tiers = (easy, med, hard) => ({ easy, medium: [...easy, ...med], hard: [...easy, ...med, ...hard] });
+  const KEY_SETS = {
+    major: tiers(['C', 'G', 'D', 'F'], ['A', 'Bb', 'E', 'Eb'], ['B', 'F#', 'Ab', 'Db', 'Gb']),
+    minor: tiers(['A', 'E', 'B', 'D'], ['F#', 'G', 'C#', 'C'], ['G#', 'D#', 'F', 'Bb', 'Eb']),
+  };
+
+  return { QUALITIES, KEY_SETS, SCALE_NAMES, parseNote, buildScale, buildChord, romanNumeral, mod12 };
+})();
+
+/* =====================================================================
+   GAME LOGIC
+   ===================================================================== */
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+function generateQuestion(mode, difficulty, scaleTypes, prev) {
+  let scaleType, key, degree, tries = 0;
+  do {
+    scaleType = pick(scaleTypes);
+    const tier = difficulty === 'random' ? pick(['easy', 'medium', 'hard']) : difficulty;
+    key = pick(Theory.KEY_SETS[scaleType][tier]);
+    degree = 1 + Math.floor(Math.random() * 6); // II–VII only; I is just the key name
+  } while (prev && prev.scaleType === scaleType && prev.key === key && prev.degree === degree && ++tries < 20);
+
+  const scale = Theory.buildScale(key, scaleType);
+  const chord = Theory.buildChord(scale, degree, mode);
+  return {
+    key,
+    scaleType,
+    keyLabel: Theory.parseNote(key).name,
+    degree,
+    scale,
+    chord,
+    numeral: Theory.romanNumeral(degree),
+  };
+}
+
+/* =====================================================================
+   UI
+   ===================================================================== */
+
+// Root buttons (pitch class -> label). Theoretical spellings like E♯ or C♭
+// are matched by pitch class and shown with correct spelling in feedback.
+const ROOT_BUTTONS = [
+  { pc: 0,  main: 'C' },
+  { pc: 1,  main: 'C♯', alt: 'D♭' },
+  { pc: 2,  main: 'D' },
+  { pc: 3,  main: 'E♭' },
+  { pc: 4,  main: 'E' },
+  { pc: 5,  main: 'F' },
+  { pc: 6,  main: 'F♯', alt: 'G♭' },
+  { pc: 7,  main: 'G' },
+  { pc: 8,  main: 'G♯', alt: 'A♭' },
+  { pc: 9,  main: 'A' },
+  { pc: 10, main: 'B♭' },
+  { pc: 11, main: 'B' },
+];
+
+const DELAY_CORRECT = 1000;
+const STORAGE_KEY = 'harmonyTrainer.v1';
+
+const $ = id => document.getElementById(id);
+const els = {
+  card: $('card'), question: $('question'), numeral: $('numeral'), keyName: $('keyName'),
+  feedback: $('feedback'), scale: $('scale'), timerbar: $('timerbar'),
+  rootGrid: $('rootGrid'), qualGrid: $('qualGrid'),
+  skipBtn: $('skipBtn'), nextBtn: $('nextBtn'), resetBtn: $('resetBtn'),
+  score: $('statScore'), streak: $('statStreak'), best: $('statBest'),
+  acc: $('statAcc'), count: $('statCount'), keyList: $('keyList'), keyType: $('keyType'),
+};
+
+const state = {
+  mode: 'sevenths',
+  difficulty: 'hard',
+  scales: ['major', 'minor'],
+  question: null,
+  selRoot: null,
+  selQuality: null,
+  locked: false,
+  timer: null,
+  stats: { score: 0, streak: 0, best: 0, correct: 0, attempts: 0 },
+};
+
+/* ---------- Persistence (optional; silently ignored if unavailable) ---------- */
+function load() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+    if (!data) return;
+    if (data.mode in Theory.QUALITIES) state.mode = data.mode;
+    if (['easy', 'medium', 'hard', 'random'].includes(data.difficulty)) state.difficulty = data.difficulty;
+    if (Array.isArray(data.scales)) {
+      const valid = data.scales.filter(t => t in Theory.KEY_SETS);
+      if (valid.length) state.scales = valid;
+    }
+    if (data.stats) Object.assign(state.stats, data.stats);
+  } catch (e) { /* ignore */ }
+}
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      mode: state.mode, difficulty: state.difficulty, scales: state.scales, stats: state.stats,
+    }));
+  } catch (e) { /* ignore */ }
+}
+
+/* ---------- Rendering ---------- */
+function buildRootButtons() {
+  els.rootGrid.innerHTML = '';
+  ROOT_BUTTONS.forEach(r => {
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.dataset.pc = r.pc;
+    b.innerHTML = r.alt
+      ? `<span class="enh"><span class="a">${r.main}</span><span class="slash"></span><span class="b">${r.alt}</span></span>`
+      : r.main;
+    b.setAttribute('aria-label', r.alt ? `${r.main} or ${r.alt}` : r.main);
+    b.addEventListener('click', e => { selectRoot(r.pc); if (e.detail) b.blur(); });
+    els.rootGrid.appendChild(b);
+  });
+}
+
+function buildQualityButtons() {
+  els.qualGrid.innerHTML = '';
+  Theory.QUALITIES[state.mode].forEach(q => {
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.dataset.q = q.id;
+    b.textContent = q.short;
+    b.title = q.label;
+    b.setAttribute('aria-label', q.label);
+    b.addEventListener('click', e => { selectQuality(q.id); if (e.detail) b.blur(); });
+    els.qualGrid.appendChild(b);
+  });
+}
+
+function renderSettings() {
+  document.querySelectorAll('[data-mode]').forEach(b =>
+    b.classList.toggle('active', b.dataset.mode === state.mode));
+  document.querySelectorAll('[data-diff]').forEach(b =>
+    b.classList.toggle('active', b.dataset.diff === state.difficulty));
+  document.querySelectorAll('[data-scale]').forEach(b =>
+    b.classList.toggle('active', state.scales.includes(b.dataset.scale)));
+  if (state.difficulty === 'random') {
+    els.keyList.textContent = 'Each question picks Easy, Medium or All keys at random.';
+  } else {
+    els.keyList.innerHTML = state.scales.map(t => {
+      const names = Theory.KEY_SETS[t][state.difficulty]
+        .map(k => Theory.parseNote(k).name + (t === 'minor' ? 'm' : '')).join('  ·  ');
+      return `<div>${t === 'major' ? 'Major' : 'Minor'}: ${names}</div>`;
+    }).join('');
+  }
+}
+
+function bump(el, value) {
+  if (el.textContent === String(value)) return;
+  el.textContent = value;
+  el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+}
+
+function renderStats() {
+  const s = state.stats;
+  bump(els.score, s.score);
+  bump(els.streak, s.streak);
+  els.best.textContent = `best ${s.best}`;
+  els.acc.textContent = s.attempts ? Math.round((s.correct / s.attempts) * 100) + '%' : '—';
+  els.count.textContent = `${s.correct} / ${s.attempts}`;
+}
+
+function renderQuestion() {
+  const q = state.question;
+  els.numeral.textContent = q.numeral;
+  els.keyName.textContent = q.keyLabel;
+  els.keyType.textContent = Theory.SCALE_NAMES[q.scaleType];
+  els.question.style.animation = 'none'; void els.question.offsetWidth; els.question.style.animation = '';
+  els.feedback.textContent = '';
+  els.feedback.className = 'feedback';
+  els.scale.className = 'scale';
+  els.scale.innerHTML = '';
+  els.card.classList.add('resetting');
+  els.card.classList.remove('flash-good', 'flash-bad', 'answered');
+  void els.card.offsetWidth;
+  els.card.classList.remove('resetting');
+  els.timerbar.className = 'timerbar';
+  document.body.classList.remove('locked');
+  els.nextBtn.hidden = true;
+  els.nextBtn.classList.remove('attention');
+  els.skipBtn.hidden = false;
+  document.querySelectorAll('.opt').forEach(b => b.classList.remove('selected', 'correct', 'wrong'));
+}
+
+function showScale() {
+  const q = state.question;
+  const chordLetters = new Set(q.chord.tones.map(t => t.name));
+  const parts = q.scale.map((n, i) => {
+    const cls = i === q.degree ? 'root' : chordLetters.has(n.name) ? 'tone' : '';
+    return `<span class="${cls}">${n.name}</span>`;
+  });
+  els.scale.innerHTML = `<span class="key-label">${q.keyLabel} ${q.scaleType === 'minor' ? 'harmonic minor' : 'major'}:</span>` + parts.join('');
+  els.scale.classList.add('show');
+}
+
+function answerText() {
+  const { root, quality } = state.question.chord;
+  const btn = ROOT_BUTTONS.find(r => r.pc === root.pc);
+  const labels = [btn.main, btn.alt].filter(Boolean);
+  const enh = labels.includes(root.name) ? '' : ` (= ${labels.join('/')})`;
+  return `${root.name}${enh} ${quality.short}  (${quality.label})`;
+}
+
+function chordSymbol() {
+  const { root, quality } = state.question.chord;
+  return root.name + quality.symbol;
+}
+
+/* ---------- Interaction ---------- */
+function selectRoot(pc) {
+  if (state.locked) return;
+  state.selRoot = pc;
+  els.rootGrid.querySelectorAll('.opt').forEach(b =>
+    b.classList.toggle('selected', Number(b.dataset.pc) === pc));
+  maybeCheck();
+}
+
+function selectQuality(id) {
+  if (state.locked) return;
+  state.selQuality = id;
+  els.qualGrid.querySelectorAll('.opt').forEach(b =>
+    b.classList.toggle('selected', b.dataset.q === id));
+  maybeCheck();
+}
+
+function maybeCheck() {
+  if (state.selRoot !== null && state.selQuality !== null) checkAnswer();
+}
+
+function markCorrectButtons() {
+  const { root, quality } = state.question.chord;
+  els.rootGrid.querySelector(`[data-pc="${root.pc}"]`).classList.add('correct');
+  els.qualGrid.querySelector(`[data-q="${quality.id}"]`).classList.add('correct');
+}
+
+function lock(delay) {
+  state.locked = true;
+  document.body.classList.add('locked');
+  els.skipBtn.hidden = true;
+  els.nextBtn.hidden = false;
+  showScale();
+  els.card.classList.add('answered');
+  if (delay == null) {
+    // Mistake or skip: keep everything on screen until the player continues.
+    els.nextBtn.classList.add('attention');
+    return;
+  }
+  els.timerbar.style.animationDuration = delay + 'ms';
+  void els.timerbar.offsetWidth;
+  els.timerbar.classList.add('run');
+  state.timer = setTimeout(nextQuestion, delay);
+}
+
+function checkAnswer() {
+  const { root, quality } = state.question.chord;
+  const rootOk = state.selRoot === root.pc;
+  const qualOk = state.selQuality === quality.id;
+  const correct = rootOk && qualOk;
+  const s = state.stats;
+
+  s.attempts++;
+  document.querySelectorAll('.opt.selected').forEach(b => b.classList.remove('selected'));
+
+  if (correct) {
+    s.correct++;
+    s.streak++;
+    s.best = Math.max(s.best, s.streak);
+    s.score += 10;
+    els.feedback.textContent = `✓ Correct!  ${chordSymbol()}`;
+    els.feedback.className = 'feedback good';
+    els.card.classList.add('flash-good');
+  } else {
+    s.streak = 0;
+    if (!rootOk) els.rootGrid.querySelector(`[data-pc="${state.selRoot}"]`).classList.add('wrong');
+    if (!qualOk) els.qualGrid.querySelector(`[data-q="${state.selQuality}"]`).classList.add('wrong');
+    els.feedback.textContent = `✗ Correct answer: ${answerText()}`;
+    els.feedback.className = 'feedback bad';
+    els.card.classList.add('flash-bad');
+  }
+  markCorrectButtons();
+  renderStats();
+  save();
+  lock(correct ? DELAY_CORRECT : null);
+}
+
+function skip() {
+  if (state.locked) return;
+  state.stats.streak = 0;
+  state.stats.attempts++;
+  document.querySelectorAll('.opt.selected').forEach(b => b.classList.remove('selected'));
+  els.feedback.textContent = `Skipped — ${answerText()}`;
+  els.feedback.className = 'feedback skip';
+  markCorrectButtons();
+  renderStats();
+  save();
+  lock(null);
+}
+
+function nextQuestion() {
+  clearTimeout(state.timer);
+  state.question = generateQuestion(state.mode, state.difficulty, state.scales, state.question);
+  state.selRoot = null;
+  state.selQuality = null;
+  state.locked = false;
+  renderQuestion();
+}
+
+function setMode(mode) {
+  if (mode === state.mode) return;
+  state.mode = mode;
+  save();
+  buildQualityButtons();
+  renderSettings();
+  nextQuestion();
+}
+
+function setDifficulty(diff) {
+  if (diff === state.difficulty) return;
+  state.difficulty = diff;
+  save();
+  renderSettings();
+  nextQuestion();
+}
+
+// Multi-select: at least one scale type must stay on.
+function toggleScale(type) {
+  const on = state.scales.includes(type);
+  if (on && state.scales.length === 1) return;
+  state.scales = on ? state.scales.filter(t => t !== type) : [...state.scales, type];
+  save();
+  renderSettings();
+  nextQuestion();
+}
+
+function resetStats() {
+  state.stats = { score: 0, streak: 0, best: 0, correct: 0, attempts: 0 };
+  save();
+  renderStats();
+}
+
+/* ---------- Wiring ---------- */
+document.querySelectorAll('[data-mode]').forEach(b =>
+  b.addEventListener('click', () => setMode(b.dataset.mode)));
+document.querySelectorAll('[data-diff]').forEach(b =>
+  b.addEventListener('click', () => setDifficulty(b.dataset.diff)));
+document.querySelectorAll('[data-scale]').forEach(b =>
+  b.addEventListener('click', () => toggleScale(b.dataset.scale)));
+els.skipBtn.addEventListener('click', skip);
+els.nextBtn.addEventListener('click', nextQuestion);
+els.resetBtn.addEventListener('click', resetStats);
+
+// Mouse/touch clicks shouldn't leave keyboard focus on a control,
+// otherwise Space/Enter would re-trigger that control instead of the game.
+document.addEventListener('click', e => {
+  if (e.detail === 0) return; // keyboard-triggered click: keep focus
+  const el = e.target.closest && e.target.closest('button, summary');
+  if (el) el.blur();
+});
+
+// Enter = next question (after answering), Space = skip (or next).
+// Keys inside the settings/mode controls keep their normal behaviour.
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.target.closest && e.target.closest('[data-native-keys], input, select, textarea')) return;
+  if (e.key === 'Enter') {
+    if (state.locked) { e.preventDefault(); nextQuestion(); }
+  } else if (e.key === ' ' || e.code === 'Space') {
+    e.preventDefault();
+    if (state.locked) nextQuestion(); else skip();
+  }
+});
+
+/* ---------- Start ---------- */
+load();
+buildRootButtons();
+buildQualityButtons();
+renderSettings();
+renderStats();
+nextQuestion();
+</script>
+</body>
+</html>
