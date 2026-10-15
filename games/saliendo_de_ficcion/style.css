@@ -1,0 +1,89 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  background: #1b2a44; /* fills the space around the square on non-square screens */
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Square stage: as large as possible while fitting the viewport */
+.stage {
+  position: relative;
+  width: min(100vw, 100vh);
+  width: min(100vw, 100dvh);
+  aspect-ratio: 1 / 1;
+}
+
+/* All layers occupy exactly the same box */
+.stage img,
+.levitator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.layer-bg { z-index: 0; }
+
+/* --lift scales the levitation height (1 = full float, 0 = resting).
+   Registering it lets it animate, so the character settles/rises smoothly. */
+@property --lift {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+
+/* The character and its aura levitate together as one group */
+.levitator {
+  z-index: 2;
+  will-change: transform;
+  transition: --lift 1.2s ease-in-out;
+}
+
+/* Ukulele off → the character comes to rest */
+.ukulele-off .levitator { --lift: 0; }
+
+/* Sun sits on top of the whole scene */
+.layer-sun { z-index: 3; }
+
+/* Sun and aura fade in while the bass is on */
+.layer-sun,
+.layer-aura {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.layer-sun.is-visible,
+.layer-aura.is-visible { opacity: 1; }
+
+/* The character starts levitating once the music starts */
+.is-playing .levitator {
+  animation: levitate 4s ease-in-out infinite;
+}
+
+/* Percentages are relative to the layer's own size, so the float scales with the screen */
+@keyframes levitate {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(calc(var(--lift) * -1.5%)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-playing .levitator { animation: none; }
+}
+
+/* The whole screen is the control: tap to start, then tap to toggle the bass */
+body {
+  cursor: pointer;
+  touch-action: manipulation; /* no double-tap zoom delay on mobile */
+  -webkit-tap-highlight-color: transparent;
+}
