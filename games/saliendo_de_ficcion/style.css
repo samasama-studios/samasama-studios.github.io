@@ -175,12 +175,12 @@ body {
   gap: 8px;
 }
 
-/* When there's room beside the square (desktop), the dock moves to the bottom-right corner so it
-   doesn't cover the scene. script.js adds .dock-side only when the dock fits in that space. */
+/* When there's room beside the square (desktop), the dock moves into the space to its right,
+   centred in it, so it doesn't cover the scene. script.js adds .dock-side only when the dock fits.
+   That space runs from the square's right edge to the screen's: with S the square's width
+   (min(100vw, 100dvh)), its centre is 100vw - (100vw - S) / 4 = 75vw + S / 4. */
 .dock-side .dock {
-  left: auto;
-  right: max(16px, env(safe-area-inset-right));
-  transform: none;
+  left: calc(75vw + min(100vw, 100dvh) / 4);
 }
 
 .controls {

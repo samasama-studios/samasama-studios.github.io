@@ -189,25 +189,31 @@ class LoopEngine {
     return shot.loop ? (t % length) / length : Math.min(1, t / length);
   }
 
-  // Bring a loop in now, and take it out again at audio-clock time `until` (its fade ends then).
-  activeUntil(name, until) {
+  // Bring a loop back in now, then fade it out over `fadeDuration` seconds from audio-clock time
+  // `fadeStart`. If that fade should already be under way, it rejoins it at the level it would
+  // have reached by now, so this can restore a fade-out that was interrupted.
+  activeUntil(name, fadeStart, fadeDuration) {
     const track = this.tracks.get(name);
     if (!track) return;
     track.active = false; // where it ends up
     const param = track.gain.gain;
     const now = this.ctx.currentTime;
-    const on = Math.min(now + this.fadeTime, until - this.fadeTime);
+    const fadeEnd = fadeStart + fadeDuration;
+    if (fadeEnd <= now) return this.setActive(name, false);
+
+    const rejoinAt = Math.min(now + this.fadeTime, fadeEnd);
+    const levelAt = (t) => track.level * Math.min(1, Math.max(0, (fadeEnd - t) / fadeDuration));
     param.cancelScheduledValues(now);
     param.setValueAtTime(param.value, now);
-    param.linearRampToValueAtTime(track.level, on);
-    param.setValueAtTime(track.level, until - this.fadeTime);
-    param.linearRampToValueAtTime(0, until);
+    param.linearRampToValueAtTime(levelAt(rejoinAt), rejoinAt);
+    if (fadeStart > rejoinAt) param.setValueAtTime(track.level, fadeStart);
+    param.linearRampToValueAtTime(0, fadeEnd);
   }
 
-  // Audio-clock time a clip is scheduled to start, if it hasn't started yet (otherwise null).
-  clipPendingStart(name) {
+  // Audio-clock time a clip starts (or started), while it's scheduled or playing; otherwise null.
+  clipStart(name) {
     const shot = this.clips.get(name);
-    return shot?.source && shot.startedAt > this.ctx.currentTime ? shot.startedAt : null;
+    return shot?.source ? shot.startedAt : null;
   }
 
   // Length of a loaded loop or clip, in seconds.

@@ -8,7 +8,7 @@
 //   4th tap → the corner plants light up; at the next loop start the ukulele hands over to its
 //             ending phrase (ukulele_intro_end), which plays once while the bass slowly fades out
 //   5th tap → the spiral (aura.webp) appears above the head and the ukulele + birds loop starts,
-//             taking over from the ukulele loop if it's still playing
+//             taking over from the ukulele and bass loops if they're still playing
 //   6th tap → the mushrooms slide up from below
 //   7th tap → the mushrooms light up
 //   taps after that → nothing yet (see STEPS below)
@@ -121,9 +121,10 @@ function resumeUkulele() {
 }
 
 // The ukulele + birds loop starts from its first note right on the tap, then keeps looping, and
-// the plain ukulele loop stops (it may still be playing if tap 4's ending hasn't started yet).
-// Going back stops the birds; if tap 4's ending is still to come, the ukulele comes back until
-// then, so the hand-over to the ending happens as planned.
+// the plain ukulele and bass loops stop (they may still be playing if tap 4's ending hasn't
+// started yet, and the bass fades through the ending). Going back stops the birds and puts the
+// ukulele and bass back on tap 4's plan: the ukulele until the ending starts, the bass fading
+// over it (rejoining that fade part-way if the ending is already playing).
 let birdsWanted = false;
 
 function startBirds() {
@@ -132,14 +133,17 @@ function startBirds() {
     if (!birdsWanted || !engine.playing) return;
     engine.playClip('ukulele_birds', undefined, { loop: true });
     engine.setActive('ukulele', false);
+    engine.setActive('bass', false);
   }, () => {});
 }
 
 function stopBirds() {
   birdsWanted = false;
   engine.stopClip('ukulele_birds');
-  const endingAt = engine.clipPendingStart('ukulele_intro_end');
-  if (endingAt !== null) engine.activeUntil('ukulele', endingAt);
+  const endingAt = engine.clipStart('ukulele_intro_end');
+  if (endingAt === null) return; // the ending is over (or never queued): nothing to restore
+  engine.activeUntil('ukulele', endingAt - engine.fadeTime, engine.fadeTime);
+  engine.activeUntil('bass', endingAt, engine.duration('ukulele_intro_end') - BASS_ENDS_EARLY);
 }
 
 // The character gets its aura (and the bass comes in) as it starts rising out of the grass, and
