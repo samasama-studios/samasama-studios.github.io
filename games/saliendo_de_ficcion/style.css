@@ -2,7 +2,7 @@
 
 html, body {
   height: 100%;
-  background: #1b2a44; /* fills the space around the square on non-square screens */
+  background: #132C3E; /* fills the space around the square on non-square screens */
 }
 
 body {
@@ -19,11 +19,15 @@ body {
   width: min(100vw, 100vh);
   width: min(100vw, 100dvh);
   aspect-ratio: 1 / 1;
+  background: #009081;
+  overflow: hidden; /* the shifted character must not spill outside the square */
 }
 
 /* All layers occupy exactly the same box */
 .stage img,
-.levitator {
+.riser,
+.levitator,
+.layer-slide {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -34,7 +38,68 @@ body {
   -webkit-user-drag: none;
 }
 
+/* Images not loaded yet (data-src only) would otherwise draw Chrome's empty-image outline */
+.stage img:not([src]) { visibility: hidden; }
+
 .layer-bg { z-index: 0; }
+.layer-floor,
+.layer-particles { z-index: 1; } /* particles come after the floor in the HTML, so they sit on top of it */
+
+/* The character starts shifted down so it sits in the floor grass, then slowly rises
+   to its original position (script.js adds .is-risen, and starts the levitation once it arrives).
+   Percentages are relative to the layer's own (square) size. */
+.riser {
+  z-index: 2;
+  transform: translateY(25%);
+  transition: transform 3s ease-in-out;
+}
+.riser.is-risen { transform: none; }
+
+/* The character with its aura, fading in over the plain one as it starts to rise */
+.layer-particular-aura {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.layer-particular-aura.is-visible { opacity: 1; }
+
+/* Sliding layers (plants, mushrooms): each starts pushed out past its edge (--dx/--dy, far enough
+   to be fully off-stage) and slides in when script.js adds .is-visible once the image is ready.
+   Plant images are shown several times, each copy clipped to the part that holds a single plant;
+   the clip moves with the image, so each copy always shows just its own plant. */
+.layer-slide {
+  z-index: 3;
+  transform: translate(var(--dx, 0), var(--dy, 0));
+  transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Side plants (plants_sides.png): come in horizontally as the page loads */
+.plant-l { clip-path: inset(0 50% 0 0); --dx: -20%; }
+.plant-r { clip-path: inset(0 0 0 50%); --dx:  20%; transition-delay: 0.1s; }
+
+/* Lit versions (plants_sides_light.png, plants_corners_light.png, shrooms_light.png): sit on top
+   of their layer and fade in on a later tap */
+.layer-light {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.layer-light.is-visible { opacity: 1; }
+
+/* Corner plants (plants_corner.png): come in diagonally on a later tap */
+.plant-tl { clip-path: inset(0 50% 50% 0); --dx: -40%; --dy: -40%; }
+.plant-tr { clip-path: inset(0 0 50% 50%); --dx:  40%; --dy: -40%; transition-delay: 0.1s; }
+.plant-bl { clip-path: inset(50% 50% 0 0); --dx: -40%; --dy:  40%; transition-delay: 0.2s; }
+.plant-br { clip-path: inset(50% 0 0 50%); --dx:  40%; --dy:  40%; transition-delay: 0.3s; }
+
+/* Mushrooms (shrooms.png): slide up from below on a later tap. Same level as the character but
+   later in the HTML, so they sit in front of it. */
+.layer-shrooms { z-index: 2; --dy: 20%; }
+
+.layer-slide.is-visible { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .layer-slide,
+  .riser { transition: none; }
+}
 
 /* --lift scales the levitation height (1 = full float, 0 = resting).
    Registering it lets it animate, so the character settles/rises smoothly. */
@@ -46,7 +111,6 @@ body {
 
 /* The character and its aura levitate together as one group */
 .levitator {
-  z-index: 2;
   will-change: transform;
   transition: --lift 1.2s ease-in-out;
 }
@@ -54,19 +118,17 @@ body {
 /* Ukulele off → the character comes to rest */
 .ukulele-off .levitator { --lift: 0; }
 
-/* Sun sits on top of the whole scene */
-.layer-sun { z-index: 3; }
+/* Sun sits on top of the whole scene, visible from the start */
+.layer-sun { z-index: 4; }
 
-/* Sun and aura fade in while the bass is on */
-.layer-sun,
+/* The spiral above the head (aura.webp): fades in on a later tap, floating with the character */
 .layer-aura {
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 1.2s ease;
 }
-.layer-sun.is-visible,
 .layer-aura.is-visible { opacity: 1; }
 
-/* The character starts levitating once the music starts */
+/* The character starts levitating once it has risen (script.js adds .is-playing) */
 .is-playing .levitator {
   animation: levitate 4s ease-in-out infinite;
 }
@@ -77,13 +139,132 @@ body {
   50%      { transform: translateY(calc(var(--lift) * -1.5%)); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .is-playing .levitator { animation: none; }
+/* The particles slowly turn around the centre while the character levitates. The animation is
+   always there but paused until then, so it starts from where the particles are and, when
+   stepping back, stops in place instead of snapping back. */
+.layer-particles {
+  animation: spin 180s linear infinite paused;
+}
+.is-playing .layer-particles { animation-play-state: running; }
+
+@keyframes spin {
+  to { transform: rotate(1turn); }
 }
 
-/* The whole screen is the control: tap to start, then tap to toggle the bass */
+@media (prefers-reduced-motion: reduce) {
+  .is-playing .levitator,
+  .layer-particles { animation: none; }
+}
+
+/* The whole screen is the control: each tap moves the scene one step forward */
 body {
   cursor: pointer;
   touch-action: manipulation; /* no double-tap zoom delay on mobile */
   -webkit-tap-highlight-color: transparent;
 }
+
+/* Bottom dock, floating over the bottom of the screen: the loop progress bar stacked on the
+   sound controls. As a grid column it's as wide as the controls, so the bar matches them. */
+.dock {
+  position: fixed;
+  left: 50%;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 10;
+  display: grid;
+  gap: 8px;
+}
+
+/* When there's room beside the square (desktop), the dock moves to the bottom-right corner so it
+   doesn't cover the scene. script.js adds .dock-side only when the dock fits in that space. */
+.dock-side .dock {
+  left: auto;
+  right: max(16px, env(safe-area-inset-right));
+  transform: none;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px 6px 8px;
+  border-radius: 999px;
+  background: rgb(19 44 62 / 0.75); /* the page colour, see-through */
+  color: #e8f4f1;
+  cursor: default;
+}
+
+.mute {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+.mute svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mute .speaker { fill: currentColor; }
+.mute .icon-off,
+.mute[aria-pressed="true"] .icon-on { display: none; }
+.mute[aria-pressed="true"] .icon-off { display: inline; }
+
+.volume {
+  width: 120px;
+  accent-color: #009081;
+  cursor: pointer;
+}
+.mute[aria-pressed="true"] + .volume { opacity: 0.5; }
+
+.mute:focus-visible,
+.volume:focus-visible {
+  outline: 2px solid #e8f4f1;
+  outline-offset: 2px;
+}
+
+/* Level progress bar along the top, as wide as the square stage (minus a gutter) */
+.progress {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: calc(min(100vw, 100dvh) - 32px);
+  display: grid;
+  gap: 6px;
+  pointer-events: none; /* taps go straight through to the scene */
+}
+
+.bar {
+  height: 4px;
+  border-radius: 999px;
+  background: rgb(232 244 241 / 0.25); /* light and see-through: shows on the scene and on the dark sides */
+  overflow: hidden;
+}
+.bar span {
+  display: block;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* Level: slides to each new step */
+.bar-level span {
+  background: #e8f4f1;
+  transition: transform 0.6s ease;
+}
+
+/* Loop: a playhead, updated every frame by script.js; lives in the bottom dock */
+.bar-loop { pointer-events: none; }
+.bar-loop span { background: #fbe08a; } /* the sun's yellow */

@@ -7,14 +7,81 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Progress bar along the top: the scene's steps -->
+  <div class="progress">
+    <div class="bar bar-level" role="progressbar" aria-label="Progreso" aria-valuemin="0" aria-valuenow="0"><span></span></div>
+  </div>
+
   <main class="stage">
-    <img class="layer-bg" src="assets/sprites/background.png" alt="" aria-hidden="true">
-    <div class="levitator">
-      <img class="layer-fg" src="assets/sprites/particular.png" alt="Personaje meditando">
-      <img class="layer-aura" src="assets/sprites/aura.png" alt="" aria-hidden="true">
+    <!-- On hold: the stage's background colour replaces this for now.
+    <img class="layer-bg" src="assets/sprites/background.webp" alt="" aria-hidden="true">
+    -->
+    <img class="layer-floor" src="assets/sprites/floor.png" alt="" aria-hidden="true">
+    <img class="layer-particles" src="assets/sprites/particles.png" alt="" aria-hidden="true">
+    <!-- The riser starts the character low, sitting in the grass, and lifts it to its original
+         position; the levitator inside floats it once it's there. -->
+    <div class="riser">
+      <div class="levitator">
+        <img class="layer-fg" src="assets/sprites/particular.webp" alt="Personaje meditando">
+        <!-- Loaded up front (but invisible) so it's ready to fade in the moment the character starts to rise -->
+        <img class="layer-particular-aura" src="assets/sprites/particular_aura.png" alt="" aria-hidden="true">
+        <!-- The spiral above the head: not loaded up front; fades in on a later tap -->
+        <img class="layer-aura" data-src="assets/sprites/aura.webp" alt="" aria-hidden="true">
+      </div>
     </div>
-    <img class="layer-sun" src="assets/sprites/sun.png" alt="" aria-hidden="true">
+    <!-- Mushrooms along the bottom, in front of the character: not loaded up front; they slide up
+         from below on a later tap. Grouped with their lit version, which fades in on the tap after. -->
+    <div class="layer-slide layer-shrooms" aria-hidden="true">
+      <img data-src="assets/sprites/shrooms.png" alt="">
+      <img class="layer-light" data-src="assets/sprites/shrooms_light.png" alt="">
+    </div>
+    <!-- Plant images are shown several times: each copy is clipped to one plant (see style.css). -->
+    <!-- Side plants: slide in on load. Each one is grouped with its lit version so the light
+         moves with the plant; the light isn't loaded up front and fades in on a later tap. -->
+    <div class="layer-slide plants-sides plant-l" aria-hidden="true">
+      <img src="assets/sprites/plants_sides.png" alt="">
+      <img class="layer-light" data-src="assets/sprites/plants_sides_light.png" alt="">
+    </div>
+    <div class="layer-slide plants-sides plant-r" aria-hidden="true">
+      <img src="assets/sprites/plants_sides.png" alt="">
+      <img class="layer-light" data-src="assets/sprites/plants_sides_light.png" alt="">
+    </div>
+    <!-- Corner plants: not loaded up front; script.js sets src from data-src when they come in.
+         Each one is grouped with its lit version, which is loaded and faded in on a later tap. -->
+    <div class="layer-slide plants-corner plant-tl" aria-hidden="true">
+      <img data-src="assets/sprites/plants_corner.png" alt="">
+      <img class="layer-light" data-src="assets/sprites/plants_corners_light.png" alt="">
+    </div>
+    <div class="layer-slide plants-corner plant-tr" aria-hidden="true">
+      <img data-src="assets/sprites/plants_corner.png" alt="">
+      <img class="layer-light" data-src="assets/sprites/plants_corners_light.png" alt="">
+    </div>
+    <div class="layer-slide plants-corner plant-bl" aria-hidden="true">
+      <img data-src="assets/sprites/plants_corner.png" alt="">
+      <img class="layer-light" data-src="assets/sprites/plants_corners_light.png" alt="">
+    </div>
+    <div class="layer-slide plants-corner plant-br" aria-hidden="true">
+      <img data-src="assets/sprites/plants_corner.png" alt="">
+      <img class="layer-light" data-src="assets/sprites/plants_corners_light.png" alt="">
+    </div>
+    <img class="layer-sun" src="assets/sprites/sun.webp" alt="" aria-hidden="true">
   </main>
+
+  <!-- Bottom dock: where the music is in its loop, above the sound controls (same width).
+       Taps on the controls don't advance the scene (see script.js). -->
+  <div class="dock">
+    <div class="bar bar-loop" aria-hidden="true"><span></span></div>
+    <div class="controls" role="group" aria-label="Sonido">
+      <button class="mute" type="button" aria-label="Silenciar" aria-pressed="false" aria-keyshortcuts="M" title="Silenciar (M)">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path class="speaker" d="M4 9h4l5-4v14l-5-4H4z" />
+          <g class="icon-on"><path d="M16 8.5a4.5 4.5 0 0 1 0 7" /><path d="M18.5 6a8 8 0 0 1 0 12" /></g>
+          <g class="icon-off"><path d="M16.5 9.5l5 5" /><path d="M21.5 9.5l-5 5" /></g>
+        </svg>
+      </button>
+      <input class="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volumen">
+    </div>
+  </div>
 
   <script src="audio.js"></script>
   <script src="script.js"></script>
