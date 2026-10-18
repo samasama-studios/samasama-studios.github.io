@@ -1,8 +1,24 @@
+/* Colours. The see-through ones are mixed from a base colour, so changing it changes them too. */
+:root {
+  --color_page: #132C3E;         /* around the square on non-square screens */
+  --color_scene: #009081;        /* the stage's background */
+  --color_ui: #e8f4f1;           /* sound controls and progress bars */
+  --color_sun: #fbe08a;          /* the sun's yellow: the music loop bar */
+  --color_debug-target: #ff0000; /* D: the collider to tap now */
+  --color_glow: #ffffff;         /* D: the other colliders; H: the hint glow */
+
+  --color_dock-bg: color-mix(in srgb, var(--color_page) 75%, transparent);
+  --color_bar-track: color-mix(in srgb, var(--color_ui) 25%, transparent);
+  --color_debug-collider: color-mix(in srgb, var(--color_glow) 25%, transparent);
+  --color_debug-collider-target: color-mix(in srgb, var(--color_debug-target) 40%, transparent);
+  --color_hint: color-mix(in srgb, var(--color_glow) 50%, transparent);
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body {
   height: 100%;
-  background: #132C3E; /* fills the space around the square on non-square screens */
+  background: var(--color_page); /* fills the space around the square on non-square screens */
 }
 
 body {
@@ -19,12 +35,15 @@ body {
   width: min(100vw, 100vh);
   width: min(100vw, 100dvh);
   aspect-ratio: 1 / 1;
-  background: #009081;
+  background: var(--color_scene);
   overflow: hidden; /* the shifted character must not spill outside the square */
 }
 
 /* All layers occupy exactly the same box */
 .stage img,
+.collider,
+.sun,
+.layer-particles,
 .riser,
 .levitator,
 .layer-slide {
@@ -72,10 +91,15 @@ body {
   transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Side plants (plants_sides.png): come in horizontally as the page loads */
+/* Side plants (plants_sides.png): come in horizontally, the left one as the page loads and the
+   right one on the first tap */
 .plant-l { clip-path: inset(0 50% 0 0); --dx: -20%; }
-.plant-r { clip-path: inset(0 0 0 50%); --dx:  20%; transition-delay: 0.1s; }
+.plant-r { clip-path: inset(0 0 0 50%); --dx:  20%; }
 
+/* Each side plant grows from the middle of its edge, so its idle wobble (script.js) tilts it
+   around that point */
+.plant-l { transform-origin: 0 50%; }
+.plant-r { transform-origin: 100% 50%; }
 /* Lit versions (plants_sides_light.png, plants_corners_light.png, shrooms_light.png): sit on top
    of their layer and fade in on a later tap */
 .layer-light {
@@ -118,8 +142,57 @@ body {
 /* Ukulele off → the character comes to rest */
 .ukulele-off .levitator { --lift: 0; }
 
-/* Sun sits on top of the whole scene, visible from the start */
-.layer-sun { z-index: 4; }
+/* Sun sits on top of the whole scene, visible from the start, slowly turning. Its image is cut off
+   at the top edge, and its centre is a little below that (1081, 50 in the 2160 px sprite), so
+   turning it as drawn would bring the cut into view. Instead the disc is made whole: a second copy,
+   turned half way round the centre, fills in the missing cap above the cut. Turned rather than
+   flipped, so its dots don't mirror the ones across the join, and faded in over a band past the
+   cut, so the join has no edge. The whole disc turns around its centre, which the hint's zoom
+   (script.js) uses too. */
+.sun {
+  z-index: 4;
+  transform-origin: calc(1081 / 2160 * 100%) calc(50 / 2160 * 100%);
+  animation: sun-turn 480s linear infinite;
+}
+/* The copy's own y maps to 100 - y once turned, so in its coordinates the cap above the cut
+   (y < 0) is y > 100, and the 30 px fade just below the cut is y 70–100. */
+.layer-sun-copy {
+  transform: rotate(0.5turn);
+  transform-origin: calc(1081 / 2160 * 100%) calc(50 / 2160 * 100%);
+  -webkit-mask-image: linear-gradient(transparent calc(70 / 2160 * 100%), #000 calc(100 / 2160 * 100%));
+  mask-image: linear-gradient(transparent calc(70 / 2160 * 100%), #000 calc(100 / 2160 * 100%));
+}
+
+@keyframes sun-turn {
+  to { rotate: 1turn; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sun { animation: none; }
+}
+
+/* The sun's ray (the aura strand, hanging from the sun): fades in when picked up. script.js builds
+   it from slices of aura.webp (top, repeated twists, tail), sizes and places it, and turns it on the
+   point where it hangs to reach the pointer. Same level as the sun but earlier in the HTML, so it
+   comes out from behind it. */
+.layer-ray {
+  position: absolute;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.layer-ray.is-visible { opacity: 1; }
+/* Two strands on top of each other, cross-faded by script.js as the ray grows a twist */
+.ray-strand {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.ray-strand > div {
+  flex: none;
+  background: url(assets/sprites/aura.webp) no-repeat;
+}
 
 /* The spiral above the head (aura.webp): fades in on a later tap, floating with the character */
 .layer-aura {
@@ -139,27 +212,64 @@ body {
   50%      { transform: translateY(calc(var(--lift) * -1.5%)); }
 }
 
-/* The particles slowly turn around the centre while the character levitates. The animation is
-   always there but paused until then, so it starts from where the particles are and, when
-   stepping back, stops in place instead of snapping back. */
-.layer-particles {
-  animation: spin 180s linear infinite paused;
-}
-.is-playing .layer-particles { animation-play-state: running; }
+/* The particles slowly turn around the centre while the character levitates, always starting from
+   their original position. When stepping back stops the levitation, script.js turns them back
+   to it (see sink()). */
+.is-playing .layer-particles { animation: spin 180s linear infinite; }
 
 @keyframes spin {
   to { transform: rotate(1turn); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .is-playing .levitator,
-  .layer-particles { animation: none; }
+/* Each cluster of particles also floats up and down, very slowly, in opposite directions: the
+   same cycle, half a cycle apart, so one rises while the other sinks. The image splits cleanly at x = 1095 (of 2160): an empty gap between the
+   clusters. The float moves the separate `translate` property, so it adds to the spin above. */
+.particles-l {
+  clip-path: inset(0 calc(100% - 1095 / 2160 * 100%) 0 0);
+  animation: particles-float 12s ease-in-out infinite;
+}
+.particles-r {
+  clip-path: inset(0 0 0 calc(1095 / 2160 * 100%));
+  animation: particles-float 12s ease-in-out -6s infinite; /* half a cycle ahead */
 }
 
-/* The whole screen is the control: each tap moves the scene one step forward */
+@keyframes particles-float {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -1%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-playing .levitator,
+  .is-playing .layer-particles,
+  .particles-l,
+  .particles-r { animation: none; }
+}
+
+/* Only the colliders take taps (see index.html): everything else on the stage lets them through */
+.stage,
+.stage * { pointer-events: none; }
+.collider use {
+  pointer-events: fill; /* the shape's inside, though it's painted transparent */
+  fill: transparent;
+}
+.collider-floor { z-index: 1; }
+.collider-sun { z-index: 4; }
+
+/* The object that moves the scene on (script.js marks its collider .is-target) gets the hand cursor */
+.collider.is-target use { cursor: pointer; }
+
+/* D (or ?debug in the URL) shows the colliders: red for the current target, grey for the rest */
+.debug .collider use { fill: var(--color_debug-collider); }
+.debug .collider.is-target use { fill: var(--color_debug-collider-target); }
+
+/* H: the current target glows twice in its own shape */
+.collider.is-hinted use { animation: hint 0.7s ease-in-out 2; }
+@keyframes hint {
+  50% { fill: var(--color_hint); }
+}
+
 body {
-  cursor: pointer;
-  touch-action: manipulation; /* no double-tap zoom delay on mobile */
+  touch-action: none; /* no scrolling or zooming, so a finger can drag the sun's ray around */
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -173,6 +283,16 @@ body {
   z-index: 10;
   display: grid;
   gap: 8px;
+  /* Hidden until the music starts (script.js adds .is-visible); visibility also takes the hidden
+     controls out of reach of taps and Tab, once they've faded out. */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease, visibility 0s 0.8s;
+}
+.dock.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.8s ease;
 }
 
 /* When there's room beside the square (desktop), the dock moves into the space to its right,
@@ -189,8 +309,8 @@ body {
   gap: 10px;
   padding: 6px 16px 6px 8px;
   border-radius: 999px;
-  background: rgb(19 44 62 / 0.75); /* the page colour, see-through */
-  color: #e8f4f1;
+  background: var(--color_dock-bg); /* the page colour, see-through */
+  color: var(--color_ui);
   cursor: default;
 }
 
@@ -222,14 +342,14 @@ body {
 
 .volume {
   width: 120px;
-  accent-color: #009081;
+  accent-color: var(--color_scene);
   cursor: pointer;
 }
 .mute[aria-pressed="true"] + .volume { opacity: 0.5; }
 
 .mute:focus-visible,
 .volume:focus-visible {
-  outline: 2px solid #e8f4f1;
+  outline: 2px solid var(--color_ui);
   outline-offset: 2px;
 }
 
@@ -249,7 +369,7 @@ body {
 .bar {
   height: 4px;
   border-radius: 999px;
-  background: rgb(232 244 241 / 0.25); /* light and see-through: shows on the scene and on the dark sides */
+  background: var(--color_bar-track); /* light and see-through: shows on the scene and on the dark sides */
   overflow: hidden;
 }
 .bar span {
@@ -261,10 +381,10 @@ body {
 
 /* Level: slides to each new step */
 .bar-level span {
-  background: #e8f4f1;
+  background: var(--color_ui);
   transition: transform 0.6s ease;
 }
 
 /* Loop: a playhead, updated every frame by script.js; lives in the bottom dock */
 .bar-loop { pointer-events: none; }
-.bar-loop span { background: #fbe08a; } /* the sun's yellow */
+.bar-loop span { background: var(--color_sun); }

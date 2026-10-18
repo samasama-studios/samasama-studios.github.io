@@ -11,6 +11,10 @@
 // Clips (loaded with { loop: false }) don't run with the loops; they start when asked, once or
 // looping, e.g. an ending phrase scheduled exactly on the next loop boundary (see nextLoopStart /
 // playClip), or a new loop that starts from its first note right on a tap.
+// iPhone, iPod, or iPad (which reports itself as a Mac, but with touch).
+const IOS = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
 class LoopEngine {
   constructor({ fadeTime = 0.04 } = {}) {
     // Created now (suspended) so files can be decoded on page load; resumed on the first user gesture.
@@ -34,6 +38,11 @@ class LoopEngine {
     this.volume = this.ctx.createGain();
 
     this.master.connect(this.volume).connect(this.limiter).connect(this.ctx.destination);
+
+    // iOS mutes Web Audio when the phone's ring/silent switch is on silent, unless the page says
+    // it's playing media. Safari 16.4+ lets it say so directly; older iOS needs an <audio> element
+    // playing (silently) alongside, which unlock() starts.
+    if (navigator.audioSession) navigator.audioSession.type = 'playback';
   }
 
   // Listener volume, 0–1 as a gain (callers decide the curve). Faded so moving the slider doesn't click.
@@ -62,7 +71,12 @@ class LoopEngine {
 
   // Must be called from a user gesture (click/tap/key) before sound can play.
   unlock() {
-    if (this.ctx.state !== 'running') return this.ctx.resume();
+    if (IOS && !navigator.audioSession && !this.silence) {
+      this.silence = new Audio(silentWav());
+      this.silence.loop = true;
+      this.silence.play().catch(() => { this.silence = null; }); // try again on the next gesture
+    }
+    if (this.ctx.state !== 'running') return this.ctx.resume(); // also 'interrupted' (iOS, after a call)
     return Promise.resolve();
   }
 
@@ -238,4 +252,18 @@ class LoopEngine {
     param.setValueAtTime(param.value, now);
     param.linearRampToValueAtTime(target, now + this.fadeTime);
   }
+}
+
+// A short silent WAV (0.1 s, mono, 8 kHz, 16-bit) as a blob URL, for the <audio> element that
+// keeps older iOS playing Web Audio with the silent switch on (see the constructor).
+function silentWav() {
+  const samples = 800;
+  const view = new DataView(new ArrayBuffer(44 + samples * 2)); // header, then silence (zeros)
+  const text = (at, s) => [...s].forEach((c, i) => view.setUint8(at + i, c.charCodeAt(0)));
+  text(0, 'RIFF'); view.setUint32(4, 36 + samples * 2, true); text(8, 'WAVE');
+  text(12, 'fmt '); view.setUint32(16, 16, true); view.setUint16(20, 1, true); // PCM
+  view.setUint16(22, 1, true); view.setUint32(24, 8000, true); // mono, 8 kHz
+  view.setUint32(28, 16000, true); view.setUint16(32, 2, true); view.setUint16(34, 16, true); // 16-bit
+  text(36, 'data'); view.setUint32(40, samples * 2, true);
+  return URL.createObjectURL(new Blob([view], { type: 'audio/wav' }));
 }

@@ -13,11 +13,20 @@
   </div>
 
   <main class="stage">
+    <!-- Each tappable object carries a collider: an SVG of its visible shape (assets/colliders, made by
+         tools/trace-colliders.mjs), inside the object so it moves with it. Only the colliders take
+         taps, and each step only advances from its own object (see STEPS in script.js). -->
     <!-- On hold: the stage's background colour replaces this for now.
     <img class="layer-bg" src="assets/sprites/background.webp" alt="" aria-hidden="true">
     -->
     <img class="layer-floor" src="assets/sprites/floor.png" alt="" aria-hidden="true">
-    <img class="layer-particles" src="assets/sprites/particles.png" alt="" aria-hidden="true">
+    <svg class="collider collider-floor" viewBox="0 0 2160 2160" aria-hidden="true"><use href="assets/colliders/floor.svg#floor"/></svg>
+    <!-- The particles: shown twice, each copy clipped to one of the image's two clusters, so each
+         cluster can float up and down on its own (see .particles-l / .particles-r in style.css). -->
+    <div class="layer-particles" aria-hidden="true">
+      <img class="particles-l" src="assets/sprites/particles.png" alt="">
+      <img class="particles-r" src="assets/sprites/particles.png" alt="">
+    </div>
     <!-- The riser starts the character low, sitting in the grass, and lifts it to its original
          position; the levitator inside floats it once it's there. -->
     <div class="riser">
@@ -27,6 +36,7 @@
         <img class="layer-particular-aura" src="assets/sprites/particular_aura.png" alt="" aria-hidden="true">
         <!-- The spiral above the head: not loaded up front; fades in on a later tap -->
         <img class="layer-aura" data-src="assets/sprites/aura.webp" alt="" aria-hidden="true">
+        <svg class="collider" viewBox="0 0 2160 2160" aria-hidden="true"><use href="assets/colliders/particular.svg#particular"/></svg>
       </div>
     </div>
     <!-- Mushrooms along the bottom, in front of the character: not loaded up front; they slide up
@@ -34,37 +44,55 @@
     <div class="layer-slide layer-shrooms" aria-hidden="true">
       <img data-src="assets/sprites/shrooms.png" alt="">
       <img class="layer-light" data-src="assets/sprites/shrooms_light.png" alt="">
+      <svg class="collider" viewBox="0 0 2160 2160"><use href="assets/colliders/shrooms.svg#shrooms"/></svg>
     </div>
     <!-- Plant images are shown several times: each copy is clipped to one plant (see style.css). -->
-    <!-- Side plants: slide in on load. Each one is grouped with its lit version so the light
-         moves with the plant; the light isn't loaded up front and fades in on a later tap. -->
+    <!-- Side plants: the left one slides in a second after load, the right one on the first tap.
+         Each one is grouped with its lit version so the light moves with the plant; the light isn't
+         loaded up front and fades in on a later tap. -->
     <div class="layer-slide plants-sides plant-l" aria-hidden="true">
       <img src="assets/sprites/plants_sides.png" alt="">
       <img class="layer-light" data-src="assets/sprites/plants_sides_light.png" alt="">
+      <svg class="collider" viewBox="0 0 2160 2160"><use href="assets/colliders/plants_sides.svg#plants_sides"/></svg>
     </div>
     <div class="layer-slide plants-sides plant-r" aria-hidden="true">
       <img src="assets/sprites/plants_sides.png" alt="">
       <img class="layer-light" data-src="assets/sprites/plants_sides_light.png" alt="">
+      <svg class="collider" viewBox="0 0 2160 2160"><use href="assets/colliders/plants_sides.svg#plants_sides"/></svg>
     </div>
     <!-- Corner plants: not loaded up front; script.js sets src from data-src when they come in.
          Each one is grouped with its lit version, which is loaded and faded in on a later tap. -->
     <div class="layer-slide plants-corner plant-tl" aria-hidden="true">
       <img data-src="assets/sprites/plants_corner.png" alt="">
       <img class="layer-light" data-src="assets/sprites/plants_corners_light.png" alt="">
+      <svg class="collider" viewBox="0 0 2160 2160"><use href="assets/colliders/plants_corner.svg#plants_corner"/></svg>
     </div>
     <div class="layer-slide plants-corner plant-tr" aria-hidden="true">
       <img data-src="assets/sprites/plants_corner.png" alt="">
       <img class="layer-light" data-src="assets/sprites/plants_corners_light.png" alt="">
+      <svg class="collider" viewBox="0 0 2160 2160"><use href="assets/colliders/plants_corner.svg#plants_corner"/></svg>
     </div>
     <div class="layer-slide plants-corner plant-bl" aria-hidden="true">
       <img data-src="assets/sprites/plants_corner.png" alt="">
       <img class="layer-light" data-src="assets/sprites/plants_corners_light.png" alt="">
+      <svg class="collider" viewBox="0 0 2160 2160"><use href="assets/colliders/plants_corner.svg#plants_corner"/></svg>
     </div>
     <div class="layer-slide plants-corner plant-br" aria-hidden="true">
       <img data-src="assets/sprites/plants_corner.png" alt="">
       <img class="layer-light" data-src="assets/sprites/plants_corners_light.png" alt="">
+      <svg class="collider" viewBox="0 0 2160 2160"><use href="assets/colliders/plants_corner.svg#plants_corner"/></svg>
     </div>
-    <img class="layer-sun" src="assets/sprites/sun.webp" alt="" aria-hidden="true">
+    <!-- The sun's ray: the aura strand (aura.webp), which hangs from the sun, rebuilt from slices so
+         it can reach any length. Hidden until the player picks it up from the sun to light the
+         corner plants (see "Sun ray" in script.js, which fills it in). -->
+    <div class="layer-ray" aria-hidden="true"></div>
+    <!-- The sun, slowly turning. Its image is cut off at the top edge, so the disc is completed with
+         a turned copy of itself (see .sun in style.css). -->
+    <div class="sun" aria-hidden="true">
+      <img class="layer-sun" src="assets/sprites/sun.webp" alt="">
+      <img class="layer-sun layer-sun-copy" src="assets/sprites/sun.webp" alt="">
+    </div>
+    <svg class="collider collider-sun" viewBox="0 0 2160 2160" aria-hidden="true"><use href="assets/colliders/sun.svg#sun"/></svg>
   </main>
 
   <!-- Bottom dock: where the music is in its loop, above the sound controls (same width).
