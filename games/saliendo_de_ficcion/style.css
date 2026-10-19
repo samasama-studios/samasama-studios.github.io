@@ -60,7 +60,7 @@ body {
 /* Images not loaded yet (data-src only) would otherwise draw Chrome's empty-image outline */
 .stage img:not([src]) { visibility: hidden; }
 
-.layer-bg { z-index: 0; }
+.layer-background { z-index: 0; }
 .layer-floor,
 .layer-particles { z-index: 1; } /* particles come after the floor in the HTML, so they sit on top of it */
 
@@ -74,32 +74,40 @@ body {
 }
 .riser.is-risen { transform: none; }
 
-/* The character with its aura, fading in over the plain one as it starts to rise */
+/* The aura behind the character, fading in as it starts to rise. Zooms (the hint, see script.js)
+   around the aura's own centre (its visible part spans x 803–1375, y 580–1632 of 2160). */
 .layer-particular-aura {
   opacity: 0;
+  transform-origin: calc(1089/2160*100%) calc(1106/2160*100%);
   transition: opacity 1.2s ease;
 }
 .layer-particular-aura.is-visible { opacity: 1; }
 
-/* Sliding layers (plants, mushrooms): each starts pushed out past its edge (--dx/--dy, far enough
-   to be fully off-stage) and slides in when script.js adds .is-visible once the image is ready.
+/* Sliding layers (plants, mushrooms): each starts pushed out past its edge (--offset-x/--offset-y,
+   far enough to be fully off-stage) and slides in when script.js adds .is-visible once the image is ready.
    Plant images are shown several times, each copy clipped to the part that holds a single plant;
    the clip moves with the image, so each copy always shows just its own plant. */
 .layer-slide {
   z-index: 3;
-  transform: translate(var(--dx, 0), var(--dy, 0));
+  transform: translate(var(--offset-x, 0), var(--offset-y, 0));
   transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* Side plants (plants_sides.png): come in horizontally, the left one as the page loads and the
    right one on the first tap */
-.plant-l { clip-path: inset(0 50% 0 0); --dx: -20%; }
-.plant-r { clip-path: inset(0 0 0 50%); --dx:  20%; }
+.plant-left  { clip-path: inset(0 50% 0 0); --offset-x: -20%; }
+.plant-right { clip-path: inset(0 0 0 50%); --offset-x:  20%; }
+
+/* Side leaves (plants_leaves_sides.png): come in horizontally like the side plants, as the
+   ukulele's ending phrase finishes (see startBirds in script.js), the right one a moment after the left */
+.leaves-left  { clip-path: inset(0 50% 0 0); --offset-x: -20%; }
+.leaves-right { clip-path: inset(0 0 0 50%); --offset-x:  20%; }
+.leaves-right.is-visible { transition-delay: 0.2s; }
 
 /* Each side plant grows from the middle of its edge, so its idle wobble (script.js) tilts it
    around that point */
-.plant-l { transform-origin: 0 50%; }
-.plant-r { transform-origin: 100% 50%; }
+.plant-left { transform-origin: 0 50%; }
+.plant-right { transform-origin: 100% 50%; }
 /* Lit versions (plants_sides_light.png, plants_corners_light.png, shrooms_light.png): sit on top
    of their layer and fade in on a later tap */
 .layer-light {
@@ -109,14 +117,14 @@ body {
 .layer-light.is-visible { opacity: 1; }
 
 /* Corner plants (plants_corner.png): come in diagonally on a later tap */
-.plant-tl { clip-path: inset(0 50% 50% 0); --dx: -40%; --dy: -40%; }
-.plant-tr { clip-path: inset(0 0 50% 50%); --dx:  40%; --dy: -40%; transition-delay: 0.1s; }
-.plant-bl { clip-path: inset(50% 50% 0 0); --dx: -40%; --dy:  40%; transition-delay: 0.2s; }
-.plant-br { clip-path: inset(50% 0 0 50%); --dx:  40%; --dy:  40%; transition-delay: 0.3s; }
+.plant-top-left     { clip-path: inset(0 50% 50% 0); --offset-x: -40%; --offset-y: -40%; }
+.plant-top-right    { clip-path: inset(0 0 50% 50%); --offset-x:  40%; --offset-y: -40%; transition-delay: 0.1s; }
+.plant-bottom-left  { clip-path: inset(50% 50% 0 0); --offset-x: -40%; --offset-y:  40%; transition-delay: 0.2s; }
+.plant-bottom-right { clip-path: inset(50% 0 0 50%); --offset-x:  40%; --offset-y:  40%; transition-delay: 0.3s; }
 
 /* Mushrooms (shrooms.png): slide up from below on a later tap. Same level as the character but
    later in the HTML, so they sit in front of it. */
-.layer-shrooms { z-index: 2; --dy: 20%; }
+.layer-shrooms { z-index: 2; --offset-y: 20%; }
 
 .layer-slide.is-visible { transform: none; }
 
@@ -224,11 +232,11 @@ body {
 /* Each cluster of particles also floats up and down, very slowly, in opposite directions: the
    same cycle, half a cycle apart, so one rises while the other sinks. The image splits cleanly at x = 1095 (of 2160): an empty gap between the
    clusters. The float moves the separate `translate` property, so it adds to the spin above. */
-.particles-l {
+.particles-left {
   clip-path: inset(0 calc(100% - 1095 / 2160 * 100%) 0 0);
   animation: particles-float 12s ease-in-out infinite;
 }
-.particles-r {
+.particles-right {
   clip-path: inset(0 0 0 calc(1095 / 2160 * 100%));
   animation: particles-float 12s ease-in-out -6s infinite; /* half a cycle ahead */
 }
@@ -241,8 +249,8 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .is-playing .levitator,
   .is-playing .layer-particles,
-  .particles-l,
-  .particles-r { animation: none; }
+  .particles-left,
+  .particles-right { animation: none; }
 }
 
 /* Only the colliders take taps (see index.html): everything else on the stage lets them through */
@@ -372,7 +380,7 @@ body {
   background: var(--color_bar-track); /* light and see-through: shows on the scene and on the dark sides */
   overflow: hidden;
 }
-.bar span {
+.bar-fill {
   display: block;
   height: 100%;
   transform: scaleX(0);
@@ -380,11 +388,11 @@ body {
 }
 
 /* Level: slides to each new step */
-.bar-level span {
+.bar-level .bar-fill {
   background: var(--color_ui);
   transition: transform 0.6s ease;
 }
 
 /* Loop: a playhead, updated every frame by script.js; lives in the bottom dock */
 .bar-loop { pointer-events: none; }
-.bar-loop span { background: var(--color_sun); }
+.bar-loop .bar-fill { background: var(--color_sun); }

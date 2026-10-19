@@ -13,6 +13,7 @@
 //             to its ending phrase (ukulele_intro_end), which plays once while the bass slowly fades out
 //   6th tap [character] → the spiral (aura.webp) appears above the head; the ukulele + birds loop
 //             starts once the ukulele's ending phrase has finished (right away if it already has)
+//             and the side leaves (plants_leaves_sides.png) slide in with it, behind the side plants
 //   7th tap [floor] → the mushrooms slide up from below
 //   8th tap [mushrooms] → the mushrooms light up
 //   taps after that → nothing yet (see STEPS below)
@@ -130,22 +131,29 @@ function resumeUkulele() {
 // ukulele finishing its pass, then its ending phrase) and starts from its first note right as the
 // ending finishes, then keeps looping. If the ending is already over it starts on the tap. The
 // ukulele and bass are already switched off by then (see endUkulele), so they're left alone.
-// Going back cancels the birds, whether they're still waiting or already playing.
+// The side leaves slide in at that same moment (right away if there's no audio).
+// Going back cancels the birds, whether they're still waiting or already playing, and the leaves.
 let birdsWanted = false;
+let leavesTimer;
+const showLeaves = () => layers('.leaves-sides').forward();
 
 function startBirds() {
   birdsWanted = true;
   ready.then(() => {
-    if (!birdsWanted || !engine.playing) return;
+    if (!birdsWanted) return;
+    if (!engine.playing) return showLeaves();
     const endingAt = engine.clipStart('ukulele_intro_end'); // null once the ending is over
     const at = endingAt === null ? undefined : endingAt + engine.duration('ukulele_intro_end');
     engine.playClip('ukulele_birds', at, { loop: true });
-  }, () => {});
+    leavesTimer = setTimeout(showLeaves, at === undefined ? 0 : (at - engine.ctx.currentTime) * 1000);
+  }, () => { if (birdsWanted) showLeaves(); });
 }
 
 function stopBirds() {
   birdsWanted = false;
   engine.stopClip('ukulele_birds');
+  clearTimeout(leavesTimer);
+  layers('.leaves-sides').back();
 }
 
 // The character gets its aura (and the bass comes in) as it starts rising out of the grass, and
@@ -203,7 +211,7 @@ const layers = (selector) => ({
 // The scene opens with no plants; the left side plant comes in a moment later (the right one on
 // the first tap).
 const FIRST_PLANT_DELAY = 1000; // ms after the page loads
-setTimeout(() => reveal(document.querySelectorAll('.plant-l')), FIRST_PLANT_DELAY);
+setTimeout(() => reveal(document.querySelectorAll('.plant-left')), FIRST_PLANT_DELAY);
 
 // --- Sun ray -----------------------------------------------------------------
 // Step 5: the corner plants are lit one at a time with a ray from the sun (the aura strand, which
@@ -360,12 +368,12 @@ document.addEventListener('pointerup', (e) => {
 // `tap` is a function handles its own taps; the function just says what to highlight right now.
 const STEPS = [
   {                                                     // 1: right side plant comes in
-    tap: '.plant-l',
+    tap: '.plant-left',
     forward: () => {
-      layers('.plant-r').forward();
+      layers('.plant-right').forward();
       scheduleWobble(SLIDE_IN + IDLE_DELAY); // the wobble waits for it to finish sliding in, too
     },
-    back: layers('.plant-r').back,
+    back: layers('.plant-right').back,
   },
   {                                                     // 2: side plants light up, ukulele starts
     tap: '.plants-sides',
@@ -392,9 +400,9 @@ const STEPS = [
     },
     back: () => { unlightCorners(); resumeUkulele(); },
   },
-  {                                                     // 6: the spiral appears above the head, ukulele + birds
+  {                                                     // 6: the spiral appears above the head, ukulele + birds, then side leaves
     tap: '.levitator',
-    forward: () => { layers('.layer-aura').forward(); startBirds(); },
+    forward: () => { layers('.layer-aura').forward(); startBirds(); }, // the leaves come with the birds
     back: () => { layers('.layer-aura').back(); stopBirds(); },
   },
   { tap: '.collider-floor', ...layers('.layer-shrooms') },             // 7: mushrooms slide up from below
@@ -463,8 +471,8 @@ function back() {
 // The loop bar, with the sound controls, stays hidden until the music is actually playing, and
 // hides again if it stops.
 const levelBar = document.querySelector('.bar-level');
-const levelFill = levelBar.querySelector('span');
-const loopFill = document.querySelector('.bar-loop span');
+const levelFill = levelBar.querySelector('.bar-fill');
+const loopFill = document.querySelector('.bar-loop .bar-fill');
 const soundDock = document.querySelector('.dock'); // the loop bar and the sound controls
 levelBar.setAttribute('aria-valuemax', STEPS.length);
 
@@ -554,12 +562,17 @@ applyVolume();
 //     music rather than idle time: see glowOnLoops)
 //   - once the character is levitating, the sun gives a little zoom bounce, until it's tapped;
 //     it also gives one on the first loop start after the bass comes in (see zoomSunOnNextLoop)
+//   - while the corner plants are lit with the sun's ray, the sun zooms the same way to show where
+//     to pick the ray up (not while it's held)
+//   - once the corner plants are lit, the character's aura gives the same zoom bounce, until it's tapped
 // Stepping back to those moments brings the hint back. Any interaction restarts the wait; a
 // wobble already under way finishes on its own instead of snapping back.
 const IDLE_DELAY = 3000; // ms without interaction before the first wobble
 const WOBBLE_EVERY = 4000; // ms between wobbles while still idle
 const SIDES_LIT = 2; // steps done once the side plants are lit (see STEPS)
 const SUN_NEXT = 3; // steps done when the sun is next (the character has risen)
+const RAY_NEXT = 4; // steps done when the corner plants are lit with the sun's ray
+const SPIRAL_NEXT = 5; // steps done once the corner plants are lit (the character is next)
 let idleTimer;
 
 // A damped sway: each plant tips in toward the centre (pivoting on the middle of its edge, see
@@ -578,7 +591,7 @@ const WOBBLE_FRAMES = [ // [tilt in degrees, vertical bob in %]
 
 function wobblePlants() {
   document.querySelectorAll('.plants-sides.is-visible').forEach((plant, i) => {
-    const dir = plant.classList.contains('plant-r') ? -1 : 1;
+    const dir = plant.classList.contains('plant-right') ? -1 : 1;
     plant.animate(
       WOBBLE_FRAMES.map(([deg, y]) => ({
         rotate: `${deg * dir}deg`,
@@ -651,11 +664,20 @@ function glowCharacter() {
   ], { duration: 900 });
 }
 
+// The aura behind the character does the same bounce, around its own centre (see style.css), so the
+// character itself stays the same size.
+function zoomAura() {
+  characterAura.animate([1, 1.05, 0.98, 1.015, 1].map((scale) => ({ scale: String(scale), easing: 'ease-in-out' })),
+    { duration: 900 });
+}
+
 // The hint for right now, if there is one. While the character is still rising, the sun's hint
 // isn't due yet, but it's on its way, so keep checking.
 function idleHint() {
   if (step < SIDES_LIT) return wobblePlants;
   if (step === SUN_NEXT) return document.body.classList.contains('is-playing') ? zoomSun : () => {};
+  if (step === RAY_NEXT) return rayHeld ? () => {} : zoomSun; // held: nothing to show, but keep checking
+  if (step === SPIRAL_NEXT) return zoomAura;
   return null;
 }
 

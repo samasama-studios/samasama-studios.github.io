@@ -5,7 +5,8 @@
 // Run from the game folder:  node tools/trace-colliders.mjs
 // Needs ImageMagick (`magick`) to read the images.
 //
-// How: each image's alpha is scaled down by SCALE and thresholded into a mask; the boundary
+// How: each image's alpha is scaled down by SCALE, thresholded into a mask and made coarser
+// (gaps filled, edges padded: see CLOSE_GAP and PAD); the boundary
 // between filled and empty pixels is followed into closed loops (outer edges clockwise, holes
 // counter-clockwise, so the default nonzero fill keeps the holes open), then simplified. With
 // FILL_HOLES the hole loops are dropped, so each shape is solid.
@@ -23,6 +24,15 @@ const MIN_AREA = 4; // drop specks smaller than this many traced pixels
 // Fill enclosed holes, so an outlined shape (a mushroom cap, a ring) can be tapped anywhere inside,
 // not just on its lines. Set to false for the exact visible shape, holes included.
 const FILL_HOLES = true;
+// Tap areas are coarser than the art, so a fingertip doesn't slip through: gaps narrower than
+// CLOSE_GAP (between leaves, flowers and stems) are filled in, then the outline is padded out by
+// PAD all round. In sprite pixels; set both to 0 to trace the art exactly.
+const CLOSE_GAP = 80;
+const PAD = 12;
+// Then each separate piece (a plant, the character…) is wrapped in its convex hull: the tightest
+// outline with no dents, like a rubber band round it, so the gaps between fronds, stems and
+// flowers can be tapped too. Set to false to keep the padded outline's shape.
+const HULL = true;
 
 // The sprites used in the scene (index.html), in stacking order.
 const LAYERS = [
@@ -40,11 +50,24 @@ const LAYERS = [
   'sun.webp',
 ];
 
+// Tap areas that also take in other images: a corner plant's area covers its glow too
+// (plants_corners_light.png), so it reaches a little past the flower.
+const ALSO = {
+  'plants_corner.png': ['plants_corners_light.png'],
+};
+
 const N = SIZE / SCALE;
 
+// Closing (grow, then shrink back) fills the gaps; growing again pads. Disk radii in traced pixels.
 function readMask(file) {
+  const radius = (px) => Math.round(px / 2 / SCALE);
+  const shape = [
+    ...(CLOSE_GAP ? ['-morphology', 'Close', `Disk:${radius(CLOSE_GAP)}`] : []),
+    ...(PAD ? ['-morphology', 'Dilate', `Disk:${radius(PAD * 2)}`] : []),
+  ];
   const alpha = execFileSync('magick', [
-    `${SPRITES}/${file}`, '-alpha', 'extract', '-resize', `${N}x${N}!`, '-depth', '8', 'gray:-',
+    `${SPRITES}/${file}`, '-alpha', 'extract', '-resize', `${N}x${N}!`,
+    '-threshold', `${(ALPHA_MIN / 255) * 100}%`, ...shape, '-depth', '8', 'gray:-',
   ], { maxBuffer: N * N * 2 });
   return Uint8Array.from(alpha, (a) => (a >= ALPHA_MIN ? 1 : 0));
 }
@@ -133,11 +156,28 @@ function pathData(loops) {
   return loops.map((pts) => 'M' + pts.map(([x, y]) => `${x * SCALE} ${y * SCALE}`).join('L') + 'Z').join('');
 }
 
+// Convex hull of a loop's points (Andrew's monotone chain), clockwise like an outer loop.
+function hull(pts) {
+  const p = [...pts].sort(([ax, ay], [bx, by]) => ax - bx || ay - by);
+  const cross = ([ox, oy], [ax, ay], [bx, by]) => (ax - ox) * (by - oy) - (ay - oy) * (bx - ox);
+  const half = (list) => list.reduce((h, q) => {
+    while (h.length >= 2 && cross(h[h.length - 2], h[h.length - 1], q) <= 0) h.pop();
+    h.push(q);
+    return h;
+  }, []);
+  const lower = half(p);
+  const upper = half([...p].reverse());
+  const h = [...lower.slice(0, -1), ...upper.slice(0, -1)];
+  return area(h) < 0 ? h.reverse() : h;
+}
+
 function trace(file) {
-  const loops = traceLoops(readMask(file))
+  const mask = readMask(file);
+  for (const other of ALSO[file] ?? []) readMask(other).forEach((on, i) => { if (on) mask[i] = 1; });
+  const loops = traceLoops(mask)
     .filter((pts) => Math.abs(area(pts)) >= MIN_AREA)
     .filter((pts) => !FILL_HOLES || area(pts) > 0) // holes run the other way round: negative area
-    .map((pts) => simplifyLoop(pts, TOLERANCE))
+    .map((pts) => (HULL && area(pts) > 0 ? hull(pts) : simplifyLoop(pts, TOLERANCE)))
     .filter((pts) => pts.length >= 3);
   return pathData(loops);
 }
