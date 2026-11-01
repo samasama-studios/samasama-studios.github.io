@@ -6,12 +6,15 @@
   --color_sun: #fbe08a;          /* the sun's yellow: the music loop bar */
   --color_debug-target: #ff0000; /* D: the collider to tap now */
   --color_glow: #ffffff;         /* D: the other colliders; H: the hint glow */
+  --color_opening: #000000;      /* the black the page opens on */
+  --color_handoff: #e2fde1;      /* the band site's bar, which the progress bar takes over from */
 
   --color_dock-bg: color-mix(in srgb, var(--color_page) 75%, transparent);
   --color_bar-track: color-mix(in srgb, var(--color_ui) 25%, transparent);
   --color_debug-collider: color-mix(in srgb, var(--color_glow) 25%, transparent);
   --color_debug-collider-target: color-mix(in srgb, var(--color_debug-target) 40%, transparent);
   --color_hint: color-mix(in srgb, var(--color_glow) 50%, transparent);
+  --color_handoff-glow: color-mix(in srgb, var(--color_handoff) 60%, transparent);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,6 +30,32 @@ body {
   justify-content: center;
   min-height: 100vh;
   min-height: 100dvh;
+}
+
+/* Opening: the page opens on black (index.html sets .is-opening before anything paints), under a
+   black curtain over everything that fades out once the scene's first frame is ready (see Opening
+   in script.js). Until then the scene's loops wait, so they start with the fade, and the curtain
+   takes the taps. Without JavaScript there's no .is-opening, so no curtain. */
+.is-opening { background: var(--color_opening); }
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 11; /* over the progress bar and the dock too */
+  background: var(--color_opening);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.is-opening body::after {
+  opacity: 1;
+  pointer-events: auto;
+}
+.is-opening .stage,
+.is-opening .stage * { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  body::after { transition-duration: 0.2s; }
 }
 
 /* Square stage: as large as possible while fitting the viewport */
@@ -60,7 +89,6 @@ body {
 /* Images not loaded yet (data-src only) would otherwise draw Chrome's empty-image outline */
 .stage img:not([src]) { visibility: hidden; }
 
-.layer-background { z-index: 0; }
 .layer-floor,
 .layer-particles { z-index: 1; } /* particles come after the floor in the HTML, so they sit on top of it */
 
@@ -93,10 +121,15 @@ body {
   transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Side plants (plants_sides.png): come in horizontally, the left one as the page loads and the
-   right one on the first tap */
+/* Side plants (plants_sides.png): come in horizontally, the right one as the page loads and the
+   left one on a later tap */
 .plant-left  { clip-path: inset(0 50% 0 0); --offset-x: -20%; }
 .plant-right { clip-path: inset(0 0 0 50%); --offset-x:  20%; }
+
+/* The right plant first comes in only partway, its tip showing, to be pulled in the rest of the
+   way (see Pulling the right plant in, script.js). --peek is how far it stays pushed out. */
+.plant-right { --peek: 7%; }
+.plant-right.is-peeking.is-visible { transform: translateX(var(--peek)); }
 
 /* Side leaves (plants_leaves_sides.png): come in horizontally like the side plants, as the
    ukulele's ending phrase finishes (see startBirds in script.js), the right one a moment after the left */
@@ -108,8 +141,8 @@ body {
    around that point */
 .plant-left { transform-origin: 0 50%; }
 .plant-right { transform-origin: 100% 50%; }
-/* Lit versions (plants_sides_light.png, plants_corners_light.png, shrooms_light.png): sit on top
-   of their layer and fade in on a later tap */
+/* Lit versions (plants_sides_light.png, shrooms_light.png) sit on top of their layer, and the corner
+   plants' glows (plants_corners_light.png) behind theirs; all fade in on a later tap */
 .layer-light {
   opacity: 0;
   transition: opacity 0.8s ease;
@@ -121,6 +154,24 @@ body {
 .plant-top-right    { clip-path: inset(0 0 50% 50%); --offset-x:  40%; --offset-y: -40%; transition-delay: 0.1s; }
 .plant-bottom-left  { clip-path: inset(50% 50% 0 0); --offset-x: -40%; --offset-y:  40%; transition-delay: 0.2s; }
 .plant-bottom-right { clip-path: inset(50% 0 0 50%); --offset-x:  40%; --offset-y:  40%; transition-delay: 0.3s; }
+
+/* Each corner plant's glow (plants_corners_light.png, behind the plant) gently zooms in and out
+   once it's lit, around its own bulb (the glows' centres in that image, out of 2160). */
+.plant-top-left     { --glow: calc(586 / 2160 * 100%) calc(442 / 2160 * 100%); }
+.plant-top-right    { --glow: calc(1676 / 2160 * 100%) calc(523 / 2160 * 100%); }
+.plant-bottom-left  { --glow: calc(554 / 2160 * 100%) calc(1535 / 2160 * 100%); }
+.plant-bottom-right { --glow: calc(1561 / 2160 * 100%) calc(1689 / 2160 * 100%); }
+.plants-corner .layer-light { transform-origin: var(--glow); }
+.plants-corner .layer-light.is-visible { animation: glow-zoom 3s ease-in-out infinite; }
+
+@keyframes glow-zoom {
+  0%, 100% { scale: 1; }
+  50%      { scale: 1.25; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plants-corner .layer-light.is-visible { animation: none; }
+}
 
 /* Mushrooms (shrooms.png): slide up from below on a later tap. Same level as the character but
    later in the HTML, so they sit in front of it. */
@@ -180,7 +231,7 @@ body {
 }
 
 /* The sun's ray (the aura strand, hanging from the sun): fades in when picked up. script.js builds
-   it from slices of aura.webp (top, repeated twists, tail), sizes and places it, and turns it on the
+   it from slices of sun_ray.webp (top, repeated twists, tail), sizes and places it, and turns it on the
    point where it hangs to reach the pointer. Same level as the sun but earlier in the HTML, so it
    comes out from behind it. */
 .layer-ray {
@@ -199,10 +250,10 @@ body {
 }
 .ray-strand > div {
   flex: none;
-  background: url(assets/sprites/aura.webp) no-repeat;
+  background: url(assets/sprites/sun_ray.webp) no-repeat;
 }
 
-/* The spiral above the head (aura.webp): fades in on a later tap, floating with the character */
+/* The spiral above the head (sun_ray.webp): fades in on a later tap, floating with the character */
 .layer-aura {
   opacity: 0;
   transition: opacity 1.2s ease;
@@ -391,6 +442,40 @@ body {
 .bar-level .bar-fill {
   background: var(--color_ui);
   transition: transform 0.6s ease;
+}
+
+/* Handoff from the band site (.is-handoff, see index.html): the level bar opens as the site's bar
+   left it, full, thin and glowing along the very top, over the black. As the scene fades in
+   (script.js swaps .is-handoff for .is-handing-over), it settles into its own place and look: it
+   drops into its gutter, narrows to the square and thickens, and the site's colour and glow fade
+   into its own empty track. */
+.is-handoff .progress {
+  z-index: 12; /* over the opening curtain */
+  top: 0;
+  width: 100vw;
+}
+.is-handoff .bar-level {
+  height: 2px;
+  border-radius: 0;
+  background: var(--color_handoff);
+  box-shadow: 0 0 8px var(--color_handoff-glow);
+}
+.is-handing-over .progress { z-index: 12; }
+.is-handing-over .bar-level { box-shadow: 0 0 8px transparent; } /* so the glow fades rather than snapping off */
+.is-handing-over .progress,
+.is-handing-over .bar-level {
+  transition-property: top, width, height, border-radius, background-color, box-shadow;
+  transition-duration: 0.8s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reduced motion: it takes its place at once, and only its colour fades */
+@media (prefers-reduced-motion: reduce) {
+  .is-handing-over .progress,
+  .is-handing-over .bar-level {
+    transition-property: background-color, box-shadow;
+    transition-duration: 0.2s;
+  }
 }
 
 /* Loop: a playhead, updated every frame by script.js; lives in the bottom dock */

@@ -1,24 +1,38 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Saliendo de Ficción</title>
+  <!-- Open on black (see Opening in style.css and script.js), set before anything paints. Without
+       JavaScript the class is never set, so the scene shows as usual. Coming from the band site
+       (once per session), the progress bar first takes over from the site's own bar. -->
+  <script>
+    (() => {
+      const root = document.documentElement;
+      root.classList.add('is-opening');
+      try {
+        if (document.referrer.startsWith('https://araukaaria.ee') && !sessionStorage.getItem('saliendo-handoff')) {
+          sessionStorage.setItem('saliendo-handoff', '1');
+          root.classList.add('is-handoff');
+        }
+      } catch {}
+      // In case script.js never gets there (it fails to load, or throws), don't stay black
+      setTimeout(() => root.classList.remove('is-opening', 'is-handoff'), 4000);
+    })();
+  </script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <!-- Progress bar along the top: the scene's steps -->
   <div class="progress">
-    <div class="bar bar-level" role="progressbar" aria-label="Progreso" aria-valuemin="0" aria-valuenow="0"><span class="bar-fill"></span></div>
+    <div class="bar bar-level" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuenow="0"><span class="bar-fill"></span></div>
   </div>
 
   <main class="stage">
     <!-- Each tappable object carries a collider: an SVG of its visible shape (assets/colliders, made by
          tools/trace-colliders.mjs), inside the object so it moves with it. Only the colliders take
          taps, and each step only advances from its own object (see STEPS in script.js). -->
-    <!-- On hold: the stage's background colour replaces this for now.
-    <img class="layer-background" src="assets/sprites/background.webp" alt="" aria-hidden="true">
-    -->
     <img class="layer-floor" src="assets/sprites/floor.png" alt="" aria-hidden="true">
     <svg class="collider collider-floor" viewBox="0 0 2160 2160" aria-hidden="true"><use href="assets/colliders/floor.svg#floor"/></svg>
     <!-- The particles: shown twice, each copy clipped to one of the image's two clusters, so each
@@ -34,9 +48,9 @@
         <!-- The aura, behind the character. Loaded up front (but invisible) so it's ready to fade in
              the moment the character starts to rise -->
         <img class="layer-particular-aura" src="assets/sprites/particular_aura.png" alt="" aria-hidden="true">
-        <img class="layer-foreground" src="assets/sprites/particular.webp" alt="Personaje meditando">
+        <img class="layer-foreground" src="assets/sprites/particular.webp" alt="Meditating character">
         <!-- The spiral above the head: not loaded up front; fades in on a later tap -->
-        <img class="layer-aura" data-src="assets/sprites/aura.webp" alt="" aria-hidden="true">
+        <img class="layer-aura" data-src="assets/sprites/sun_ray.webp" alt="" aria-hidden="true">
         <svg class="collider" viewBox="0 0 2160 2160" aria-hidden="true"><use href="assets/colliders/particular.svg#particular"/></svg>
       </div>
     </div>
@@ -52,7 +66,8 @@
          the spiral appears above the character's head. Not tappable, so no collider. -->
     <img class="layer-slide leaves-sides leaves-left" data-src="assets/sprites/plants_leaves_sides.png" alt="" aria-hidden="true">
     <img class="layer-slide leaves-sides leaves-right" data-src="assets/sprites/plants_leaves_sides.png" alt="" aria-hidden="true">
-    <!-- Side plants: the left one slides in a second after load, the right one on the first tap.
+    <!-- Side plants: the right one slides partway in a second after load (.is-peeking: its tip
+         showing) to be pulled in the rest of the way; the left one comes in on the next tap.
          Each one is grouped with its lit version so the light moves with the plant; the light isn't
          loaded up front and fades in on a later tap. -->
     <div class="layer-slide plants-sides plant-left" aria-hidden="true">
@@ -60,34 +75,36 @@
       <img class="layer-light" data-src="assets/sprites/plants_sides_light.png" alt="">
       <svg class="collider" viewBox="0 0 2160 2160"><use href="assets/colliders/plants_sides.svg#plants_sides"/></svg>
     </div>
-    <div class="layer-slide plants-sides plant-right" aria-hidden="true">
+    <div class="layer-slide plants-sides plant-right is-peeking" aria-hidden="true">
       <img src="assets/sprites/plants_sides.png" alt="">
       <img class="layer-light" data-src="assets/sprites/plants_sides_light.png" alt="">
       <svg class="collider" viewBox="0 0 2160 2160"><use href="assets/colliders/plants_sides.svg#plants_sides"/></svg>
     </div>
     <!-- Corner plants: not loaded up front; script.js sets src from data-src when they come in.
-         Each one is grouped with its lit version, which is loaded and faded in on a later tap. -->
+         Each one is grouped with its glow (just the light round its bulb), which is loaded and faded
+         in on a later tap. The glow comes first so it sits behind the plant, shining through the
+         bulb's ring. -->
     <div class="layer-slide plants-corner plant-top-left" aria-hidden="true">
-      <img data-src="assets/sprites/plants_corner.png" alt="">
       <img class="layer-light" data-src="assets/sprites/plants_corners_light.png" alt="">
+      <img data-src="assets/sprites/plants_corner.png" alt="">
       <svg class="collider" viewBox="0 0 2160 2160"><use href="assets/colliders/plants_corner.svg#plants_corner"/></svg>
     </div>
     <div class="layer-slide plants-corner plant-top-right" aria-hidden="true">
-      <img data-src="assets/sprites/plants_corner.png" alt="">
       <img class="layer-light" data-src="assets/sprites/plants_corners_light.png" alt="">
+      <img data-src="assets/sprites/plants_corner.png" alt="">
       <svg class="collider" viewBox="0 0 2160 2160"><use href="assets/colliders/plants_corner.svg#plants_corner"/></svg>
     </div>
     <div class="layer-slide plants-corner plant-bottom-left" aria-hidden="true">
-      <img data-src="assets/sprites/plants_corner.png" alt="">
       <img class="layer-light" data-src="assets/sprites/plants_corners_light.png" alt="">
+      <img data-src="assets/sprites/plants_corner.png" alt="">
       <svg class="collider" viewBox="0 0 2160 2160"><use href="assets/colliders/plants_corner.svg#plants_corner"/></svg>
     </div>
     <div class="layer-slide plants-corner plant-bottom-right" aria-hidden="true">
-      <img data-src="assets/sprites/plants_corner.png" alt="">
       <img class="layer-light" data-src="assets/sprites/plants_corners_light.png" alt="">
+      <img data-src="assets/sprites/plants_corner.png" alt="">
       <svg class="collider" viewBox="0 0 2160 2160"><use href="assets/colliders/plants_corner.svg#plants_corner"/></svg>
     </div>
-    <!-- The sun's ray: the aura strand (aura.webp), which hangs from the sun, rebuilt from slices so
+    <!-- The sun's ray: the aura strand (sun_ray.webp), which hangs from the sun, rebuilt from slices so
          it can reach any length. Hidden until the player picks it up from the sun to light the
          corner plants (see "Sun ray" in script.js, which fills it in). -->
     <div class="layer-ray" aria-hidden="true"></div>
@@ -104,15 +121,15 @@
        Taps on the controls don't advance the scene (see script.js). -->
   <div class="dock">
     <div class="bar bar-loop" aria-hidden="true"><span class="bar-fill"></span></div>
-    <div class="controls" role="group" aria-label="Sonido">
-      <button class="mute" type="button" aria-label="Silenciar" aria-pressed="false" aria-keyshortcuts="M" title="Silenciar (M)">
+    <div class="controls" role="group" aria-label="Sound">
+      <button class="mute" type="button" aria-label="Mute" aria-pressed="false" aria-keyshortcuts="M" title="Mute (M)">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path class="speaker" d="M4 9h4l5-4v14l-5-4H4z" />
           <g class="icon-on"><path d="M16 8.5a4.5 4.5 0 0 1 0 7" /><path d="M18.5 6a8 8 0 0 1 0 12" /></g>
           <g class="icon-off"><path d="M16.5 9.5l5 5" /><path d="M21.5 9.5l-5 5" /></g>
         </svg>
       </button>
-      <input class="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volumen">
+      <input class="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
     </div>
   </div>
 

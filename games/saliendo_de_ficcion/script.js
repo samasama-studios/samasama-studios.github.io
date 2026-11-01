@@ -1,21 +1,24 @@
 // Page wiring: connects taps to the scene. Like a puzzle, each step only advances when its own
 // object is tapped (the tap areas follow each object's shape; press D to see them).
 // Current flow (the object to tap in brackets):
-//   on load → no plants yet; the sun and particles are already there
-//   1 s later → the left side plant comes in (no tap needed)
-//   1st tap [left plant] → the right side plant comes in
-//   2nd tap [a side plant] → the side plants light up and the ukulele starts
-//   3rd tap [character] → the character gets its aura and the bass comes in; it slowly rises
+//   on load → black, then the scene fades in (see Opening below): no plants yet; the sun and
+//             particles are already there
+//   1 s into the fade → the right side plant comes in partway, its tip showing (no tap needed)
+//   1st step [pull the right plant in from the right half of the screen, or tap it] → it comes all
+//             the way in (see Pulling the right plant in below)
+//   2nd tap [right plant] → the left side plant comes in
+//   3rd tap [a side plant] → the side plants light up and the ukulele starts
+//   4th tap [character] → the character gets its aura and the bass comes in; it slowly rises
 //             to the centre, then starts levitating
-//   4th tap [sun] → the corner plants come in
-//   5th step [sun, then a corner plant; four times] → each corner plant is lit with the sun's ray
+//   5th tap [sun] → the corner plants come in
+//   6th step [sun, then a corner plant; four times] → each corner plant is lit with the sun's ray
 //             (see Sun ray below); once all four are, at the next loop start the ukulele hands over
 //             to its ending phrase (ukulele_intro_end), which plays once while the bass slowly fades out
-//   6th tap [character] → the spiral (aura.webp) appears above the head; the ukulele + birds loop
+//   7th tap [character] → the spiral (sun_ray.webp) appears above the head; the ukulele + birds loop
 //             starts once the ukulele's ending phrase has finished (right away if it already has)
 //             and the side leaves (plants_leaves_sides.png) slide in with it, behind the side plants
-//   7th tap [floor] → the mushrooms slide up from below
-//   8th tap [mushrooms] → the mushrooms light up
+//   8th tap [floor] → the mushrooms slide up from below
+//   9th tap [mushrooms] → the mushrooms light up
 //   taps after that → nothing yet (see STEPS below)
 // ← steps back (each step animates in reverse); → / Space / Enter step forward without needing the
 // right object (handy while building, and for keyboard players); M mutes; D shows/hides the tap
@@ -208,10 +211,33 @@ const layers = (selector) => ({
   back: () => hide(document.querySelectorAll(selector)),
 });
 
-// The scene opens with no plants; the left side plant comes in a moment later (the right one on
-// the first tap).
-const FIRST_PLANT_DELAY = 1000; // ms after the page loads
-setTimeout(() => reveal(document.querySelectorAll('.plant-left')), FIRST_PLANT_DELAY);
+// --- Opening -----------------------------------------------------------------
+// The page opens on black (.is-opening, see index.html and style.css). Once the images in the
+// scene's first frame have decoded (or after OPEN_TIMEOUT at the latest, so it never hangs), the
+// black fades away, and the scene's own opening (its loops, the right plant, the idle hint's wait)
+// starts with the fade. Coming from the band site, the progress bar settles from the site's bar
+// into its own look at the same time (see Handoff in style.css).
+const OPEN_TIMEOUT = 2500; // ms
+const HANDOVER = 800; // ms, the bar's handover (see .is-handing-over in style.css)
+const firstFrame = document.querySelectorAll('.layer-floor, .layer-particles img, .layer-foreground, .layer-sun');
+
+const opened = Promise.race([
+  Promise.all([...firstFrame].map((img) => img.decode().catch(() => {}))), // a broken image shouldn't hold it up
+  new Promise((resolve) => setTimeout(resolve, OPEN_TIMEOUT)),
+]).then(() => {
+  const root = document.documentElement;
+  if (root.classList.contains('is-handoff')) {
+    root.classList.replace('is-handoff', 'is-handing-over');
+    setTimeout(() => root.classList.remove('is-handing-over'), HANDOVER);
+  }
+  root.classList.remove('is-opening');
+});
+// -----------------------------------------------------------------------------
+
+// The scene opens with no plants; the right side plant comes in partway a moment later, to be
+// pulled in the rest of the way (the left one comes in on the tap after that).
+const FIRST_PLANT_DELAY = 1000; // ms after the scene starts fading in
+opened.then(() => setTimeout(() => reveal(document.querySelectorAll('.plant-right')), FIRST_PLANT_DELAY));
 
 // --- Sun ray -----------------------------------------------------------------
 // Step 5: the corner plants are lit one at a time with a ray from the sun (the aura strand, which
@@ -221,7 +247,7 @@ setTimeout(() => reveal(document.querySelectorAll('.plant-left')), FIRST_PLANT_D
 // be picked up again. Tapping the sun while holding the ray puts it back. Once all four corner
 // plants are lit, the step completes.
 //
-// So it can grow without its dots stretching, the ray is stacked from slices of aura.webp: the top
+// So it can grow without its dots stretching, the ray is stacked from slices of sun_ray.webp: the top
 // (where it hangs from the sun), one twist of the helix repeated as many times as the reach needs,
 // and the tail down to the bright tip dot. The cuts fall in the gaps between dots where the two
 // strands cross, so the repeats join up; with one twist it's the strand exactly as drawn. In
@@ -253,7 +279,7 @@ function makeStrand() {
 
 const strands = [makeStrand(), makeStrand()]; // fewer twists, one twist more
 
-// Show `top`–`bottom` of aura.webp in a slice, stretched down by `s` (k: screen px per sprite px).
+// Show `top`–`bottom` of sun_ray.webp in a slice, stretched down by `s` (k: screen px per sprite px).
 function raySlice(el, top, bottom, k, s) {
   el.style.height = `${(bottom - top) * k * s}px`;
   el.style.backgroundSize = `${2160 * k}px ${2160 * k * s}px`;
@@ -302,7 +328,7 @@ function sizeRay(reach) {
 }
 
 const RAY_REACH = Math.hypot(TIP_DX, HEAD + TWIST + TAIL); // as drawn
-sizeRay(RAY_REACH); // build it up front, so aura.webp is loaded before it's first picked up
+sizeRay(RAY_REACH); // build it up front, so sun_ray.webp is loaded before it's first picked up
 
 // The ray starts where the sun was pressed: a short stub under the finger, growing as it's
 // aimed. (Hanging at its drawn length, its tip would sit right over the character's head, looking
@@ -363,34 +389,86 @@ document.addEventListener('pointerup', (e) => {
 });
 // -----------------------------------------------------------------------------
 
+// --- Pulling the right plant in ---------------------------------------------------
+// Step 1: the right plant peeks in from the edge (.is-peeking) and is pulled in the rest of the way.
+// Phones use edge swipes for Back, so the pull doesn't have to start on the plant: it can start
+// anywhere on the right half of the stage, and the plant follows the finger leftwards. Let go
+// once it's pulled far enough and it comes all the way in; otherwise it springs back. A plain
+// tap on the plant also brings it in, so nobody gets stuck.
+const PULL_ZONE = 0.5; // the pull can start anywhere right of this share of the stage's width
+const PULL_DONE = 0.4; // share of the way it must be pulled to come in when let go
+const PULL_SLOP = 6; // px a press can move and still count as a tap
+const plantRight = document.querySelector('.plant-right');
+let pull = null; // while pulling: { x: where it started, reach: px to pull it all the way, ... }
+let swallowClickUntil = 0; // the click that follows a pull (or a tap handled here) is ignored
+
+document.addEventListener('pointerdown', (e) => {
+  if (step !== PULL_NEXT || !plantRight.classList.contains('is-visible')) return;
+  const stage = document.querySelector('.stage').getBoundingClientRect();
+  if (e.clientX < stage.left + stage.width * PULL_ZONE) return;
+  const peek = parseFloat(getComputedStyle(plantRight).getPropertyValue('--peek')) / 100;
+  pull = { x: e.clientX, reach: stage.width * peek, peek, share: 0, moved: false,
+           onPlant: Boolean(e.target.closest?.('.plant-right')) };
+  plantRight.style.transition = 'none'; // follows the finger directly
+});
+
+document.addEventListener('pointermove', (e) => {
+  if (!pull) return;
+  const dx = pull.x - e.clientX; // leftwards is positive
+  if (Math.abs(dx) > PULL_SLOP) pull.moved = true;
+  pull.share = Math.min(1, Math.max(0, dx / pull.reach));
+  plantRight.style.transform = `translateX(${pull.peek * (1 - pull.share) * 100}%)`;
+});
+
+function endPull(e) {
+  if (!pull) return;
+  const done = e.type === 'pointerup' && (pull.moved ? pull.share >= PULL_DONE : pull.onPlant);
+  pull = null;
+  // Back to the stylesheet's transform, transitioning from wherever the finger left it.
+  plantRight.style.transition = '';
+  plantRight.style.transform = '';
+  if (done) {
+    swallowClickUntil = performance.now() + 500;
+    forward();
+  }
+}
+document.addEventListener('pointerup', endPull);
+document.addEventListener('pointercancel', endPull);
+// -----------------------------------------------------------------------------
+
 // The scene's steps, in order. Each one goes forward when its object is tapped (`tap`: matched
 // against the tapped collider and its parents), or on → / Space / Enter; ← goes back. A step whose
 // `tap` is a function handles its own taps; the function just says what to highlight right now.
 const STEPS = [
-  {                                                     // 1: right side plant comes in
-    tap: '.plant-left',
+  {                                                     // 1: right side plant pulled in the rest of the way
+    tap: () => '.plant-right', // pulled or tapped: handled in Pulling the right plant in
+    forward: () => plantRight.classList.remove('is-peeking'),
+    back: () => plantRight.classList.add('is-peeking'),
+  },
+  {                                                     // 2: left side plant comes in
+    tap: '.plant-right',
     forward: () => {
-      layers('.plant-right').forward();
+      layers('.plant-left').forward();
       scheduleWobble(SLIDE_IN + IDLE_DELAY); // the wobble waits for it to finish sliding in, too
     },
-    back: layers('.plant-right').back,
+    back: layers('.plant-left').back,
   },
-  {                                                     // 2: side plants light up, ukulele starts
+  {                                                     // 3: side plants light up, ukulele starts
     tap: '.plants-sides',
     forward: () => { layers('.plants-sides .layer-light').forward(); startMusic(); glowOnLoops(); },
     back: () => { layers('.plants-sides .layer-light').back(); stopMusic(); },
   },
-  {                                                     // 3: aura + bass, character rises, levitates
+  {                                                     // 4: aura + bass, character rises, levitates
     tap: '.levitator',
     forward: rise,
     back: () => { sink(); glowOnLoops(); }, // back to waiting for the character: its glow resumes
   },
-  {                                                     // 4: corner plants come in
+  {                                                     // 5: corner plants come in
     tap: '.collider-sun',
     forward: layers('.plants-corner').forward,
     back: () => { layers('.plants-corner').back(); unlightCorners(); }, // any lit with the ray so far
   },
-  {                                                     // 5: corner plants lit with the sun's ray, ukulele ending phrase
+  {                                                     // 6: corner plants lit with the sun's ray, ukulele ending phrase
     ray: true,
     tap: () => (rayHeld ? '.plants-corner:not(.is-lit)' : '.collider-sun'),
     forward: () => { // all lit (the → key lights any the ray hasn't)
@@ -400,13 +478,13 @@ const STEPS = [
     },
     back: () => { unlightCorners(); resumeUkulele(); },
   },
-  {                                                     // 6: the spiral appears above the head, ukulele + birds, then side leaves
+  {                                                     // 7: the spiral appears above the head, ukulele + birds, then side leaves
     tap: '.levitator',
     forward: () => { layers('.layer-aura').forward(); startBirds(); }, // the leaves come with the birds
     back: () => { layers('.layer-aura').back(); stopBirds(); },
   },
-  { tap: '.collider-floor', ...layers('.layer-shrooms') },             // 7: mushrooms slide up from below
-  { tap: '.layer-shrooms', ...layers('.layer-shrooms .layer-light') }, // 8: mushrooms light up
+  { tap: '.collider-floor', ...layers('.layer-shrooms') },             // 8: mushrooms slide up from below
+  { tap: '.layer-shrooms', ...layers('.layer-shrooms .layer-light') }, // 9: mushrooms light up
 ];
 
 let step = 0; // how many steps are currently done
@@ -510,7 +588,7 @@ function applyVolume() {
   const v = Number(volumeSlider.value);
   engine.setVolume(muted ? 0 : v * v);
   muteButton.setAttribute('aria-pressed', String(muted));
-  muteButton.setAttribute('aria-label', muted ? 'Activar sonido' : 'Silenciar');
+  muteButton.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
   muteButton.title = `${muteButton.getAttribute('aria-label')} (M)`;
 }
 
@@ -556,7 +634,8 @@ applyVolume();
 // --- Idle hint ---------------------------------------------------------------
 // If nobody interacts for a few seconds, what to tap next moves to invite a tap, then again
 // every few seconds:
-//   - until the side plants light up, the side plants that are in (the left one, then both) wobble
+//   - while the right plant peeks in, it gives a little tug inward, as if pulled
+//   - until the side plants light up, the side plants that are in (the right one, then both) wobble
 //   - once they're lit, the character glows for a moment with its aura (particular_aura.png) on
 //     every ukulele loop start, starting with the second, until it's tapped (that one follows the
 //     music rather than idle time: see glowOnLoops)
@@ -569,10 +648,11 @@ applyVolume();
 // wobble already under way finishes on its own instead of snapping back.
 const IDLE_DELAY = 3000; // ms without interaction before the first wobble
 const WOBBLE_EVERY = 4000; // ms between wobbles while still idle
-const SIDES_LIT = 2; // steps done once the side plants are lit (see STEPS)
-const SUN_NEXT = 3; // steps done when the sun is next (the character has risen)
-const RAY_NEXT = 4; // steps done when the corner plants are lit with the sun's ray
-const SPIRAL_NEXT = 5; // steps done once the corner plants are lit (the character is next)
+const PULL_NEXT = 0; // steps done while the right plant waits to be pulled in
+const SIDES_LIT = 3; // steps done once the side plants are lit (see STEPS)
+const SUN_NEXT = 4; // steps done when the sun is next (the character has risen)
+const RAY_NEXT = 5; // steps done when the corner plants are lit with the sun's ray
+const SPIRAL_NEXT = 6; // steps done once the corner plants are lit (the character is next)
 let idleTimer;
 
 // A damped sway: each plant tips in toward the centre (pivoting on the middle of its edge, see
@@ -583,14 +663,15 @@ let idleTimer;
 // ≈ 0.5% of the stage's width; PUSH_PER_DEG adds some margin to that.
 // Animates the separate `translate` and `rotate` properties, so it doesn't disturb the slide-in
 // transform. Percentages are relative to the layer's (square) size, so it scales with the screen.
-// The right plant mirrors the left one, and follows a moment after it so they don't move in unison.
+// The left plant mirrors the right one, and follows a moment after it (in the order they came in)
+// so they don't move in unison.
 const PUSH_PER_DEG = 0.6; // % of the stage's width pushed out per degree of tilt
 const WOBBLE_FRAMES = [ // [tilt in degrees, vertical bob in %]
   [0, 0], [3, -0.8], [-2, 0.5], [1, -0.2], [0, 0],
 ];
 
 function wobblePlants() {
-  document.querySelectorAll('.plants-sides.is-visible').forEach((plant, i) => {
+  [...document.querySelectorAll('.plants-sides.is-visible')].reverse().forEach((plant, i) => {
     const dir = plant.classList.contains('plant-right') ? -1 : 1;
     plant.animate(
       WOBBLE_FRAMES.map(([deg, y]) => ({
@@ -600,6 +681,13 @@ function wobblePlants() {
       { duration: 700, delay: i * 300, easing: 'ease-in-out' }
     );
   });
+}
+
+// The peeking right plant is tugged inward a little and springs back, hinting it can be pulled in.
+// Animates the separate `translate` property, so it adds to the peeking transform.
+function tugPlant() {
+  plantRight.animate([0, -2.5, 0.6, -1, 0].map((x) => ({ translate: `${x}% 0`, easing: 'ease-in-out' })),
+    { duration: 900 });
 }
 
 // The sun swells a little, dips below its size and settles, around its centre (see .sun).
@@ -674,6 +762,7 @@ function zoomAura() {
 // The hint for right now, if there is one. While the character is still rising, the sun's hint
 // isn't due yet, but it's on its way, so keep checking.
 function idleHint() {
+  if (step === PULL_NEXT) return plantRight.classList.contains('is-visible') ? tugPlant : () => {};
   if (step < SIDES_LIT) return wobblePlants;
   if (step === SUN_NEXT) return document.body.classList.contains('is-playing') ? zoomSun : () => {};
   if (step === RAY_NEXT) return rayHeld ? () => {} : zoomSun; // held: nothing to show, but keep checking
@@ -694,10 +783,10 @@ function scheduleWobble(delay) {
 
 ['pointerdown', 'keydown', 'input'].forEach((type) =>
   document.addEventListener(type, () => scheduleWobble(IDLE_DELAY), true));
-// The first wobble waits a full idle delay after the left plant has come in and finished sliding
+// The first wobble waits a full idle delay after the right plant has come in and finished sliding
 // (and so does the first one with both plants, see STEPS).
 const SLIDE_IN = 1400; // ms, the plants' slide-in (see .layer-slide in style.css)
-scheduleWobble(FIRST_PLANT_DELAY + SLIDE_IN + IDLE_DELAY);
+opened.then(() => scheduleWobble(FIRST_PLANT_DELAY + SLIDE_IN + IDLE_DELAY));
 // -----------------------------------------------------------------------------
 
 // Audio can only be unlocked inside a user gesture, so any tap does it. iOS doesn't send a click
@@ -707,6 +796,7 @@ scheduleWobble(FIRST_PLANT_DELAY + SLIDE_IN + IDLE_DELAY);
 
 // A tap only moves the scene on when it lands on the current step's object.
 document.addEventListener('click', (e) => {
+  if (performance.now() < swallowClickUntil) return; // the end of a pull, already handled
   const tap = STEPS[step]?.tap;
   if (typeof tap === 'string' && e.target.closest?.(tap)) forward(); // a function `tap` handles its own
 });

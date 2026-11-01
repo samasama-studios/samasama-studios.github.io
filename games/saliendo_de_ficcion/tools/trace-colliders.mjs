@@ -40,7 +40,7 @@ const LAYERS = [
   'particles.png',
   'particular.webp',
   'particular_aura.png',
-  'aura.webp',
+  'sun_ray.webp',
   'shrooms.png',
   'shrooms_light.png',
   'plants_sides.png',
