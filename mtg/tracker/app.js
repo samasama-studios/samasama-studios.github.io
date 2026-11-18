@@ -7,8 +7,8 @@ const ICONS = {
   pass:
     '<circle class="bg" cx="32" cy="32" r="31"/>' +
     '<path class="fg" d="M23 12 12 26H19.5V52H26.5V26H34Z M41 52 52 38H44.5V12H37.5V38H30Z"/>',
-  combat:
-    '<path d="M58 6 56 16 28 44 20 36 48 8Z"/><path d="M12 34 30 52 26 56 8 38Z"/><path d="M20 46 18 44 8 54 10 56Z" stroke-width="5" stroke-linejoin="round"/>',
+  shield: '<path d="M4 4H60V26C60 44 47 55 32 62C17 55 4 44 4 26Z"/>',
+  endturn: '<path d="M4 14 30 32 4 50Z M32 14 58 32 32 50Z"/>',
   dot: '<circle cx="32" cy="32" r="28"/>',
   square: '<rect x="6" y="6" width="52" height="52"/>',
   plus: '<circle cx="32" cy="32" r="27"/><path d="M32 18V46M18 32H46"/>',
@@ -46,23 +46,17 @@ const icon = (name) =>
 
 // hint: [for the player whose turn it is, for the opponent]; {A} = active player's name
 const STEPS = [
-  { name: 'Untap', mark: 'dot', auto: true, // no player gets priority
-    hint: ['Untap all your tapped cards', '{A} untaps their cards'] },
-  { name: 'Upkeep', mark: 'dot',
-    hint: ['"At the beginning of your upkeep" effects happen', '{A} handles their upkeep effects'] },
-  { name: 'Draw', mark: 'dot',
-    hint: ['Draw a card (skipped on the very first turn)', '{A} draws a card'] },
+  { name: 'Begin', mark: 'dot', // untap, upkeep and draw in one step
+    hint: ['Untap your cards, then draw a card (no draw on the very first turn)', '{A} untaps and draws a card'] },
   { name: 'Main 1', mark: 'square', main: true,
     hint: ['Play a land and cast spells of any type', '{A} can play a land and cast spells'] },
-  { name: 'Combat', mark: 'combat',
+  { name: 'Combat', mark: 'shield',
     hint: ['Attack with your untapped creatures', "Block {A}'s attackers with your creatures"] },
   { name: 'Main 2', mark: 'square', main: true,
     hint: ['After combat: play a land or cast more spells', '{A} can cast more spells after combat'] },
   { name: 'End', mark: 'dot',
     hint: ['"At end of turn" effects happen, discard down to 7', '{A} is ending their turn'] },
 ];
-
-const UNTAP_DELAY = 700; // ms the Untap step stays highlighted
 
 // speed: 'sorcery' = own main phase, empty stack; 'instant' = any time with priority
 const ACTIONS = [
@@ -99,7 +93,7 @@ const newGame = () => ({
   turn: 1,
   active: 0, // whose turn it is
   step: 0,
-  priority: null, // who may act right now (null during Untap)
+  priority: 0, // who may act right now
   passes: 0, // consecutive passes without an action in between
   landPlayed: false,
   stack: [], // [{ owner, id }], last item is the top
@@ -112,7 +106,6 @@ const state = newGame();
 // Life totals are left out so reverting never touches them.
 const HISTORY_LIMIT = 200;
 let history = [];
-let autoTimer = null;
 
 const other = (p) => 1 - p;
 
@@ -137,16 +130,11 @@ function advanceStep() {
 
 function enterStep() {
   state.passes = 0;
-  if (STEPS[state.step].auto) {
-    state.priority = null;
-    autoTimer = setTimeout(() => {
-      advanceStep();
-      render();
-    }, UNTAP_DELAY);
-  } else {
-    state.priority = state.active;
-  }
+  state.priority = state.active;
 }
+
+// End Turn: the active player skips the rest of their turn (only with an empty stack)
+const canEndTurn = (p) => state.priority === p && p === state.active && state.stack.length === 0;
 
 // Returns the stack item that resolved, if any
 function passPriority() {
@@ -170,9 +158,7 @@ function doAction(p, id) {
   const action = ACTION_BY_ID[id];
   if (!action || !canUse(p, action)) return;
 
-  const { life, ...flow } = state;
-  history.push({ flow: structuredClone(flow), label: describeAction(p, action) });
-  if (history.length > HISTORY_LIMIT) history.shift();
+  remember(describeAction(p, action));
 
   let resolved = null;
   if (id === 'pass') {
@@ -192,6 +178,23 @@ function doAction(p, id) {
   if (resolved) views.forEach((v) => showResolved(v, resolved));
   navigator.vibrate?.(12);
   render();
+}
+
+function endTurn(p) {
+  if (!canEndTurn(p)) return;
+  remember(`Player ${p + 1} ended their turn`);
+  state.step = STEPS.length - 1;
+  advanceStep(); // past End: next player's Begin
+  views.forEach(hideToast);
+  navigator.vibrate?.(12);
+  render();
+}
+
+// Snapshot the game flow so "Revert last step" can undo the next change
+function remember(label) {
+  const { life, ...flow } = state;
+  history.push({ flow: structuredClone(flow), label });
+  if (history.length > HISTORY_LIMIT) history.shift();
 }
 
 // Plain-language reason why a dimmed action can't be used right now
@@ -231,14 +234,12 @@ function describeAction(p, action) {
 function revertLastStep() {
   const last = history.pop();
   if (!last) return;
-  clearTimeout(autoTimer);
   Object.assign(state, last.flow);
   views.forEach(hideToast);
   render();
 }
 
 function resetGame() {
-  clearTimeout(autoTimer);
   Object.assign(state, newGame());
   history = [];
   views.forEach(hideToast);
@@ -269,14 +270,20 @@ function buildPlayer(p) {
     </div>
     <div class="board">
       <div class="tracker">
-        <ol class="steps">
-        ${STEPS.map((s) => `
-          <li class="step">
-            <span class="step-mark">${icon(s.mark)}</span>
-            <span class="step-label">${s.name}</span>
-          </li>`).join('')}
-        </ol>
-        <div class="track"><div class="track-fill"></div><div class="track-knob"></div></div>
+        <div class="timeline" style="--n: ${STEPS.length}">
+          <div class="track"><div class="track-fill"></div></div>
+          <ol class="steps">
+          ${STEPS.map((s) => `
+            <li class="step">
+              <span class="step-mark">${icon(s.mark)}</span>
+              <span class="step-label">${s.name}</span>
+            </li>`).join('')}
+          </ol>
+        </div>
+        <button class="end-turn" data-endturn>
+          ${icon('endturn')}
+          <span>End Turn</span>
+        </button>
       </div>
       <div class="content">
         <p class="step-hint"></p>
@@ -306,6 +313,11 @@ function buildPlayer(p) {
     </div>`;
 
   el.addEventListener('click', (e) => {
+    if (e.target.closest('[data-endturn]')) {
+      if (canEndTurn(p)) endTurn(p);
+      else if (state.stack.length) showReason(view, 'Let everything on the stack resolve before ending your turn.');
+      return;
+    }
     const btn = e.target.closest('[data-action]');
     if (!btn) return;
     if (btn.getAttribute('aria-disabled') === 'true') showWhy(view, ACTION_BY_ID[btn.dataset.action]);
@@ -317,7 +329,8 @@ function buildPlayer(p) {
   const view = {
     el,
     total: el.querySelector('.life-total'),
-    tracker: el.querySelector('.tracker'),
+    timeline: el.querySelector('.timeline'),
+    endTurn: el.querySelector('.end-turn'),
     steps: [...el.querySelectorAll('.step')],
     actions: [...el.querySelectorAll('.action')],
     stack: el.querySelector('.stack'),
@@ -339,7 +352,10 @@ function buildPlayer(p) {
 }
 
 function showWhy(view, action) {
-  const reason = whyNot(Number(view.el.dataset.p), action);
+  showReason(view, whyNot(Number(view.el.dataset.p), action));
+}
+
+function showReason(view, reason) {
   if (!reason) return;
   hideToast(view);
   view.toast.textContent = reason;
@@ -392,14 +408,19 @@ function bindHoldRepeat(btn, fn) {
 
 function render() {
   table.dataset.active = state.active;
-  const progress = (state.step + 0.5) / STEPS.length;
+  const progress = state.step / (STEPS.length - 1);
 
   views.forEach((v, p) => {
     v.el.classList.toggle('has-priority', state.priority === p);
     v.total.textContent = state.life[p];
 
-    v.tracker.style.setProperty('--progress', progress);
-    v.steps.forEach((li, i) => li.classList.toggle('current', i === state.step));
+    v.timeline.style.setProperty('--progress', progress);
+    v.steps.forEach((li, i) => {
+      li.classList.toggle('current', i === state.step);
+      li.classList.toggle('done', i < state.step);
+    });
+    v.el.classList.toggle('my-turn', state.active === p);
+    v.endTurn.setAttribute('aria-disabled', !canEndTurn(p));
 
     v.actions.forEach((btn) => {
       btn.setAttribute('aria-disabled', !canUse(p, ACTION_BY_ID[btn.dataset.action]));
@@ -408,8 +429,7 @@ function render() {
     v.hint.textContent = hintFor(p);
 
     if (state.priority !== p) {
-      v.waitingText.textContent =
-        state.priority === null ? `Player ${state.active + 1} untaps` : `Waiting for Player ${state.priority + 1}`;
+      v.waitingText.textContent = `Waiting for Player ${state.priority + 1}`;
       v.waitingSub.textContent = `Turn ${state.turn} · Player ${state.active + 1} · ${STEPS[state.step].name}`;
       renderStack(v.stack);
     }

@@ -158,16 +158,26 @@ svg {
 .board {
   position: relative;
   display: grid;
-  grid-template-columns: 19cqw 1fr;
+  grid-template-columns: 23cqw 1fr;
   min-height: 0;
   padding: 1.5cqh 0;
 }
 
-/* Phase tracker */
+/* Turn timeline: markers sit on the line, labels beside them */
 
 .tracker {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6cqh;
+  min-height: 0;
+  padding: 0.6cqh 0 0.6cqh 4cqw;
+  --mark: min(3.6cqw, 1.9cqh);
+}
+
+.timeline {
   position: relative;
-  padding-right: 4cqw;
+  flex: 1;
+  min-height: 0;
 }
 
 .steps {
@@ -182,20 +192,20 @@ svg {
 .step {
   flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.5cqh;
+  gap: 2.4cqw;
   color: var(--dim-text);
-  font-size: min(3.1cqw, 1.6cqh);
+  font-size: min(3.4cqw, 1.8cqh);
   line-height: 1.1;
   white-space: nowrap;
   transition: color 0.2s;
 }
 
 .step-mark {
-  width: min(3.3cqw, 1.7cqh);
-  height: min(3.3cqw, 1.7cqh);
+  position: relative; /* above the track */
+  flex: none;
+  width: var(--mark);
+  height: var(--mark);
   display: grid;
   place-items: center;
   color: var(--dim);
@@ -206,48 +216,69 @@ svg {
   width: 100%;
   height: 100%;
   fill: currentColor;
-  stroke: currentColor;
+}
+
+.step.done,
+.step.current { color: var(--ink); }
+.step.done .step-mark,
+.step.current .step-mark { color: var(--turn); }
+
+/* Runs from the first marker's center to the last one's */
+.track {
+  position: absolute;
+  top: calc(50% / var(--n));
+  bottom: calc(50% / var(--n));
+  left: calc(var(--mark) / 2);
+  width: 3px;
+  translate: -50% 0;
+  background: var(--dim);
+}
+
+.track-fill {
+  height: calc(var(--progress, 0) * 100%);
+  background: var(--turn);
+  transition: height 0.3s ease;
+}
+
+/* End Turn: only for the player whose turn it is, while they have priority */
+.end-turn {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3cqh;
+  margin-right: 1cqw;
+  padding: 0.9cqh 1cqw;
+  border: 2px solid var(--ink);
+  border-radius: 2cqw;
+  background: var(--me);
+  color: var(--ink);
+  font-size: min(3.4cqw, 1.9cqh);
+  visibility: hidden; /* keeps its space so the timeline doesn't jump */
+  transition: transform 0.08s;
+}
+
+.end-turn svg {
+  width: min(6cqw, 3.4cqh);
+  height: min(4.4cqw, 2.5cqh);
+  fill: currentColor;
+}
+
+.my-turn.has-priority .end-turn { visibility: visible; }
+.player:not(.my-turn) .end-turn { display: none; } /* opponent's timeline uses the full height */
+
+.end-turn:active:not([aria-disabled="true"]) { transform: scale(0.95); }
+
+.end-turn[aria-disabled="true"] {
+  background: transparent;
+  border-color: transparent;
+  color: var(--dim-text);
 }
 
 /* Mana font glyphs: size them like the SVG icons they replace */
 .glyph.ms {
   display: block;
   line-height: 1;
-}
-
-
-.step.current { color: var(--ink); }
-.step.current .step-mark { color: var(--turn); }
-
-.track {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 1.5cqw;
-  width: 3px;
-  border-radius: 2px;
-  background: var(--dim);
-}
-
-.track-fill {
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: calc(var(--progress, 0.1) * 100%);
-  border-radius: inherit;
-  background: var(--turn);
-  transition: height 0.3s ease;
-}
-
-.track-knob {
-  position: absolute;
-  left: 50%;
-  top: calc(var(--progress, 0.1) * 100%);
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--turn);
-  transform: translate(-50%, -50%);
-  transition: top 0.3s ease;
 }
 
 /* Content area: actions or waiting */
