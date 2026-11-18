@@ -249,7 +249,7 @@ svg {
   gap: 0.3cqh;
   margin-right: 1cqw;
   padding: 0.9cqh 1cqw;
-  border: 2px solid var(--ink);
+  border: 0;
   border-radius: 2cqw;
   background: var(--me);
   color: var(--ink);
@@ -270,8 +270,7 @@ svg {
 .end-turn:active:not([aria-disabled="true"]) { transform: scale(0.95); }
 
 .end-turn[aria-disabled="true"] {
-  background: transparent;
-  border-color: transparent;
+  background: #141414;
   color: var(--dim-text);
 }
 
@@ -385,71 +384,106 @@ svg {
 .has-priority .actions { display: grid; }
 .has-priority .waiting { display: none; }
 
+/* Layout from the design: wide cast cards on the left, Play Land and pass on the right */
 .actions {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 2.5fr 1fr;
   grid-template-rows: repeat(2, 1fr);
-  gap: 1.6cqh 2.6cqw;
-  align-content: center;
-  padding: 1cqh 0;
+  gap: 1.6cqh 2.8cqw;
+  padding: 0.6cqh 0 1cqh;
 }
 
-.action {
+/* Borderless cards, as in the design */
+.action,
+.chip {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.4cqh;
   min-height: 0;
-  padding: 0.6cqh 0.5cqw;
+  padding: 0.6cqh 1cqw;
+  border: 0;
   border-radius: 2cqw;
-  border: 2px solid var(--ink);
   background: var(--me);
   color: var(--ink);
-  font-size: min(3.4cqw, 2cqh);
-  line-height: 1.15;
+  font-size: min(3.6cqw, 2.1cqh);
+  line-height: 1.2;
   text-align: center;
-  transition: transform 0.08s, background-color 0.2s, border-color 0.2s, color 0.2s;
+  transition: transform 0.08s, background-color 0.2s, color 0.2s;
 }
 
-.action:active:not([aria-disabled="true"]) {
-  transform: scale(0.95);
+.action:active:not([aria-disabled="true"]),
+.chip:active {
+  transform: scale(0.96);
 }
 
 .action svg {
-  width: min(10cqw, 6.2cqh);
-  height: min(10cqw, 6.2cqh);
+  width: min(9cqw, 5.4cqh);
+  height: min(9cqw, 5.4cqh);
   fill: currentColor;
   stroke: currentColor;
   flex-shrink: 0;
 }
 
 .action .glyph.ms {
-  font-size: min(10cqw, 6.2cqh);
+  font-size: min(9cqw, 5.4cqh);
 }
 
+.action-title {
+  font-size: min(4.4cqw, 2.6cqh);
+}
+
+.action-types {
+  font-size: min(3.3cqw, 2cqh);
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+/* Disabled: a faint card so the shape stays, with dimmed text */
 .action[aria-disabled="true"] {
-  background: transparent;
-  border-color: transparent;
-  color: var(--dim);
+  background: #141414;
+  color: var(--dim-text);
   cursor: help;
 }
 
-.action[aria-disabled="true"] .action-label {
-  color: var(--dim-text);
+.action[aria-disabled="true"] svg,
+.action[aria-disabled="true"] .glyph.ms {
+  color: var(--dim);
 }
 
-.action.pass {
-  background: transparent;
-  border-color: transparent;
+/* Pass: white circle with arrows in the player's color, like the life-bar badge */
+.action.pass .bg { fill: var(--ink); }
+.action.pass .fg { fill: var(--me); stroke: none; }
+
+/* Type picker: replaces the buttons until a type is chosen */
+.picker {
+  display: none;
+  grid-area: 2 / 1;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 1.4cqh 2.4cqw;
+  min-height: 0;
+  padding: 0.6cqh 0 1cqh;
+  animation: pop 0.15s ease-out;
 }
 
-.action.pass svg {
-  width: min(11cqw, 6.8cqh);
-  height: min(11cqw, 6.8cqh);
+.picker[data-group="respond"] { grid-template-columns: repeat(2, 1fr); }
+
+.has-priority.picking .actions { display: none; }
+.has-priority.picking .picker.open { display: grid; }
+
+.chip {
+  font-size: min(3.4cqw, 2cqh);
 }
 
-.action.pass .bg { fill: var(--opp); }
-.action.pass .fg { fill: var(--bg); stroke: none; }
+.chip .glyph.ms {
+  font-size: min(8cqw, 4.6cqh);
+}
+
+.chip.cancel {
+  background: #1b1b1b;
+  color: #bdbdbd;
+}
 
 /* Waiting */
 
@@ -609,7 +643,7 @@ svg {
   gap: 3.5cqw;
   width: 100%;
   padding: 3cqw 4cqw;
-  border: 2px solid var(--ink);
+  border: 0;
   border-radius: 2cqw;
   background: var(--me);
   color: var(--ink);

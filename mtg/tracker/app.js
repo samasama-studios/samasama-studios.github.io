@@ -28,12 +28,14 @@ const ICONS = {
 
 // Official MTG symbols from the Mana font (vendor/mana)
 const MANA = {
-  sorcery: 'sorcery',
-  enchantment: 'enchantment',
-  artifact: 'artifact',
   creature: 'creature',
+  artifact: 'artifact',
+  enchantment: 'enchantment',
+  planeswalker: 'planeswalker',
+  sorcery: 'sorcery',
   instant: 'instant',
   ability: 'tap',
+  flash: 'ability-flash',
   land: 'land',
 };
 
@@ -58,32 +60,39 @@ const STEPS = [
     hint: ['"At end of turn" effects happen, discard down to 7', '{A} is ending their turn'] },
 ];
 
-// speed: 'sorcery' = own main phase, empty stack; 'instant' = any time with priority
+// Spell types players pick after tapping a cast button; then = what happens when it resolves
+const BATTLEFIELD = 'Put it onto the battlefield.';
+const GRAVEYARD = 'Do what it says, then put it in the graveyard.';
+const SPELLS = {
+  creature: { label: 'Creature', then: BATTLEFIELD },
+  artifact: { label: 'Artifact', then: BATTLEFIELD },
+  enchantment: { label: 'Enchantment', then: BATTLEFIELD },
+  planeswalker: { label: 'Planeswalker', then: BATTLEFIELD },
+  sorcery: { label: 'Sorcery', then: GRAVEYARD },
+  instant: { label: 'Instant', then: GRAVEYARD },
+  ability: { label: 'Ability', then: 'Apply its effect.' },
+  flash: { label: 'Flash card', then: BATTLEFIELD }, // a permanent cast at instant speed
+};
+
+const onStackLabel = (id) => (id === 'ability' ? 'Activated Ability' : `Casted ${SPELLS[id].label}`);
+
+// The four buttons. speed: 'sorcery' = own main phase with an empty stack,
+// 'instant' = whenever you have priority. picks = types offered after tapping it.
 const ACTIONS = [
-  { id: 'sorcery', label: 'Cast Sorcery', onStack: 'Casted Sorcery', speed: 'sorcery' },
-  { id: 'enchantment', label: 'Cast Enchant', onStack: 'Casted Enchantment', speed: 'sorcery' },
-  { id: 'artifact', label: 'Cast Artifact', onStack: 'Casted Artifact', speed: 'sorcery' },
-  { id: 'creature', label: 'Cast Creature', onStack: 'Casted Creature', speed: 'sorcery' },
-  { id: 'instant', label: 'Cast Instant', onStack: 'Casted Instant', speed: 'instant' },
-  { id: 'ability', label: 'Activate Ability', onStack: 'Activated Ability', speed: 'instant' },
-  { id: 'land', label: 'Play Land', speed: 'land' },
-  { id: 'pass', label: 'Pass Priority', speed: 'instant' },
+  { id: 'cast', speed: 'sorcery', picks: ['creature', 'artifact', 'enchantment', 'planeswalker', 'sorcery'],
+    hint: 'Which type is printed on your card?' },
+  { id: 'land', speed: 'land' },
+  { id: 'respond', speed: 'instant', picks: ['instant', 'ability', 'flash'],
+    hint: 'Is it an instant, an activated ability, or a card with Flash?' },
+  { id: 'pass', speed: 'instant' },
 ];
 
 const ACTION_BY_ID = Object.fromEntries(ACTIONS.map((a) => [a.id, a]));
-const PLURAL = { sorcery: 'Sorceries', enchantment: 'Enchantments', artifact: 'Artifacts', creature: 'Creatures' };
+const SPEED_OF = { land: 'land', pass: 'instant' };
+ACTIONS.forEach((a) => a.picks?.forEach((id) => (SPEED_OF[id] = a.speed)));
+
 const HINT_TOAST_MS = 3500;
 const RESOLVE_TOAST_MS = 2500;
-
-// What happens to a spell when it resolves, by card type
-const RESOLVES = {
-  creature: { noun: 'creature', then: 'Put it onto the battlefield.' },
-  artifact: { noun: 'artifact', then: 'Put it onto the battlefield.' },
-  enchantment: { noun: 'enchantment', then: 'Put it onto the battlefield.' },
-  sorcery: { noun: 'sorcery', then: 'Do what it says, then put it in the graveyard.' },
-  instant: { noun: 'instant', then: 'Do what it says, then put it in the graveyard.' },
-  ability: { noun: 'ability', then: 'Apply its effect.' },
-};
 const STARTING_LIFE = 20;
 const STACK_VISIBLE = 3;
 
@@ -109,11 +118,11 @@ let history = [];
 
 const other = (p) => 1 - p;
 
-function canUse(p, action) {
+function canUse(p, speed) {
   if (state.priority !== p) return false;
-  if (action.speed === 'instant') return true;
+  if (speed === 'instant') return true;
   const sorcerySpeed = p === state.active && STEPS[state.step].main && state.stack.length === 0;
-  if (action.speed === 'land') return sorcerySpeed && !state.landPlayed;
+  if (speed === 'land') return sorcerySpeed && !state.landPlayed;
   return sorcerySpeed;
 }
 
@@ -154,11 +163,11 @@ function passPriority() {
   return null;
 }
 
+// id: 'pass', 'land' or a spell type from SPELLS
 function doAction(p, id) {
-  const action = ACTION_BY_ID[id];
-  if (!action || !canUse(p, action)) return;
+  if (!SPEED_OF[id] || !canUse(p, SPEED_OF[id])) return;
 
-  remember(describeAction(p, action));
+  remember(describeAction(p, id));
 
   let resolved = null;
   if (id === 'pass') {
@@ -174,7 +183,10 @@ function doAction(p, id) {
     state.priority = other(p);
   }
 
-  views.forEach(hideToast);
+  views.forEach((v) => {
+    v.picking = null;
+    hideToast(v);
+  });
   if (resolved) views.forEach((v) => showResolved(v, resolved));
   navigator.vibrate?.(12);
   render();
@@ -200,28 +212,29 @@ function remember(label) {
   if (history.length > HISTORY_LIMIT) history.shift();
 }
 
-// Plain-language reason why a dimmed action can't be used right now
+// Plain-language reason why a dimmed button can't be used right now
 function whyNot(p, action) {
-  const sorceryLike = action.speed !== 'land';
-  const what = sorceryLike ? PLURAL[action.id] : 'Lands';
-  const verb = sorceryLike ? 'cast' : 'played';
+  const isLand = action.id === 'land';
+  const what = isLand ? 'Lands' : 'Spells on this button';
+  const verb = isLand ? 'played' : 'cast';
   if (p !== state.active) {
-    return sorceryLike
-      ? `${what} can only be cast on your own turn. Cards with Flash work like instants: use Cast Instant.`
-      : 'Lands can only be played on your own turn.';
+    return isLand
+      ? 'Lands can only be played on your own turn.'
+      : 'Spells on this button can only be cast on your own turn. If your card has Flash, use Cast Instant.';
   }
   if (!STEPS[state.step].main) return `${what} can only be ${verb} in your main phases (Main 1 or Main 2).`;
   if (state.stack.length) {
-    return `${what} can't be ${verb} while something is on the stack. Respond with an instant or ability, or pass.`;
+    return `${what} can't be ${verb} while something is on the stack. Use Cast Instant, or let it resolve.`;
   }
-  if (action.speed === 'land' && state.landPlayed) return 'You already played a land this turn. Only one per turn!';
+  if (isLand && state.landPlayed) return 'You already played a land this turn. Only one per turn!';
   return '';
 }
 
 // What this player should know right now
-function hintFor(p) {
+function hintFor(p, picking) {
+  if (picking) return ACTION_BY_ID[picking].hint;
   if (state.priority === p && state.stack.length) {
-    return 'Respond with an instant or ability, or pass to let the top spell resolve';
+    return 'Respond with an instant or ability, or let the top spell resolve';
   }
   if (state.priority === p && p !== state.active && state.step === STEPS.length - 1) {
     return 'Last chance to cast instants this turn, or pass to start your turn';
@@ -230,25 +243,41 @@ function hintFor(p) {
   return p === state.active ? mine : theirs.replace('{A}', `Player ${state.active + 1}`);
 }
 
-function describeAction(p, action) {
+// The pass button says where passing leads
+function passInfo(p) {
+  if (state.stack.length) return { label: 'Let it resolve', mark: 'pass' };
+  if (state.step === STEPS.length - 1) {
+    return { label: p === state.active ? 'Finish Turn' : 'Start My Turn', mark: 'endturn' };
+  }
+  const next = STEPS[state.step + 1];
+  return { label: `To ${next.name}`, mark: next.mark };
+}
+
+function describeAction(p, id) {
   const who = `Player ${p + 1}`;
-  if (action.id === 'pass') return `${who} passed priority`;
-  if (action.id === 'land') return `${who} played a land`;
-  return `${who} · ${action.onStack}`;
+  if (id === 'pass') return `${who} passed priority`;
+  if (id === 'land') return `${who} played a land`;
+  return `${who} · ${onStackLabel(id)}`;
 }
 
 function revertLastStep() {
   const last = history.pop();
   if (!last) return;
   Object.assign(state, last.flow);
-  views.forEach(hideToast);
+  views.forEach((v) => {
+    v.picking = null;
+    hideToast(v);
+  });
   render();
 }
 
 function resetGame() {
   Object.assign(state, newGame());
   history = [];
-  views.forEach(hideToast);
+  views.forEach((v) => {
+    v.picking = null;
+    hideToast(v);
+  });
   enterStep();
   render();
 }
@@ -294,12 +323,33 @@ function buildPlayer(p) {
       <div class="content">
         <p class="step-hint"></p>
         <div class="actions">
-          ${ACTIONS.map((a) => `
-            <button class="action${a.id === 'pass' ? ' pass' : ''}" data-action="${a.id}">
-              ${icon(a.id)}
-              <span class="action-label">${a.label}</span>
-            </button>`).join('')}
+          <button class="action wide" data-action="cast">
+            <span class="action-title">Cast</span>
+            <span class="action-types">Sorcery / Creature / Enchant<br>Artifact / Planeswalker</span>
+          </button>
+          <button class="action" data-action="land">
+            ${icon('land')}
+            <span class="action-label">Play Land</span>
+          </button>
+          <button class="action wide" data-action="respond">
+            <span class="action-title">Cast Instant</span>
+            <span class="action-types">or</span>
+            <span class="action-title">Activate Ability</span>
+          </button>
+          <button class="action pass" data-action="pass">
+            <span class="pass-icon"></span>
+            <span class="action-label pass-label"></span>
+          </button>
         </div>
+        ${ACTIONS.filter((a) => a.picks).map((a) => `
+        <div class="picker" data-group="${a.id}">
+          ${a.picks.map((id) => `
+          <button class="chip" data-spell="${id}">
+            ${icon(id)}
+            <span>${SPELLS[id].label}</span>
+          </button>`).join('')}
+          <button class="chip cancel" data-cancel>Cancel</button>
+        </div>`).join('')}
         <div class="waiting">
           <ul class="stack"></ul>
           <div class="waiting-msg">
@@ -324,10 +374,28 @@ function buildPlayer(p) {
       else if (state.stack.length) showReason(view, 'Let everything on the stack resolve before ending your turn.');
       return;
     }
+    if (e.target.closest('[data-cancel]')) {
+      view.picking = null;
+      render();
+      return;
+    }
+    const chip = e.target.closest('[data-spell]');
+    if (chip) {
+      doAction(p, chip.dataset.spell);
+      return;
+    }
     const btn = e.target.closest('[data-action]');
     if (!btn) return;
-    if (btn.getAttribute('aria-disabled') === 'true') showWhy(view, ACTION_BY_ID[btn.dataset.action]);
-    else doAction(p, btn.dataset.action);
+    const action = ACTION_BY_ID[btn.dataset.action];
+    if (btn.getAttribute('aria-disabled') === 'true') {
+      showWhy(view, action);
+    } else if (action.picks) {
+      view.picking = action.id; // ask for the card type first
+      hideToast(view);
+      render();
+    } else {
+      doAction(p, action.id);
+    }
   });
 
   el.querySelectorAll('.life-btn').forEach((btn) => bindHoldRepeat(btn, () => changeLife(p, Number(btn.dataset.delta))));
@@ -339,6 +407,11 @@ function buildPlayer(p) {
     endTurn: el.querySelector('.end-turn'),
     steps: [...el.querySelectorAll('.step')],
     actions: [...el.querySelectorAll('.action')],
+    pickers: [...el.querySelectorAll('.picker')],
+    passIcon: el.querySelector('.pass-icon'),
+    passLabel: el.querySelector('.pass-label'),
+    passMark: null,
+    picking: null, // 'cast' or 'respond' while choosing a card type
     stack: el.querySelector('.stack'),
     waitingText: el.querySelector('.waiting-text'),
     waitingSub: el.querySelector('.waiting-sub'),
@@ -380,7 +453,8 @@ function hideToast(view) {
 // "Your creature resolves" / "Player 2's instant resolves", in the caster's color
 function showResolved(view, item) {
   const p = Number(view.el.dataset.p);
-  const { noun, then } = RESOLVES[item.id];
+  const { label, then } = SPELLS[item.id];
+  const noun = label.toLowerCase();
   const whose = item.owner === p ? 'Your' : `Player ${item.owner + 1}'s`;
   view.resolve.style.setProperty('--c', `var(${item.owner === 0 ? '--blue' : '--red'})`);
   view.resolve.querySelector('.resolve-icon').innerHTML = icon(item.id);
@@ -429,10 +503,21 @@ function render() {
     v.endTurn.setAttribute('aria-disabled', !canEndTurn(p));
 
     v.actions.forEach((btn) => {
-      btn.setAttribute('aria-disabled', !canUse(p, ACTION_BY_ID[btn.dataset.action]));
+      btn.setAttribute('aria-disabled', !canUse(p, ACTION_BY_ID[btn.dataset.action].speed));
     });
 
-    v.hint.textContent = hintFor(p);
+    if (v.picking && !canUse(p, ACTION_BY_ID[v.picking].speed)) v.picking = null;
+    v.el.classList.toggle('picking', !!v.picking);
+    v.pickers.forEach((el) => el.classList.toggle('open', el.dataset.group === v.picking));
+
+    const pass = passInfo(p);
+    v.passLabel.textContent = pass.label;
+    if (v.passMark !== pass.mark) {
+      v.passMark = pass.mark;
+      v.passIcon.innerHTML = icon(pass.mark);
+    }
+
+    v.hint.textContent = hintFor(p, v.picking);
 
     if (state.priority !== p) {
       v.waitingText.textContent = `Waiting for Player ${state.priority + 1}`;
@@ -457,7 +542,7 @@ function renderStack(list) {
         (item) => `
         <li class="stack-item" style="--c: var(${item.owner === 0 ? '--blue' : '--red'})">
           ${icon(item.id)}
-          <span>${ACTION_BY_ID[item.id].onStack}</span>
+          <span>${onStackLabel(item.id)}</span>
         </li>`
       )
       .join('') + (hidden > 0 ? `<li class="stack-more">+${hidden} more</li>` : '');
