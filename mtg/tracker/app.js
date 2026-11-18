@@ -13,6 +13,11 @@ const ICONS = {
   square: '<rect x="6" y="6" width="52" height="52"/>',
   plus: '<circle cx="32" cy="32" r="27"/><path d="M32 18V46M18 32H46"/>',
   minus: '<circle cx="32" cy="32" r="27"/><path d="M18 32H46"/>',
+  gear:
+    [0, 45, 90, 135, 180, 225, 270, 315]
+      .map((deg) => `<rect x="27" y="5" width="10" height="14" rx="2" transform="rotate(${deg} 32 32)"/>`)
+      .join('') +
+    '<path fill-rule="evenodd" d="M32 13a19 19 0 1 0 0 38 19 19 0 1 0 0-38Zm0 11a8 8 0 1 1 0 16 8 8 0 1 1 0-16Z"/>',
 };
 
 // Official MTG symbols from the Mana font (vendor/mana)
@@ -63,7 +68,7 @@ const STACK_VISIBLE = 3;
 
 /* ---------- State ---------- */
 
-const state = {
+const newGame = () => ({
   turn: 1,
   active: 0, // whose turn it is
   step: 0,
@@ -72,7 +77,15 @@ const state = {
   landPlayed: false,
   stack: [], // [{ owner, id }], last item is the top
   life: [STARTING_LIFE, STARTING_LIFE],
-};
+});
+
+const state = newGame();
+
+// Snapshots of the game flow before each action, for "Revert last step".
+// Life totals are left out so reverting never touches them.
+const HISTORY_LIMIT = 200;
+let history = [];
+let autoTimer = null;
 
 const other = (p) => 1 - p;
 
@@ -99,7 +112,7 @@ function enterStep() {
   state.passes = 0;
   if (STEPS[state.step].auto) {
     state.priority = null;
-    setTimeout(() => {
+    autoTimer = setTimeout(() => {
       advanceStep();
       render();
     }, UNTAP_DELAY);
@@ -128,6 +141,10 @@ function doAction(p, id) {
   const action = ACTION_BY_ID[id];
   if (!action || !canUse(p, action)) return;
 
+  const { life, ...flow } = state;
+  history.push({ flow: structuredClone(flow), label: describeAction(p, action) });
+  if (history.length > HISTORY_LIMIT) history.shift();
+
   if (id === 'pass') {
     passPriority();
   } else if (id === 'land') {
@@ -142,6 +159,29 @@ function doAction(p, id) {
   }
 
   navigator.vibrate?.(12);
+  render();
+}
+
+function describeAction(p, action) {
+  const who = `Player ${p + 1}`;
+  if (action.id === 'pass') return `${who} passed priority`;
+  if (action.id === 'land') return `${who} played a land`;
+  return `${who} · ${action.onStack}`;
+}
+
+function revertLastStep() {
+  const last = history.pop();
+  if (!last) return;
+  clearTimeout(autoTimer);
+  Object.assign(state, last.flow);
+  render();
+}
+
+function resetGame() {
+  clearTimeout(autoTimer);
+  Object.assign(state, newGame());
+  history = [];
+  enterStep();
   render();
 }
 
@@ -258,6 +298,8 @@ function render() {
       renderStack(v.stack);
     }
   });
+
+  renderMenu();
 }
 
 function renderStack(list) {
@@ -277,6 +319,61 @@ function renderStack(list) {
         </li>`
       )
       .join('') + (hidden > 0 ? `<li class="stack-more">+${hidden} more</li>` : '');
+}
+
+/* ---------- Game menu ---------- */
+
+const menu = document.getElementById('menu');
+const revertBtn = document.getElementById('revert-btn');
+const revertSub = document.getElementById('revert-sub');
+const resetBtn = document.getElementById('reset-btn');
+const resetLabel = document.getElementById('reset-label');
+const RESET_CONFIRM_MS = 3000;
+let resetArmed = null;
+
+document.getElementById('gear-btn').innerHTML = icon('gear');
+document.getElementById('gear-btn').addEventListener('click', () => {
+  disarmReset();
+  menu.showModal();
+});
+document.getElementById('menu-close').addEventListener('click', () => menu.close());
+
+// Tapping the backdrop (outside the panel) closes the menu
+menu.addEventListener('click', (e) => {
+  if (e.target === menu) menu.close();
+});
+menu.addEventListener('close', disarmReset);
+
+revertBtn.addEventListener('click', () => {
+  revertLastStep();
+  navigator.vibrate?.(12);
+});
+
+// Reset needs a second tap within a few seconds, so a stray tap can't wipe the match
+resetBtn.addEventListener('click', () => {
+  if (!resetArmed) {
+    resetBtn.classList.add('armed');
+    resetLabel.textContent = 'Tap again to reset';
+    resetArmed = setTimeout(disarmReset, RESET_CONFIRM_MS);
+    return;
+  }
+  disarmReset();
+  resetGame();
+  navigator.vibrate?.([20, 60, 20]);
+  menu.close();
+});
+
+function disarmReset() {
+  clearTimeout(resetArmed);
+  resetArmed = null;
+  resetBtn.classList.remove('armed');
+  resetLabel.textContent = 'Reset game';
+}
+
+function renderMenu() {
+  const last = history[history.length - 1];
+  revertBtn.disabled = !last;
+  revertSub.textContent = last ? `Undo: ${last.label}` : 'Nothing to revert yet';
 }
 
 /* ---------- Keep the screen awake during a match ---------- */

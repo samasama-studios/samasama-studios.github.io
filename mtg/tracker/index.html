@@ -23,7 +23,24 @@
     <!-- Player 2 sits across the table: their half is rotated 180° -->
     <section class="player" data-p="1" aria-label="Player 2"></section>
     <section class="player" data-p="0" aria-label="Player 1"></section>
+    <!-- Mirrors the life bar grid so the gear sits opposite the priority badge, on the divider -->
+    <div class="divider-overlay">
+      <button class="gear-btn" id="gear-btn" aria-label="Game menu" aria-haspopup="dialog"></button>
+    </div>
   </main>
+
+  <dialog class="menu" id="menu" aria-labelledby="menu-title" autofocus>
+    <h2 class="menu-title" id="menu-title">Game</h2>
+    <button class="menu-btn" id="revert-btn">
+      <span class="menu-btn-label">Revert last step</span>
+      <span class="menu-btn-sub" id="revert-sub"></span>
+    </button>
+    <button class="menu-btn danger" id="reset-btn">
+      <span class="menu-btn-label" id="reset-label">Reset game</span>
+      <span class="menu-btn-sub" id="reset-sub">Steps, priority, stack and life</span>
+    </button>
+    <button class="menu-close" id="menu-close">Close</button>
+  </dialog>
   <script src="app.js"></script>
 </body>
 </html>
