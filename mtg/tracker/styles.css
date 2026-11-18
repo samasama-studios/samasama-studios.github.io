@@ -301,6 +301,55 @@ svg {
   display: none;
 }
 
+/* A spell resolved: shown to both players, fades by itself, taps pass through */
+.resolve-toast {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 84cqw;
+  translate: -50% -50%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 3.5cqw;
+  padding: 2.6cqw 4cqw;
+  border: 2px solid var(--c);
+  border-radius: 2cqw;
+  background: var(--bg);
+  color: var(--ink);
+  pointer-events: none;
+  animation: pop 0.18s ease-out, fade-out 0.4s ease-in 2.1s forwards;
+}
+
+.resolve-toast[hidden] {
+  display: none;
+}
+
+.resolve-icon .glyph.ms {
+  color: var(--c);
+  font-size: min(10cqw, 6cqh);
+}
+
+.resolve-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5cqw;
+}
+
+.resolve-title {
+  font-size: min(4.2cqw, 2.5cqh);
+  font-weight: 500;
+}
+
+.resolve-then {
+  font-size: min(3.4cqw, 2cqh);
+  color: #bdbdbd;
+}
+
+@keyframes fade-out {
+  to { opacity: 0; }
+}
+
 .actions { display: none; }
 .has-priority .actions { display: grid; }
 .has-priority .waiting { display: none; }

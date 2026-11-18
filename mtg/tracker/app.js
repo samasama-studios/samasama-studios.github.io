@@ -79,6 +79,17 @@ const ACTIONS = [
 const ACTION_BY_ID = Object.fromEntries(ACTIONS.map((a) => [a.id, a]));
 const PLURAL = { sorcery: 'Sorceries', enchantment: 'Enchantments', artifact: 'Artifacts', creature: 'Creatures' };
 const HINT_TOAST_MS = 3500;
+const RESOLVE_TOAST_MS = 2500;
+
+// What happens to a spell when it resolves, by card type
+const RESOLVES = {
+  creature: { noun: 'creature', then: 'Put it onto the battlefield.' },
+  artifact: { noun: 'artifact', then: 'Put it onto the battlefield.' },
+  enchantment: { noun: 'enchantment', then: 'Put it onto the battlefield.' },
+  sorcery: { noun: 'sorcery', then: 'Do what it says, then put it in the graveyard.' },
+  instant: { noun: 'instant', then: 'Do what it says, then put it in the graveyard.' },
+  ability: { noun: 'ability', then: 'Apply its effect.' },
+};
 const STARTING_LIFE = 20;
 const STACK_VISIBLE = 3;
 
@@ -137,20 +148,22 @@ function enterStep() {
   }
 }
 
+// Returns the stack item that resolved, if any
 function passPriority() {
   state.passes += 1;
   if (state.passes < 2) {
     state.priority = other(state.priority);
-    return;
+    return null;
   }
   // Both players passed in succession
   if (state.stack.length) {
-    state.stack.pop(); // top of the stack resolves
+    const resolved = state.stack.pop(); // top of the stack resolves
     state.priority = state.active;
     state.passes = 0;
-  } else {
-    advanceStep();
+    return resolved;
   }
+  advanceStep();
+  return null;
 }
 
 function doAction(p, id) {
@@ -161,8 +174,9 @@ function doAction(p, id) {
   history.push({ flow: structuredClone(flow), label: describeAction(p, action) });
   if (history.length > HISTORY_LIMIT) history.shift();
 
+  let resolved = null;
   if (id === 'pass') {
-    passPriority();
+    resolved = passPriority();
   } else if (id === 'land') {
     // Lands don't use the stack; the player keeps priority
     state.landPlayed = true;
@@ -175,6 +189,7 @@ function doAction(p, id) {
   }
 
   views.forEach(hideToast);
+  if (resolved) views.forEach((v) => showResolved(v, resolved));
   navigator.vibrate?.(12);
   render();
 }
@@ -281,6 +296,13 @@ function buildPlayer(p) {
         </div>
       </div>
       <div class="hint-toast" role="status" hidden></div>
+      <div class="resolve-toast" role="status" hidden>
+        <span class="resolve-icon"></span>
+        <span class="resolve-text">
+          <span class="resolve-title"></span>
+          <span class="resolve-then"></span>
+        </span>
+      </div>
     </div>`;
 
   el.addEventListener('click', (e) => {
@@ -304,6 +326,8 @@ function buildPlayer(p) {
     hint: el.querySelector('.step-hint'),
     toast: el.querySelector('.hint-toast'),
     toastTimer: null,
+    resolve: el.querySelector('.resolve-toast'),
+    resolveTimer: null,
   };
 
   view.toast.addEventListener('click', (e) => {
@@ -317,6 +341,7 @@ function buildPlayer(p) {
 function showWhy(view, action) {
   const reason = whyNot(Number(view.el.dataset.p), action);
   if (!reason) return;
+  hideToast(view);
   view.toast.textContent = reason;
   view.toast.hidden = false;
   clearTimeout(view.toastTimer);
@@ -325,7 +350,22 @@ function showWhy(view, action) {
 
 function hideToast(view) {
   clearTimeout(view.toastTimer);
+  clearTimeout(view.resolveTimer);
   view.toast.hidden = true;
+  view.resolve.hidden = true;
+}
+
+// "Your creature resolves" / "Player 2's instant resolves", in the caster's color
+function showResolved(view, item) {
+  const p = Number(view.el.dataset.p);
+  const { noun, then } = RESOLVES[item.id];
+  const whose = item.owner === p ? 'Your' : `Player ${item.owner + 1}'s`;
+  view.resolve.style.setProperty('--c', `var(${item.owner === 0 ? '--blue' : '--red'})`);
+  view.resolve.querySelector('.resolve-icon').innerHTML = icon(item.id);
+  view.resolve.querySelector('.resolve-title').textContent = `${whose} ${noun} resolves`;
+  view.resolve.querySelector('.resolve-then').textContent = then;
+  view.resolve.hidden = false;
+  view.resolveTimer = setTimeout(() => (view.resolve.hidden = true), RESOLVE_TOAST_MS);
 }
 
 // Tap = ±1, press and hold = keeps counting
