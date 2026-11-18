@@ -448,16 +448,19 @@ svg {
   transform: rotate(30deg) scale(0.92);
 }
 
-/* ---------- Game menu ---------- */
+/* ---------- Game menu (styled like the action cards) ---------- */
 
 .menu {
-  width: min(320px, calc(100vw - 32px));
-  padding: 20px;
-  border: 1px solid #2a2a2a;
-  border-radius: 18px;
-  background: #111;
+  width: 78cqw;
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 5cqw;
+  border: 2px solid var(--dim);
+  border-radius: 3cqw;
+  background: var(--bg);
   color: var(--ink);
-  font-family: "Roboto", system-ui, sans-serif;
+  font-family: inherit;
 }
 
 .menu:focus {
@@ -465,78 +468,94 @@ svg {
 }
 
 .menu::backdrop {
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .menu[open] {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 3cqw;
   animation: pop 0.18s ease-out;
 }
 
 .menu-title {
-  margin: 0 0 4px;
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  margin: 0 0 1cqw;
   color: var(--dim-text);
+  font-size: min(3.4cqw, 2cqh);
+  font-weight: 400;
+  text-align: center;
 }
 
 .menu-btn {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 3px;
+  align-items: center;
+  gap: 3.5cqw;
   width: 100%;
-  padding: 14px 16px;
-  border-radius: 12px;
-  border: 2px solid #2f2f2f;
-  background: #1b1b1b;
+  padding: 3cqw 4cqw;
+  border: 2px solid var(--ink);
+  border-radius: 2cqw;
+  background: var(--me);
+  color: var(--ink);
   text-align: left;
-  transition: background-color 0.15s, border-color 0.15s, transform 0.08s;
+  transition: transform 0.08s, background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
+.menu-btn.revert { --me: var(--blue); }
+.menu-btn.reset { --me: var(--red); }
+
 .menu-btn:active:not(:disabled) {
-  transform: scale(0.98);
+  transform: scale(0.97);
+}
+
+.menu-icon svg {
+  width: 9cqw;
+  height: 9cqw;
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+.menu-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6cqw;
+  min-width: 0;
 }
 
 .menu-btn-label {
-  font-size: 17px;
+  font-size: min(4.4cqw, 2.6cqh);
   font-weight: 500;
+  line-height: 1.15;
 }
 
 .menu-btn-sub {
-  font-size: 13px;
-  color: #8a8a8a;
+  font-size: min(3.2cqw, 1.9cqh);
+  line-height: 1.2;
+  opacity: 0.85;
 }
 
+/* Same look as the disabled action buttons */
 .menu-btn:disabled {
+  background: transparent;
+  border-color: transparent;
+  color: var(--dim);
   cursor: default;
-  opacity: 0.45;
 }
 
-.menu-btn.danger .menu-btn-label {
+.menu-btn:disabled .menu-text {
+  color: var(--dim-text);
+}
+
+/* Armed reset: inverted card asks for the confirming tap */
+.menu-btn.reset.armed {
+  background: var(--ink);
+  border-color: var(--ink);
   color: var(--red);
 }
 
-.menu-btn.danger.armed {
-  background: var(--red);
-  border-color: var(--red);
-}
-
-.menu-btn.danger.armed .menu-btn-label,
-.menu-btn.danger.armed .menu-btn-sub {
-  color: var(--ink);
-}
-
 .menu-close {
-  margin-top: 4px;
-  padding: 12px;
-  border-radius: 12px;
-  color: #bdbdbd;
-  font-size: 15px;
+  padding: 2.5cqw;
+  color: var(--ink);
+  font-size: min(3.8cqw, 2.3cqh);
 }
 
 @keyframes pop {

@@ -13,6 +13,12 @@ const ICONS = {
   square: '<rect x="6" y="6" width="52" height="52"/>',
   plus: '<circle cx="32" cy="32" r="27"/><path d="M32 18V46M18 32H46"/>',
   minus: '<circle cx="32" cy="32" r="27"/><path d="M18 32H46"/>',
+  revert:
+    '<path d="M22 20H40A14 14 0 0 1 40 48H20" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<path d="M6 20 24 7V33Z" stroke="none"/>',
+  reset:
+    '<path d="M50 32A18 18 0 1 1 41 16.4" fill="none" stroke-width="7" stroke-linecap="round"/>' +
+    '<path d="M48.5 21 35.3 22.3 43.3 8.5Z" stroke="none"/>',
   gear:
     [0, 45, 90, 135, 180, 225, 270, 315]
       .map((deg) => `<rect x="27" y="5" width="10" height="14" rx="2" transform="rotate(${deg} 32 32)"/>`)
@@ -332,9 +338,11 @@ const RESET_CONFIRM_MS = 3000;
 let resetArmed = null;
 
 document.getElementById('gear-btn').innerHTML = icon('gear');
+menu.querySelectorAll('[data-icon]').forEach((el) => (el.innerHTML = icon(el.dataset.icon)));
 document.getElementById('gear-btn').addEventListener('click', () => {
   disarmReset();
   menu.showModal();
+  menu.focus(); // focus the panel, not the first button, so no focus ring shows on open
 });
 document.getElementById('menu-close').addEventListener('click', () => menu.close());
 
