@@ -1,3 +1,20 @@
+/* Bundled fonts (latin subset) so the app works offline */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("fonts/roboto-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Roboto Condensed";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/roboto-condensed-700-latin.woff2") format("woff2");
+}
+
 :root {
   --blue: #4472e2;
   --red: #df4256;
@@ -22,6 +39,7 @@ body {
   font-family: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
   overflow: hidden;
   overscroll-behavior: none;
+  -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -53,6 +71,8 @@ svg {
   width: min(100vw, 100dvh * 0.5625);
   height: 100dvh;
   margin: 0 auto;
+  /* Keep controls clear of notches and home indicators in fullscreen */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   display: grid;
   grid-template-rows: 1fr 1fr;
 }
@@ -182,6 +202,7 @@ svg {
   width: 100%;
   height: 100%;
   fill: currentColor;
+  stroke: currentColor;
 }
 
 /* Mana font glyphs: size them like the SVG icons they replace */
@@ -190,9 +211,6 @@ svg {
   line-height: 1;
 }
 
-.step-mark .glyph.ms {
-  font-size: min(6cqw, 3.1cqh); /* glyphs sit smaller in their em box */
-}
 
 .step.current { color: var(--ink); }
 .step.current .step-mark { color: var(--turn); }

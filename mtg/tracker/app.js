@@ -7,6 +7,8 @@ const ICONS = {
   pass:
     '<circle class="bg" cx="32" cy="32" r="31"/>' +
     '<path class="fg" d="M23 12 12 26H19.5V52H26.5V26H34Z M41 52 52 38H44.5V12H37.5V38H30Z"/>',
+  combat:
+    '<path d="M58 6 56 16 28 44 20 36 48 8Z"/><path d="M12 34 30 52 26 56 8 38Z"/><path d="M20 46 18 44 8 54 10 56Z" stroke-width="5" stroke-linejoin="round"/>',
   dot: '<circle cx="32" cy="32" r="28"/>',
   square: '<rect x="6" y="6" width="52" height="52"/>',
   plus: '<circle cx="32" cy="32" r="27"/><path d="M32 18V46M18 32H46"/>',
@@ -22,10 +24,6 @@ const MANA = {
   instant: 'instant',
   ability: 'tap',
   land: 'land',
-  untap: 'untap',
-  upkeep: 'ability-triggered',
-  combat: 'battle',
-  end: 'counter-time',
 };
 
 const icon = (name) =>
@@ -36,13 +34,13 @@ const icon = (name) =>
 /* ---------- Game definitions ---------- */
 
 const STEPS = [
-  { name: 'Untap', mark: 'untap', auto: true }, // no player gets priority
-  { name: 'Upkeep', mark: 'upkeep' },
+  { name: 'Untap', mark: 'dot', auto: true }, // no player gets priority
+  { name: 'Upkeep', mark: 'dot' },
   { name: 'Draw', mark: 'dot' },
   { name: 'Main 1', mark: 'square', main: true },
   { name: 'Combat', mark: 'combat' },
   { name: 'Main 2', mark: 'square', main: true },
-  { name: 'End', mark: 'end' },
+  { name: 'End', mark: 'dot' },
 ];
 
 const UNTAP_DELAY = 700; // ms the Untap step stays highlighted
@@ -290,10 +288,50 @@ async function keepAwake() {
     /* not supported or denied */
   }
 }
-document.addEventListener('pointerdown', keepAwake, { once: true });
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') keepAwake();
 });
+
+/* ---------- Fullscreen ---------- */
+
+const isInstalled = () =>
+  ['fullscreen', 'standalone'].some((m) => matchMedia(`(display-mode: ${m})`).matches) ||
+  navigator.standalone === true; // iOS home-screen app
+
+// In a regular browser tab, the first tap goes fullscreen (browsers require a user gesture)
+async function goFullscreen() {
+  const root = document.documentElement;
+  if (!isInstalled() && !document.fullscreenElement && root.requestFullscreen) {
+    try {
+      await root.requestFullscreen({ navigationUI: 'hide' });
+    } catch {
+      /* not allowed here (e.g. iPhone Safari) */
+    }
+  }
+  try {
+    await screen.orientation?.lock?.('portrait');
+  } catch {
+    /* only works in fullscreen on some devices */
+  }
+}
+
+// pointerup (not pointerdown) counts as a user gesture for touch input
+document.addEventListener(
+  'pointerup',
+  () => {
+    keepAwake();
+    goFullscreen();
+  },
+  { once: true }
+);
+
+/* ---------- Offline support ---------- */
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
 
 enterStep();
 render();
