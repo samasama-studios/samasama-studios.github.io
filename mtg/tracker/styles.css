@@ -156,6 +156,7 @@ svg {
 /* ---------- Board (tracker + content) ---------- */
 
 .board {
+  position: relative;
   display: grid;
   grid-template-columns: 19cqw 1fr;
   min-height: 0;
@@ -276,12 +277,14 @@ svg {
   text-align: center;
 }
 
-/* Why a dimmed action can't be used: tap it, this appears, tap to dismiss */
+/* Why a dimmed action can't be used: tap it, this appears, tap to dismiss.
+   Centered across the player's whole panel, not just the button area. */
 .hint-toast {
   position: absolute;
-  left: 3cqw;
-  right: 3cqw;
-  bottom: 1cqh;
+  top: 50%;
+  left: 50%;
+  width: 84cqw;
+  translate: -50% -50%; /* separate from transform, so the pop animation doesn't shift it */
   z-index: 1;
   padding: 2.4cqw 3.4cqw;
   border: 2px solid var(--me);

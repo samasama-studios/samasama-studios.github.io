@@ -279,8 +279,8 @@ function buildPlayer(p) {
             <p class="waiting-sub"></p>
           </div>
         </div>
-        <div class="hint-toast" role="status" hidden></div>
       </div>
+      <div class="hint-toast" role="status" hidden></div>
     </div>`;
 
   el.addEventListener('click', (e) => {
