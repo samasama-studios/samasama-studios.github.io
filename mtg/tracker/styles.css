@@ -1,0 +1,393 @@
+:root {
+  --blue: #4472e2;
+  --red: #df4256;
+  --bg: #000;
+  --ink: #fff;
+  --dim: #3b3b3b;
+  --dim-text: #5e5e5e;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+svg {
+  display: block;
+}
+
+/* ---------- Table (phone-shaped container) ---------- */
+
+.table {
+  container-type: size;
+  width: min(100vw, 100dvh * 0.5625);
+  height: 100dvh;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.table[data-active="0"] { --turn: var(--blue); }
+.table[data-active="1"] { --turn: var(--red); }
+
+.player {
+  display: grid;
+  grid-template-rows: 31.5% 1fr;
+  min-height: 0;
+}
+
+.player[data-p="0"] { --me: var(--blue); --opp: var(--red); }
+.player[data-p="1"] { --me: var(--red); --opp: var(--blue); transform: rotate(180deg); }
+
+/* ---------- Life bar ---------- */
+
+.life {
+  background: var(--me);
+  display: grid;
+  grid-template-columns: 1fr auto 3.2ch auto 1fr;
+  align-items: center;
+  justify-items: center;
+  font-family: "Roboto Condensed", "Arial Narrow", sans-serif;
+  font-size: min(11.5cqh, 20cqw);
+}
+
+.life-total {
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.life-btn {
+  width: 16cqw;
+  height: 16cqw;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.life-btn svg {
+  width: 9cqw;
+  height: 9cqw;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.life-btn:active svg {
+  transform: scale(0.9);
+}
+
+.prio-badge {
+  width: 9cqw;
+  height: 9cqw;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.prio-badge .bg { fill: var(--ink); }
+.prio-badge .fg { fill: var(--me); }
+
+/* Mirror the badge for the player across the table, as in the design */
+.player[data-p="1"] .prio-badge { grid-area: 1 / 5; }
+.player[data-p="1"] .life-spacer { grid-area: 1 / 1; }
+
+.has-priority .prio-badge {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Board (tracker + content) ---------- */
+
+.board {
+  display: grid;
+  grid-template-columns: 19cqw 1fr;
+  min-height: 0;
+  padding: 1.5cqh 0;
+}
+
+/* Phase tracker */
+
+.tracker {
+  position: relative;
+  padding-right: 4cqw;
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3cqh;
+  color: var(--dim-text);
+  font-size: min(3.1cqw, 1.6cqh);
+  line-height: 1.1;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.step-mark {
+  width: min(4.6cqw, 2.4cqh);
+  height: min(4.6cqw, 2.4cqh);
+  display: grid;
+  place-items: center;
+  color: var(--dim);
+  transition: color 0.2s;
+}
+
+.step-mark svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+/* Mana font glyphs: size them like the SVG icons they replace */
+.glyph.ms {
+  display: block;
+  line-height: 1;
+}
+
+.step-mark .glyph.ms {
+  font-size: min(6cqw, 3.1cqh); /* glyphs sit smaller in their em box */
+}
+
+.step.current { color: var(--ink); }
+.step.current .step-mark { color: var(--turn); }
+
+.track {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 1.5cqw;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--dim);
+}
+
+.track-fill {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: calc(var(--progress, 0.1) * 100%);
+  border-radius: inherit;
+  background: var(--turn);
+  transition: height 0.3s ease;
+}
+
+.track-knob {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--progress, 0.1) * 100%);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--turn);
+  transform: translate(-50%, -50%);
+  transition: top 0.3s ease;
+}
+
+/* Content area: actions or waiting */
+
+.content {
+  position: relative;
+  min-height: 0;
+  display: grid;
+  padding: 0 3cqw 0 3cqw;
+}
+
+.actions,
+.waiting {
+  grid-area: 1 / 1;
+  min-height: 0;
+}
+
+.actions { display: none; }
+.has-priority .actions { display: grid; }
+.has-priority .waiting { display: none; }
+
+.actions {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1.6cqh 2.6cqw;
+  align-content: center;
+  padding: 1cqh 0;
+}
+
+.action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4cqh;
+  min-height: 0;
+  padding: 0.6cqh 0.5cqw;
+  border-radius: 2cqw;
+  border: 2px solid var(--ink);
+  background: var(--me);
+  color: var(--ink);
+  font-size: min(3.4cqw, 2cqh);
+  line-height: 1.15;
+  text-align: center;
+  transition: transform 0.08s, background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.action:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.action svg {
+  width: min(10cqw, 6.2cqh);
+  height: min(10cqw, 6.2cqh);
+  fill: currentColor;
+  stroke: currentColor;
+  flex-shrink: 0;
+}
+
+.action .glyph.ms {
+  font-size: min(10cqw, 6.2cqh);
+}
+
+.action:disabled {
+  background: transparent;
+  border-color: transparent;
+  color: var(--dim);
+  cursor: default;
+}
+
+.action:disabled .action-label {
+  color: var(--dim-text);
+}
+
+.action.pass {
+  background: transparent;
+  border-color: transparent;
+}
+
+.action.pass svg {
+  width: min(11cqw, 6.8cqh);
+  height: min(11cqw, 6.8cqh);
+}
+
+.action.pass .bg { fill: var(--opp); }
+.action.pass .fg { fill: var(--bg); stroke: none; }
+
+/* Waiting */
+
+.waiting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5cqw;
+}
+
+.stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1cqh;
+  max-height: 100%;
+}
+
+.stack:empty { display: none; }
+
+.stack-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: min(3.6cqw, 2.2cqh);
+  line-height: 1.2;
+  text-align: center;
+  max-width: 22cqw;
+  animation: pop 0.25s ease-out;
+}
+
+.stack-item .glyph.ms {
+  color: var(--c);
+  font-size: min(11cqw, 6.5cqh);
+  margin-bottom: 0.4cqh;
+}
+
+/* Older items further down the stack get smaller and dimmer */
+.stack-item + .stack-item {
+  opacity: 0.55;
+  font-size: min(2.8cqw, 1.7cqh);
+}
+
+.stack-item + .stack-item .glyph.ms {
+  font-size: min(6cqw, 3.6cqh);
+}
+
+.stack-more {
+  color: var(--dim-text);
+  font-size: min(2.8cqw, 1.7cqh);
+}
+
+.waiting-msg {
+  text-align: center;
+}
+
+.waiting-text {
+  margin: 0;
+  white-space: nowrap;
+  font-size: min(5cqw, 3.1cqh);
+  line-height: 1.2;
+}
+
+.waiting-sub {
+  margin: 0.8cqh 0 0;
+  color: var(--dim-text);
+  font-size: min(3.2cqw, 1.9cqh);
+}
+
+@keyframes pop {
+  from { transform: scale(0.7); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
