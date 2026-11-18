@@ -185,7 +185,7 @@ svg {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.3cqh;
+  gap: 0.5cqh;
   color: var(--dim-text);
   font-size: min(3.1cqw, 1.6cqh);
   line-height: 1.1;
@@ -194,8 +194,8 @@ svg {
 }
 
 .step-mark {
-  width: min(4.6cqw, 2.4cqh);
-  height: min(4.6cqw, 2.4cqh);
+  width: min(3.3cqw, 1.7cqh);
+  height: min(3.3cqw, 1.7cqh);
   display: grid;
   place-items: center;
   color: var(--dim);
