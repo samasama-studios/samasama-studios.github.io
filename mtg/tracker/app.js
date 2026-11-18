@@ -133,7 +133,7 @@ function enterStep() {
   state.priority = state.active;
 }
 
-// End Turn: the active player skips the rest of their turn (only with an empty stack)
+// End Turn: the active player skips ahead to their End step (only with an empty stack)
 const canEndTurn = (p) => state.priority === p && p === state.active && state.stack.length === 0;
 
 // Returns the stack item that resolved, if any
@@ -183,8 +183,11 @@ function doAction(p, id) {
 function endTurn(p) {
   if (!canEndTurn(p)) return;
   remember(`Player ${p + 1} ended their turn`);
+  // Jump to the End step as if the active player passed: the opponent still gets a last
+  // chance to respond, and if they pass too the turn ends.
   state.step = STEPS.length - 1;
-  advanceStep(); // past End: next player's Begin
+  state.passes = 1;
+  state.priority = other(p);
   views.forEach(hideToast);
   navigator.vibrate?.(12);
   render();
@@ -219,6 +222,9 @@ function whyNot(p, action) {
 function hintFor(p) {
   if (state.priority === p && state.stack.length) {
     return 'Respond with an instant or ability, or pass to let the top spell resolve';
+  }
+  if (state.priority === p && p !== state.active && state.step === STEPS.length - 1) {
+    return 'Last chance to cast instants this turn, or pass to start your turn';
   }
   const [mine, theirs] = STEPS[state.step].hint;
   return p === state.active ? mine : theirs.replace('{A}', `Player ${state.active + 1}`);
