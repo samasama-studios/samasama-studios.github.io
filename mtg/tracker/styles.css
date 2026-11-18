@@ -72,8 +72,10 @@ svg {
   width: min(100vw, 100dvh * 0.5625);
   height: 100dvh;
   margin: 0 auto;
-  /* Keep controls clear of notches and home indicators in fullscreen */
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  /* Keep controls clear of notches and home indicators in fullscreen.
+     Top and bottom get the same inset so the divider stays at exactly half the screen. */
+  --inset-y: max(env(safe-area-inset-top), env(safe-area-inset-bottom));
+  padding: var(--inset-y) env(safe-area-inset-right) var(--inset-y) env(safe-area-inset-left);
   display: grid;
   grid-template-rows: 1fr 1fr;
 }
@@ -410,8 +412,8 @@ svg {
   position: absolute;
   left: env(safe-area-inset-left);
   right: env(safe-area-inset-right);
-  top: calc(env(safe-area-inset-top) + (100% - env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 2);
-  height: 0;
+  top: 50%;
+  transform: translateY(-50%); /* center the gear on the line, not its top edge */
   display: grid;
   grid-template-columns: 1fr 16cqw 3.2ch 16cqw 1fr;
   align-items: center;
@@ -428,9 +430,10 @@ svg {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--bg);
+  background: rgba(255, 255, 255, 0.18);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   color: var(--ink);
-  box-shadow: 0 0 0 2px var(--bg);
   pointer-events: auto;
   transition: transform 0.15s;
 }
