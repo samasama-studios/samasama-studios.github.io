@@ -44,14 +44,22 @@ const icon = (name) =>
 
 /* ---------- Game definitions ---------- */
 
+// hint: [for the player whose turn it is, for the opponent]; {A} = active player's name
 const STEPS = [
-  { name: 'Untap', mark: 'dot', auto: true }, // no player gets priority
-  { name: 'Upkeep', mark: 'dot' },
-  { name: 'Draw', mark: 'dot' },
-  { name: 'Main 1', mark: 'square', main: true },
-  { name: 'Combat', mark: 'combat' },
-  { name: 'Main 2', mark: 'square', main: true },
-  { name: 'End', mark: 'dot' },
+  { name: 'Untap', mark: 'dot', auto: true, // no player gets priority
+    hint: ['Untap all your tapped cards', '{A} untaps their cards'] },
+  { name: 'Upkeep', mark: 'dot',
+    hint: ['"At the beginning of your upkeep" effects happen', '{A} handles their upkeep effects'] },
+  { name: 'Draw', mark: 'dot',
+    hint: ['Draw a card (skipped on the very first turn)', '{A} draws a card'] },
+  { name: 'Main 1', mark: 'square', main: true,
+    hint: ['Play a land and cast spells of any type', '{A} can play a land and cast spells'] },
+  { name: 'Combat', mark: 'combat',
+    hint: ['Attack with your untapped creatures', "Block {A}'s attackers with your creatures"] },
+  { name: 'Main 2', mark: 'square', main: true,
+    hint: ['After combat: play a land or cast more spells', '{A} can cast more spells after combat'] },
+  { name: 'End', mark: 'dot',
+    hint: ['"At end of turn" effects happen, discard down to 7', '{A} is ending their turn'] },
 ];
 
 const UNTAP_DELAY = 700; // ms the Untap step stays highlighted
@@ -69,6 +77,8 @@ const ACTIONS = [
 ];
 
 const ACTION_BY_ID = Object.fromEntries(ACTIONS.map((a) => [a.id, a]));
+const PLURAL = { sorcery: 'Sorceries', enchantment: 'Enchantments', artifact: 'Artifacts', creature: 'Creatures' };
+const HINT_TOAST_MS = 3500;
 const STARTING_LIFE = 20;
 const STACK_VISIBLE = 3;
 
@@ -164,8 +174,36 @@ function doAction(p, id) {
     state.priority = other(p);
   }
 
+  views.forEach(hideToast);
   navigator.vibrate?.(12);
   render();
+}
+
+// Plain-language reason why a dimmed action can't be used right now
+function whyNot(p, action) {
+  const sorceryLike = action.speed !== 'land';
+  const what = sorceryLike ? PLURAL[action.id] : 'Lands';
+  const verb = sorceryLike ? 'cast' : 'played';
+  if (p !== state.active) {
+    return sorceryLike
+      ? `${what} can only be cast on your own turn. Cards with Flash work like instants: use Cast Instant.`
+      : 'Lands can only be played on your own turn.';
+  }
+  if (!STEPS[state.step].main) return `${what} can only be ${verb} in your main phases (Main 1 or Main 2).`;
+  if (state.stack.length) {
+    return `${what} can't be ${verb} while something is on the stack. Respond with an instant or ability, or pass.`;
+  }
+  if (action.speed === 'land' && state.landPlayed) return 'You already played a land this turn. Only one per turn!';
+  return '';
+}
+
+// What this player should know right now
+function hintFor(p) {
+  if (state.priority === p && state.stack.length) {
+    return 'Respond with an instant or ability, or pass to let the top spell resolve';
+  }
+  const [mine, theirs] = STEPS[state.step].hint;
+  return p === state.active ? mine : theirs.replace('{A}', `Player ${state.active + 1}`);
 }
 
 function describeAction(p, action) {
@@ -180,6 +218,7 @@ function revertLastStep() {
   if (!last) return;
   clearTimeout(autoTimer);
   Object.assign(state, last.flow);
+  views.forEach(hideToast);
   render();
 }
 
@@ -187,6 +226,7 @@ function resetGame() {
   clearTimeout(autoTimer);
   Object.assign(state, newGame());
   history = [];
+  views.forEach(hideToast);
   enterStep();
   render();
 }
@@ -224,6 +264,7 @@ function buildPlayer(p) {
         <div class="track"><div class="track-fill"></div><div class="track-knob"></div></div>
       </div>
       <div class="content">
+        <p class="step-hint"></p>
         <div class="actions">
           ${ACTIONS.map((a) => `
             <button class="action${a.id === 'pass' ? ' pass' : ''}" data-action="${a.id}">
@@ -238,17 +279,20 @@ function buildPlayer(p) {
             <p class="waiting-sub"></p>
           </div>
         </div>
+        <div class="hint-toast" role="status" hidden></div>
       </div>
     </div>`;
 
   el.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-action]');
-    if (btn) doAction(p, btn.dataset.action);
+    if (!btn) return;
+    if (btn.getAttribute('aria-disabled') === 'true') showWhy(view, ACTION_BY_ID[btn.dataset.action]);
+    else doAction(p, btn.dataset.action);
   });
 
   el.querySelectorAll('.life-btn').forEach((btn) => bindHoldRepeat(btn, () => changeLife(p, Number(btn.dataset.delta))));
 
-  return {
+  const view = {
     el,
     total: el.querySelector('.life-total'),
     tracker: el.querySelector('.tracker'),
@@ -257,7 +301,31 @@ function buildPlayer(p) {
     stack: el.querySelector('.stack'),
     waitingText: el.querySelector('.waiting-text'),
     waitingSub: el.querySelector('.waiting-sub'),
+    hint: el.querySelector('.step-hint'),
+    toast: el.querySelector('.hint-toast'),
+    toastTimer: null,
   };
+
+  view.toast.addEventListener('click', (e) => {
+    e.stopPropagation();
+    hideToast(view);
+  });
+
+  return view;
+}
+
+function showWhy(view, action) {
+  const reason = whyNot(Number(view.el.dataset.p), action);
+  if (!reason) return;
+  view.toast.textContent = reason;
+  view.toast.hidden = false;
+  clearTimeout(view.toastTimer);
+  view.toastTimer = setTimeout(() => hideToast(view), HINT_TOAST_MS);
+}
+
+function hideToast(view) {
+  clearTimeout(view.toastTimer);
+  view.toast.hidden = true;
 }
 
 // Tap = ±1, press and hold = keeps counting
@@ -294,8 +362,10 @@ function render() {
     v.steps.forEach((li, i) => li.classList.toggle('current', i === state.step));
 
     v.actions.forEach((btn) => {
-      btn.disabled = !canUse(p, ACTION_BY_ID[btn.dataset.action]);
+      btn.setAttribute('aria-disabled', !canUse(p, ACTION_BY_ID[btn.dataset.action]));
     });
+
+    v.hint.textContent = hintFor(p);
 
     if (state.priority !== p) {
       v.waitingText.textContent =
