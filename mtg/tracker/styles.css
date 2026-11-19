@@ -451,9 +451,11 @@ svg {
   color: var(--dim);
 }
 
-/* Pass: white circle with arrows in the player's color, like the life-bar badge */
+/* Pass moves the current turn along, so it takes the turn owner's color:
+   on the opponent's turn it shows their color, making it clear it isn't yours */
+.action.pass { background: var(--turn); }
 .action.pass .bg { fill: var(--ink); }
-.action.pass .fg { fill: var(--me); stroke: none; }
+.action.pass .fg { fill: var(--turn); stroke: none; }
 
 /* Type picker: replaces the buttons until a type is chosen */
 .picker {
